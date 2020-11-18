@@ -23,7 +23,6 @@ function App(props) {
     signInWithGoogle,
   } = props;
 
-  console.log(signInWithGoogle, user)
   return (
     <div className="App">
     <header className="App-header">
