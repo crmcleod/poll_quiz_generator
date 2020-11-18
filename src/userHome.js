@@ -2,6 +2,9 @@ import { render } from '@testing-library/react'
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import QuizList from './quizList'
+import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom'
+import ErrorPage from './errorPage'
+import Home from './home'
 
 const UserHome = ({user}) =>{
 
@@ -19,27 +22,28 @@ const UserHome = ({user}) =>{
 
     }, [userEmail])
 
-    const handleExistingQuizzesClick = () =>{
-        setExistingQuizzesVisible(true);
-    }
+    // const handleExistingQuizzesClick = () =>{
+    //     setExistingQuizzesVisible(true);
+    // }
     if(!existingQuizzesVisible){
     return(
-        <>
-            <h1> Welcome to the quiz generatorrrrr, quizzards! </h1>
-            <h2>{userDisplayName} get started with a new quiz or change an existing one. </h2>
-            <label for="existing-quizzes"></label>
-            <button onClick={ handleExistingQuizzesClick } id="existing-quizzes">View existing quizzes</button>
-        </>
-    )}
-    else if(existingQuizzesVisible){
-        return(
+        <Router>
             <>
-                <h1> Here are you existing quizzes</h1>
-                <QuizList ids={quizIds}/>
+                {/* <h1> Welcome to the quiz generatorrrrr, quizzards! </h1>
+                <h2>{userDisplayName} get started with a new quiz or change an existing one. </h2>
+                <label for="existing-quizzes"></label>
+                <button onClick={ handleExistingQuizzesClick } id="existing-quizzes">View existing quizzes</button> */}
+                <Switch>
+                    <Route exact path="/" 
+                    render={() => <Home userDisplayName={userDisplayName} />} />
+                                        {/* handleExistingQuizzesClick={handleExistingQuizzesClick} />} /> */}
+                    <Route path="/quizzes" 
+                    render={() => <QuizList ids={quizIds} />} />
+                    <Route component={ErrorPage} />
+                </Switch>
             </>
-        )
-    }
-
+        </Router>
+    )}
 }
 
 export default UserHome;
