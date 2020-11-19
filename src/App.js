@@ -6,6 +6,7 @@ import withFirebaseAuth from 'react-with-firebase-auth'
 import "firebase/auth";
 import firebaseConfig from './firebaseConfig.js';
 import UserHome from './userHome';
+import NavBarContainer from './navBarContainer';
 
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
@@ -33,7 +34,7 @@ function App(props) {
       }
       {
         user
-          ? <button onClick={signOut}>Sign out</button>
+          ? <button id="sign-out-button" onClick={signOut}>Sign out</button>
           : <button onClick={signInWithGoogle}>Sign in with Google</button>
       }
     </header>

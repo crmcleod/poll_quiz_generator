@@ -1,24 +1,51 @@
 import React, {useState, useEffect} from 'react';
 import QuizCard from './quizCard';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import UserHome from './userHome';
-import ErrorPage from './errorPage';
+import { BrowserRouter as Router, Route, Switch, Link, useParams, withRouter } from "react-router-dom";
+import axios from 'axios'
 
 
-const QuizList = ({ids}) =>{
+const QuizList = ({ids, quizNames}) =>{
 
-    if(!ids){
+    const [ quizId, setQuizId ] = useState();
+    const handleSelectChange = (e) =>{
+        setQuizId(e.target.value)
+        // console.log(axios( `${process.env.REACT_APP_SERVER_URL}/quizzes/${e.target.value}`))
+    }
+
+    let { id } = useParams;
+
+    // let quizzes;
+    // useEffect(() => {
+    //     if(typeof(quizNames) !== "undefined"){
+    //     quizzes = ids.map((id) => {
+    //         return <option id="quiz-list" key={id} value={id}>{quizNames[ids.indexOf(id)]}</option>})}
+    //     return () => {
+            
+    //     }
+    // }, [ids])
+
+    if(!quizNames){
         return(
             <h1> ... loading ... </h1>
         )
     }
+
     const quizzes = ids.map((id) => {
-        return <QuizCard id={id} />})
+        return <option id="quiz-list" key={id} value={id}>{quizNames[ids.indexOf(id)]}</option>})
+        
     return(
         <>
-            { quizzes }
+            <select onChange={handleSelectChange}>
+                <option disabled selected>Pick Quiz</option>
+                { quizzes }
+            </select>
+            <Link to={`/quizzes/${quizId}`}> Go to quiz</Link>
+            <Switch>
+                <Route exact path={`/quizzes/:id`} 
+                        render={() => <QuizCard />} />
+            </Switch>
         </>
     )
 
 }
-export default QuizList
+export default withRouter(QuizList);
