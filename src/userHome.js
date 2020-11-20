@@ -12,11 +12,10 @@ const UserHome = ({user}) =>{
 
     const [ userEmail, setUserEmail ] = useState(user.email)
     const [ userEmailVerified, setUserEmailVerified ] = useState(user.emailVerified)
-    const [ userDisplayName, setUserDisplayName ] = useState(user.displayName)
     const [ userName, setUserName ] = useState();
+    const [ userId, setUserId ] = useState();
     const [ quizIds, setQuizIds ] = useState();
     const [ quizNames, setQuizNames ] = useState();
-    const [ existingQuizzesVisible, setExistingQuizzesVisible ] = useState(false);
     const [ signUpDetails, setSignUpDetails ] = useState({
         "firstName": null,
         "lastName": null,
@@ -34,6 +33,7 @@ const UserHome = ({user}) =>{
         setQuizIds(quizIds)
         setQuizNames(quizNames)
         setUserName(userNameDB)}
+        setUserId(result.data[0].id)
 
     }, [userEmail, userEmailVerified, userName])
 
@@ -46,7 +46,6 @@ const UserHome = ({user}) =>{
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(signUpDetails)
         axios.post(`${process.env.REACT_APP_SERVER_URL}/users`, signUpDetails)
         .then(res => {
             console.log(res);
@@ -82,7 +81,8 @@ const UserHome = ({user}) =>{
                                         {/* handleExistingQuizzesClick={handleExistingQuizzesClick} />} /> */}
                     <Route path="/quizzes" 
                         render={() => <QuizList ids={quizIds} quizNames={quizNames} />} />
-                    <Route path="/new_quiz" component={NewQuizContainer} />
+                    <Route path="/new_quiz" 
+                        render={() => <NewQuizContainer id={userId} /> } />
                     <Route component={ErrorPage} />
                 </Switch>
             </>
