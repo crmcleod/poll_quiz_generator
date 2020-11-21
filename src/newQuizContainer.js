@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import NewTriviaQuiz from './Components/newTriviaQuiz'
-const NewQuizContainer = (props) =>{
+const NewQuizContainer = ({author}) =>{
 
     const [ triviaQuizComponentActive, setTriviaQuizComponentActive ] = useState(false);
 
@@ -9,7 +9,7 @@ const NewQuizContainer = (props) =>{
         setTriviaQuizComponentActive(true);
     }
     if(triviaQuizComponentActive){
-        return <NewTriviaQuiz active={triviaQuizComponentActive}/>
+        return <NewTriviaQuiz active={triviaQuizComponentActive} author={author}/>
     } 
     return(
         <>

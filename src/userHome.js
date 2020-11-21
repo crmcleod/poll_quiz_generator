@@ -82,7 +82,9 @@ const UserHome = ({user}) =>{
                     <Route path="/quizzes" 
                         render={() => <QuizList ids={quizIds} quizNames={quizNames} />} />
                     <Route path="/new_quiz" 
-                        render={() => <NewQuizContainer id={userId} /> } />
+                        render={() => <NewQuizContainer 
+                                            id={userId} 
+                                            author={userName} /> } />
                     <Route component={ErrorPage} />
                 </Switch>
             </>
