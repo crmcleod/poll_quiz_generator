@@ -1,18 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import QuizCard from './quizCard';
-import { BrowserRouter as Router, Route, Switch, Link, useParams, withRouter } from "react-router-dom";
-import axios from 'axios'
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react'
+import QuizCard from './quizCard'
+import { Route, Switch, Link, withRouter } from 'react-router-dom'
+// import axios from 'axios'
 
 
 const QuizList = ({ids, quizNames}) =>{
 
-    const [ quizId, setQuizId ] = useState();
+    const [ quizId, setQuizId ] = useState()
     const handleSelectChange = (e) =>{
         setQuizId(e.target.value)
         // console.log(axios( `${process.env.REACT_APP_SERVER_URL}/quizzes/${e.target.value}`))
     }
 
-    let { id } = useParams;
+    // let { id } = useParams;
 
     // let quizzes;
     // useEffect(() => {
@@ -41,11 +42,11 @@ const QuizList = ({ids, quizNames}) =>{
             </select>
             <Link to={`/quizzes/${quizId}`}> Go to quiz</Link>
             <Switch>
-                <Route exact path={`/quizzes/:id`} 
-                        render={() => <QuizCard />} />
+                <Route exact path={'/quizzes/:id'} 
+                    render={() => <QuizCard />} />
             </Switch>
         </>
     )
 
 }
-export default withRouter(QuizList);
+export default withRouter(QuizList)

@@ -1,27 +1,29 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-undef */
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useParams, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom'
 
 const QuizCard = (props) =>{
 
-    const [ quizData, setQuizData ] = useState();
+    const [ quizData, setQuizData ] = useState()
 
-    useEffect( async() => {
-        if(props){
-        const result = await axios( `${process.env.REACT_APP_SERVER_URL}/quizzes/${props.match.params.id}`)
-        setQuizData(result.data)}
+    useEffect( () => {
+        if( props ){
+            axios.get( `${process.env.REACT_APP_SERVER_URL}/quizzes/${props.match.params.id}`)
+                .then( res => setQuizData(res.data))}
     }, [props])
 
-    let questions;
+    let questions
     if(quizData) {
         questions = quizData.questions.map((question) => {
-                return(
-                    <li>
-                        <label for={question.id}>{question.questionBody}</label>
-                        <input type="radio" id={question.id} name="quiz"></input>
-                    </li>
-                )
-            })
+            return(
+                <li key={question.id}>
+                    <label htmlFor={question.id}>{question.questionBody}</label>
+                    <input type="radio" id={question.id} name="quiz"></input>
+                </li>
+            )
+        })
     }
 
     if(!quizData){
@@ -53,4 +55,4 @@ const QuizCard = (props) =>{
 
 }
 
-export default withRouter(QuizCard);
+export default withRouter(QuizCard)

@@ -1,90 +1,93 @@
-import { render } from '@testing-library/react'
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-undef */
+/* eslint-disable react/prop-types */
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import QuizList from './quizList'
-import {BrowserRouter as Router, Route, Switch, Link, withRouter} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import ErrorPage from './errorPage'
 import Home from './home'
-import NewQuizContainer from './newQuizContainer'
-import NavBarContainer from './navBarContainer'
+import NewQuizContainer from './Containers/newQuizContainer'
+import NavBarContainer from './Containers/navBarContainer'
+import QuizWidgetContainer from './Containers/quizWidgetContainer'
 
-const UserHome = ({user}) =>{
+const UserHome = ({ user }) =>{
 
-    const [ userEmail, setUserEmail ] = useState(user.email)
+    const [ userEmail ] = useState(user.email)
     const [ userEmailVerified, setUserEmailVerified ] = useState(user.emailVerified)
-    const [ userName, setUserName ] = useState();
-    const [ userId, setUserId ] = useState();
-    const [ quizIds, setQuizIds ] = useState();
-    const [ quizNames, setQuizNames ] = useState();
+    const [ userName, setUserName ] = useState()
+    const [ userId, setUserId ] = useState()
+    const [ quizIds, setQuizIds ] = useState()
+    const [ quizNames, setQuizNames ] = useState()
     const [ signUpDetails, setSignUpDetails ] = useState({
-        "firstName": null,
-        "lastName": null,
-        "email": user.email,
-        "quizzes": []
+        'firstName': null,
+        'lastName': null,
+        'email': user.email,
+        'quizzes': []
     })
 
-    useEffect( async () => {
+    useEffect( () => {
             
-        const result = await axios( `${process.env.REACT_APP_SERVER_URL}/users?email=${userEmail}`)
-        if(result.data.length !== 0){
-        let quizIds = result.data[0].quizzes.map((quiz) => { return quiz.id})
-        let quizNames = result.data[0].quizzes.map((quiz) => { return quiz.quizName})
-        let userNameDB = result.data[0].firstName
-        setQuizIds(quizIds)
-        setQuizNames(quizNames)
-        setUserName(userNameDB)}
-        setUserId(result.data[0].id)
+        axios.get( `${process.env.REACT_APP_SERVER_URL}/users?email=${userEmail}`)
+            .then(res => {
+                if(res.data.length !== 0){
+                    let quizIds = res.data[0].quizzes.map((quiz) => { return quiz.id})
+                    let quizNames = res.data[0].quizzes.map((quiz) => { return quiz.quizName})
+                    let userNameDB = res.data[0].firstName
+                    setQuizIds(quizIds)
+                    setQuizNames(quizNames)
+                    setUserName(userNameDB)
+                    setUserId(res.data[0].id)}})
 
-    }, [userEmail, userEmailVerified, userName])
+    }, [ userEmail, userEmailVerified, userName ])
 
-    const handleFirstNameChange = (event) =>{
-        setSignUpDetails({...signUpDetails, firstName: event.target.value})
+    const handleFirstNameChange = ( event ) =>{
+        setSignUpDetails({ ...signUpDetails, firstName: event.target.value })
     }
-    const handleLastNameChange = (event) =>{
-        setSignUpDetails({...signUpDetails, lastName: event.target.value})
-    }
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/users`, signUpDetails)
-        .then(res => {
-            console.log(res);
-            console.log(res.data)
-            setUserEmailVerified(true)
-            setUserName(signUpDetails.firstName)
-        })
+    const handleLastNameChange = ( event ) =>{
+        setSignUpDetails({ ...signUpDetails, lastName: event.target.value })
     }
 
-   if(!userName){
-       return(
+    const handleSubmit = ( event ) => {
+        event.preventDefault()
+        axios.post( `${process.env.REACT_APP_SERVER_URL}/users`, signUpDetails )
+            .then( res => {
+                console.log( res )
+                console.log( res.data )
+                setUserEmailVerified( true )
+                setUserName( signUpDetails.firstName )
+            })
+    }
+
+    if( !userName ){
+        return(
             <>
                 <h1> Looks like this is your first time, let's grab some details to personalise your experience!</h1>
                 <form onSubmit={handleSubmit}>
-                    <label for="first_name">First name: </label>
+                    <label htmlFor="first_name">First name: </label>
                     <input type="text" id="first_name" placeholder="First name" onChange={handleFirstNameChange} value={signUpDetails.first_name}></input>
-                    <label for="last_name">Last name: </label>
+                    <label htmlFor="last_name">Last name: </label>
                     <input type="text" id="last_name" placeholder="Last name" onChange={handleLastNameChange} value={signUpDetails.last_name}></input>
-                    <label for="email">Email: </label>
+                    <label htmlFor="email">Email: </label>
                     <input type="text" id="email" disabled placeholder="Email" value={userEmail}></input>
                     <input type="submit" value="Submit"  />
                 </form>
-                <h2>{signUpDetails.first_name}{signUpDetails.last_name}</h2>
+                <h2>{ signUpDetails.first_name }{ signUpDetails.last_name }</h2>
             </>
-       )}
+        )}
     return(
         <Router>
             <>
-              <NavBarContainer />  
+                <NavBarContainer />  
                 <Switch>
                     <Route exact path="/" 
-                        render={() => <Home userDisplayName={userName} />} />
-                                        {/* handleExistingQuizzesClick={handleExistingQuizzesClick} />} /> */}
-                    <Route path="/quizzes" 
+                        render={() => <Home userDisplayName={ userName } />} />
+                    <Route path="/widgets" component={ QuizWidgetContainer }
                         render={() => <QuizList ids={quizIds} quizNames={quizNames} />} />
                     <Route path="/new_quiz" 
                         render={() => <NewQuizContainer 
-                                            id={userId} 
-                                            author={userName} /> } />
+                            id={userId} 
+                            author={userName} /> } />
                     <Route component={ErrorPage} />
                 </Switch>
             </>
@@ -92,4 +95,4 @@ const UserHome = ({user}) =>{
     )
 }
 
-export default UserHome;
+export default UserHome
