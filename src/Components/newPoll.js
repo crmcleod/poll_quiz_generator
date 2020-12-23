@@ -50,7 +50,7 @@ const NewPoll = ({ author }) => {
 
     const choicesToDisplay = pollObject.choices.map( ( choice, index ) => {
         return(
-            <input key={ index } className="poll-input" type="text" value={ choice } onChange={ (e) => handleChoiceChange(index, e) } placeholder="Choice..."></input>
+            <input required key={ index } className="poll-input" type="text" value={ choice } onChange={ (e) => handleChoiceChange(index, e) } placeholder="Choice..."></input>
         )
     })
 
@@ -64,6 +64,7 @@ const NewPoll = ({ author }) => {
                 { choicesToDisplay }
                 <p>Add choice<span onClick={ handleAddChoiceClick } style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
                 <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button>
+                {poll ? <h2> Your poll can be found at <a href={'http://localhost:3000/widgets/poll/'+ poll.id}> {'http://localhost:3000/widgets/poll/'+ poll.id } </a></h2> : null}
             </form>
         </>
     )

@@ -57,7 +57,7 @@ const PollWidget = ({ id }) => {
                     className={'poll-result ' + classExtension}> 
                     <span>{ response.choice }</span> 
                     <span>{ response.percentage }%</span>
-                    <span>{ (`${response.total}/${poll.responses.length}`) }</span>
+                    <span>{ (`${response.total}/${poll.responses.length}`) } votes</span>
                 </div>
             )
         })
@@ -73,8 +73,10 @@ const PollWidget = ({ id }) => {
 
     return(
         <div id="poll-wrapper">
-            <img id="poll-image" src='https://picsum.photos/500/150' />
-            <h1> { poll && poll.pollName } </h1>
+            <div id="image-title-wrapper">
+                <h1> { poll && poll.pollName } </h1>
+                <img id="poll-image" src='https://picsum.photos/500/150' />
+            </div>
             { cookieState ? responsesToDisplay : pollChoices }
         </div>
     )
