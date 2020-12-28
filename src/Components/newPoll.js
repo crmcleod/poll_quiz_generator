@@ -10,7 +10,8 @@ const NewPoll = ({ author }) => {
         pollName: '',
         pollAuthor: author,
         responses: [],
-        choices: []
+        choices: [],
+        imgID: null
     })
     const [ poll, setPoll ] = useState()
     const [ pollSaved, setPollSaved ] = useState( false )
@@ -48,7 +49,19 @@ const NewPoll = ({ author }) => {
         setPollObject({ ...pollObject, choices: prevChoices })
     }
 
-    const choicesToDisplay = pollObject.choices.map( ( choice, index ) => {
+    const handleImageChange = ( e ) => {
+        if( e.target.files[ 0 ].size > 10000000){
+            alert( 'The file is too large.' )
+            document.querySelector( '#poll-img' ).value = ''
+        } else {
+            let image = new FormData()
+            image.append( 'image', e.target.files[ 0 ] )
+            axios.post( 'http://localhost:8080/upload', image )
+                .then( res => setPollObject({ ...pollObject, imgID: res.data }) )
+        }
+    }
+
+    const choicesToDisplay = pollObject.choices.map(( choice, index ) => {
         return(
             <input required key={ index } className="poll-input" type="text" value={ choice } onChange={ (e) => handleChoiceChange(index, e) } placeholder="Choice..."></input>
         )
@@ -63,6 +76,7 @@ const NewPoll = ({ author }) => {
                 <input className="poll-input" id="poll_name_input" value={ pollObject.pollName } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
                 { choicesToDisplay }
                 <p>Add choice<span onClick={ handleAddChoiceClick } style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
+                <input onChange={ handleImageChange } id="poll-img" type="file"/>
                 <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button>
                 {poll ? <h2> Your poll can be found at <a href={'http://localhost:3000/widgets/poll/'+ poll.id}> {'http://localhost:3000/widgets/poll/'+ poll.id } </a></h2> : null}
             </form>

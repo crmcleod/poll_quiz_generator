@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 import './App.css'
-
+import React, { useState, useEffect } from 'react'
 import firebase from 'firebase/app'
 
 import withFirebaseAuth from 'react-with-firebase-auth'
@@ -10,6 +10,7 @@ import firebaseConfig from './firebaseConfig.js'
 import UserHome from './userHome'
 import { BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom'
 import QuizWidgetContainer from './Containers/quizWidgetContainer'
+import axios from 'axios'
 
 const firebaseApp = firebase.initializeApp(firebaseConfig)
 
@@ -20,12 +21,27 @@ const providers = {
 
 function App(props) {
 
+    const [ dbCheck, setDbCheck ] = useState()
+
     const {
         user, 
         signOut, 
         signInWithGoogle,
     } = props
 
+    const checkDb = () => axios.get( `${process.env.REACT_APP_SERVER_URL}/users`)
+        .then(res => setDbCheck(res.status))
+        .catch( err => setDbCheck(err.isAxiosError))
+
+    useEffect(() => {
+        checkDb()
+    }, [])
+
+    if( dbCheck === true){
+        return(
+            <h1> There seems to be a gremlin in the works, please try again! 👹 </h1>
+        )
+    }
     return (
         <div className="App">
             <Router>
@@ -37,7 +53,7 @@ function App(props) {
 
             <header className="App-header">
                 {
-                    user 
+                    user
                         ? <UserHome user={user} />
                         : <p>Please sign in.</p>
                 }

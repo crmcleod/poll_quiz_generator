@@ -12,6 +12,7 @@ const PollWidget = ({ id }) => {
     const [ poll, setPoll ] = useState()
     const [ responses, setResponses ] = useState()
     const [ cookieState, setCookieState ] = useState( cookies.get(`poll${ id }`) ? cookies.get(`poll${ id }`) : null )
+    const [ pollImage, setPollImage ] = useState()
 
     useEffect(() => {
         // replace with env
@@ -70,12 +71,23 @@ const PollWidget = ({ id }) => {
         )
     }) : null
 
+    // add env here
+    const backgroundImg = poll ? poll.imgID ?
+        axios.get(`http://localhost:8080/images/${poll.imgID}`)
+            .then( res => setPollImage(res.data.image)) : null : null
 
+    if( !pollImage ){
+        return(
+            <div id="loading-container">
+                <h1>...loading quiz now...</h1>
+            </div>
+        )
+    }
     return(
         <div id="poll-wrapper">
             <div id="image-title-wrapper">
                 <h1> { poll && poll.pollName } </h1>
-                <img id="poll-image" src='https://picsum.photos/500/150' />
+                <img id="poll-image" height="10px" width="10px" src={`data:image/png;base64,${pollImage}`} />
             </div>
             { cookieState ? responsesToDisplay : pollChoices }
         </div>

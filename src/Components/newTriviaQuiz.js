@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import TriviaQuestion from './triviaQuestion'
+import TriviaOutcome from './triviaOutcome'
 
 const NewTriviaQuiz = ({ author }) =>{
 
@@ -13,6 +14,13 @@ const NewTriviaQuiz = ({ author }) =>{
         correctAnswer: false,
         quiz: {},
         answers: []
+    })
+    const [ outcomeSchema, setOutcomeSchema ] = useState({
+        outcomeName: '',
+        outcomeBody: '',
+        conditionComparator: '',
+        conditionValue: null,
+        quiz: {}
     })
     const [ questions, setQuestions ] = useState([])
     const [ outcomes, setOutcomes ] = useState([])
@@ -27,6 +35,7 @@ const NewTriviaQuiz = ({ author }) =>{
             id: 1
         }
     })
+    const [ triviaQuizCreated, setTriviaQuizCreated ] = useState( false )
 
     const postQuizToGetID = () => {
         axios.post(`${ process.env.REACT_APP_SERVER_URL }/quizzes`, quizObject)
@@ -37,12 +46,17 @@ const NewTriviaQuiz = ({ author }) =>{
         postQuizToGetID()
     }, [])
 
-    const outcomesToDisplay = outcomes.map(() =>{
+    const outcomesToDisplay = outcomes.map(( outcome ) =>{
         return(
             <>
                 <br></br>
-                <input type="text" placeholder="Outcome name / number..."></input>
-                <input type="text" placeholder="Outcome..."></input>
+                <TriviaOutcome 
+                    key={ outcome.id } 
+                    outcomeID={ outcome.id } 
+                    quizID={ quizID }
+                    quizObject={ quizObject }
+                    setQuizObject={ setQuizObject }
+                />
             </>
         )
     })
@@ -51,31 +65,34 @@ const NewTriviaQuiz = ({ author }) =>{
         return(
             <>
                 <br></br>
-                <TriviaQuestion key={ question.id } questionId={ question.id } quizID={ quizID } />
+                <TriviaQuestion 
+                    key={ question.id } 
+                    questionId={ question.id } 
+                    quizID={ quizID } 
+                    quizObject={ quizObject }
+                    setQuizObject={ setQuizObject }
+                />
             </>
         )
     })
 
 
     const handleAddQuestionClick = async () =>{
-        const prevQuestions = [...questions]
-
+        const prevQuestions = [ ...questions ]
         const newSchemaWithQuizID = { ...questionSchema, quiz: { id: quizID } }
-
         await axios.post( `${process.env.REACT_APP_SERVER_URL}/questions`, newSchemaWithQuizID )
             .then( res => (prevQuestions.push( {...newSchemaWithQuizID, id: res.data.id } )))
         setQuestions(prevQuestions)
         setQuestionSchema(newSchemaWithQuizID)
     }
 
-    const handleAddOutcomeClick = () =>{
-        const newOutcomes = outcomes.map( (outcome) =>{
-            return outcome
-        })
-
-        newOutcomes.push({})
-        setOutcomes(newOutcomes)
-
+    const handleAddOutcomeClick = async () =>{
+        const newOutcomes = [ ...outcomes ]
+        const newOutcomeSchemaWithQuizID = { ...outcomeSchema, quiz: { id: quizID }}
+        await axios.post( `${process.env.REACT_APP_SERVER_URL}/outcomes`, newOutcomeSchemaWithQuizID )
+            .then( res => ( newOutcomes.push({ ...newOutcomeSchemaWithQuizID, id: res.data.id })))
+        setOutcomes( newOutcomes )
+        setOutcomeSchema( newOutcomeSchemaWithQuizID )
     }
 
     const handleQuizNameChange = (event) => {
@@ -83,35 +100,27 @@ const NewTriviaQuiz = ({ author }) =>{
         axios.put(`${process.env.REACT_APP_SERVER_URL}/quizzes/${quizID}`, quizObject)
     }
 
-    const handleQuestionSubmit = (event) =>{
-        event.preventDefault()
-    }
-
     const submitQuiz = () => {
-        
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/quizzes`, quizObject)
-        console.log(quizObject)
-
+        axios.put(`${process.env.REACT_APP_SERVER_URL}/quizzes/${quizID}`, quizObject)
+        setTriviaQuizCreated( true )
     }
 
     return(
         <>
             <h1> Let's create a new trivia quiz! </h1>
             <p>{quizObject.quizName}</p>
-            <form onSubmit={handleQuestionSubmit}>
-                <label htmlFor="quiz_name_input"> Quiz title...</label>
-                <input id="quiz_name_input" value={quizObject.quizName} onChange={handleQuizNameChange} placeholder="Quiz title..."></input>
-                <p> Author: {author}</p>
-                <h3>Add outcome <span style={{color: 'red'}} onClick={handleAddOutcomeClick} id="add_outcome">+</span> </h3>
-
-                { outcomesToDisplay }
-                { questions.length === 0 ? null : <p>Questions...</p> }
-                { questionsToDisplay }
-                <input type="submit"></input>
-            </form>
-            <h3>Add question <span style={{color: 'red'}} onClick={handleAddQuestionClick} id="add_question">+</span> </h3>
+            <label htmlFor="quiz_name_input"> Quiz title...</label>
+            <input id="quiz_name_input" value={quizObject.quizName} onChange={ handleQuizNameChange } placeholder="Quiz title..."></input>
+            <p> Author: {author}</p>
+            { outcomesToDisplay }
+            <h3>Add outcome <span style={{ color: 'red' }} onClick={ handleAddOutcomeClick } id="add_outcome">+</span> </h3>
+            { questions.length === 0 ? null : <p>Questions...</p> }
+            { questionsToDisplay }
+            <input type="submit"></input>
+            <h3>Add question <span style={{color: 'red'}} onClick={ handleAddQuestionClick } id="add_question">+</span> </h3>
             <br></br>
             <button id="build-quiz" onClick={submitQuiz}> Build my quiz!</button>
+            { triviaQuizCreated && <h2><a href={'http://localhost:3000/widgets/quiz/'+ quizID}> {'http://localhost:3000/widgets/quiz/'+ quizID} </a></h2>}
         </>
     )
 }
