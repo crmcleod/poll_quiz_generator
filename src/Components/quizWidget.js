@@ -12,6 +12,7 @@ const QuizWidget = ({ id }) => {
     const [ questionCount, setQuestionCount ] = useState( 0 )
     const [ outcomes, setOutcomes ] = useState()
     const [ responses, setResponses ] = useState([])
+    const [ currentResponse, setCurrentResponse ] = useState()
     const [ score, setScore ] = useState( 0 )
     const [ quizInProcess, setQuizInProcess ] = useState( true )
 
@@ -34,6 +35,7 @@ const QuizWidget = ({ id }) => {
 
     const handleTriviaAnswerClick = ( e ) => {
         let prevResponses = [ ...responses ]
+        !currentResponse && setCurrentResponse( e )
         if( questions[questionCount].correctAnswer === e ){
             prevResponses.push( true )
         } else {
@@ -45,7 +47,7 @@ const QuizWidget = ({ id }) => {
 
     const questionAnswersToDisplay = ( currentQuestion )  => questions[currentQuestion].answers.map(( question, index ) => {
         return(
-            <div className={ 'answers' } onClick={ () => handleTriviaAnswerClick( question ) } key={ index } >{ question } </div>
+            <div className={ 'answers' + ' ' + ( currentResponse === question ? 'selected' : '') } onClick={ () => handleTriviaAnswerClick( question ) } key={ index } >{ question } </div>
         )
     })
 
@@ -70,6 +72,7 @@ const QuizWidget = ({ id }) => {
 
     const handleNextQClick = () => {
         setQuestionCount( questionCount + 1 )
+        setCurrentResponse('')
     }
     const handlePrevQClick = () => {
         setQuestionCount(questionCount - 1)

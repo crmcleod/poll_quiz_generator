@@ -64,6 +64,11 @@
     transform: scale(0.98);
     box-shadow: 0 0 0 0;
 }
-.next{
+.selected{
+    background-color: rgb(188, 221, 231);
+    box-shadow: 0.14vw 0.14vw 0.3vw 0.05vw rgb(31, 85, 110);
+}
+.selected:hover{
+    background-color: rgb(71, 113, 126);
 
 }
