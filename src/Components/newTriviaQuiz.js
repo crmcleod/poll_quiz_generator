@@ -36,6 +36,7 @@ const NewTriviaQuiz = ({ author }) =>{
         }
     })
     const [ triviaQuizCreated, setTriviaQuizCreated ] = useState( false )
+    const [ copiedToClipboard, setCopiedToClipboard ] = useState( false )
 
     const postQuizToGetID = () => {
         axios.post(`${ process.env.REACT_APP_SERVER_URL }/quizzes`, quizObject)
@@ -100,6 +101,13 @@ const NewTriviaQuiz = ({ author }) =>{
         setTriviaQuizCreated( true )
     }
 
+    const handleIframeCopyCode = () =>{
+        navigator.clipboard.writeText(
+            `<iframe src='${process.env.REACT_APP_WIDGET_URL}quiz/${quizID}' scrolling='disabled'></iframe>`
+        )
+        setCopiedToClipboard( true )
+    }
+
     return(
         <>
             <form onSubmit={submitQuiz} style={{width: '100%'}}>
@@ -120,10 +128,17 @@ const NewTriviaQuiz = ({ author }) =>{
                 <h3 style={{ cursor: 'pointer'}} onClick={ handleAddOutcomeClick }> Add outcome <span style={{ color: 'red' }} id="add_outcome">+</span> </h3>
                 <button type="submit" id="build-quiz"> Build my quiz!</button>
                 { triviaQuizCreated && 
-                <h2> You can find your quiz here: 
-                    <br></br>
-                    <a href={`${process.env.REACT_APP_WIDGET_URL}quiz/`+ quizID}>here</a>
-                </h2>}
+                <>
+                    <h2> You can find your quiz here: 
+                        <br></br>
+                        <a style={{ color: 'lightblue', fontWeight: '800'}} href={`${process.env.REACT_APP_WIDGET_URL}quiz/`+ quizID}>here</a>
+                    </h2>
+                    <div id="iframe-grab">
+                        <h3> Get iframe code :</h3>
+                        <button onClick={ handleIframeCopyCode } type="button"> { copiedToClipboard ? 'Copied' : 'Copy iframe code to clipboard' } </button>
+                    </div>
+                </>
+                }
                 <p> Author: { author }</p>
             </form>
         </>

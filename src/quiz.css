@@ -144,3 +144,28 @@
     box-shadow: 0.14vw 0.14vw 0.3vw 0.05vw rgba(116, 116, 116, 0.322);
     color: white;
 }
+#iframe-grab > h3{
+    margin: 0;
+}
+#iframe-grab > button{
+    font-size: 0.7em;
+    font-family: 'Raleway';
+    font-weight: 700;
+    color: grey;
+    border-style: none;
+    transition: all 0.3s ease;
+}
+#iframe-grab > button:hover{
+    color: rgb(255, 255, 255);
+    background-color: rgb(58, 58, 58);
+}
+#iframe-grab{
+    margin: 0 auto 0 auto;
+    background-color: rgba(255, 255, 255, 0.295);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 3em;
+    width: 10em;
+}
