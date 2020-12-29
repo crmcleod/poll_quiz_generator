@@ -122,7 +122,7 @@ const NewTriviaQuiz = ({ author }) =>{
                 { triviaQuizCreated && 
                 <h2> You can find your quiz here: 
                     <br></br>
-                    <a href={`${process.env.REACT_APP_WIDGET_URL}/quiz/`+ quizID}>here</a>
+                    <a href={`${process.env.REACT_APP_WIDGET_URL}quiz/`+ quizID}>here</a>
                 </h2>}
                 <p> Author: { author }</p>
             </form>
