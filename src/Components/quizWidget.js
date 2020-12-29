@@ -17,8 +17,7 @@ const QuizWidget = ({ id }) => {
     const [ quizInProcess, setQuizInProcess ] = useState( true )
 
     useEffect(() => {
-        // replace with env
-        axios.get(`http://localhost:8080/quizzes/${ id }`)
+        axios.get(`${process.env.REACT_APP_DATABASE_URL}/quizzes/${ id }`)
             .then( res => { 
 
                 let orderedQuestions = []
@@ -90,7 +89,6 @@ const QuizWidget = ({ id }) => {
                 <h3 id="question-title"> { questions[questionCount].questionBody }</h3>
                 { questionAnswersToDisplay( questionCount ) }
                 <div id="question-nav-wrapper">
-                    {/* { questionCount + 1 < questions.length && <button className="quiz-button" type="button">Next Question</button> } */}
                     { questionCount !== 0 && <button className="quiz-button prev" onClick={ handlePrevQClick } type="button">Previous Question </button> }
                     { questionCount + 1 < questions.length ? 
                         <button className="quiz-button next" onClick={ handleNextQClick } type="button">Next Question</button> : 

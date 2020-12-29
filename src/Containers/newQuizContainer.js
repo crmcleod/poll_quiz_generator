@@ -24,9 +24,6 @@ const NewQuizContainer = ({ author }) =>{
                     </div>
                 </Link>
             </div>
-            {/* <h3> A poll; </h3>
-            <h3> A picture quiz; </h3>
-            <h3> A personality quiz; </h3> */}
         </>
     )
 
