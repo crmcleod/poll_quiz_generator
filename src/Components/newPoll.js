@@ -17,6 +17,7 @@ const NewPoll = ({ author }) => {
     const [ poll, setPoll ] = useState()
     const [ pollSaved, setPollSaved ] = useState( false )
     const [ pollPosted, setPollPosted ] = useState( false )
+    const [ copiedToClipboard, setCopiedToClipboard ] = useState( false )
 
     const handlePollSubmission = ( event ) => {
         event.preventDefault()
@@ -68,6 +69,13 @@ const NewPoll = ({ author }) => {
         )
     })
 
+    const handleIframeCopyCode = () =>{
+        navigator.clipboard.writeText(
+            `<iframe src='${process.env.REACT_APP_WIDGET_URL}quiz/${quizID}' scrolling='disabled'></iframe>`
+        )
+        setCopiedToClipboard( true )
+    }
+
     return(
         <>
             <h1> Let's create a new poll!</h1>
@@ -79,8 +87,18 @@ const NewPoll = ({ author }) => {
                 <p onClick={ handleAddChoiceClick } >Add choice<span style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
                 <input onChange={ handleImageChange } id="poll-img" type="file"/>
                 <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button>
-                {poll ? <h2> Your poll can be found <a href={`${process.env.REACT_APP_WIDGET_URL}/poll`+ poll.id}> here </a></h2> : null}
+                {pollSaved ? <h2> Your poll can be found <a href={`${process.env.REACT_APP_WIDGET_URL}poll/`+ poll.id}> here </a></h2> : null}
             </form>
+            {pollSaved ? 
+                <div id="iframe-grab">
+                    <h3> Get iframe code :</h3>
+                    <button onClick={ handleIframeCopyCode } type="button"> { copiedToClipboard ? 'Copied' : 'Copy iframe code to clipboard' } </button>
+                </div> 
+                : 
+                null
+            }
+
+            
         </>
     )
 }
