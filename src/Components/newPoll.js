@@ -79,7 +79,7 @@ const NewPoll = ({ author }) => {
                 <p onClick={ handleAddChoiceClick } >Add choice<span style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
                 <input onChange={ handleImageChange } id="poll-img" type="file"/>
                 <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button>
-                {poll ? <h2> Your poll can be found <a href={`${process.env.REACT_APP_SERVER_URL}/poll`+ poll.id}>here</a></h2> : null}
+                {poll ? <h2> Your poll can be found <a href={`${process.env.REACT_APP_WIDGET_URL}/poll`+ poll.id}> here </a></h2> : null}
             </form>
         </>
     )
