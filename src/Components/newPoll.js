@@ -21,6 +21,7 @@ const NewPoll = ({ author }) => {
 
     const handlePollSubmission = ( event ) => {
         event.preventDefault()
+        setPollSaved( !pollSaved )
         if( !pollPosted ){ 
             axios.post( `${ process.env.REACT_APP_SERVER_URL }/polls`, pollObject )
                 .then(res => setPoll( res.data ))
@@ -32,7 +33,6 @@ const NewPoll = ({ author }) => {
         for( let field of formFields ){
             field.disabled = !pollSaved
         }
-        setPollSaved( !pollSaved )
     }
 
     const handlePollNameChange = ( event ) => {
@@ -84,10 +84,10 @@ const NewPoll = ({ author }) => {
             <form id="poll-form" onSubmit={ handlePollSubmission }>
                 <input className="poll-input" id="poll_name_input" value={ pollObject.pollName } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
                 { choicesToDisplay }
-                <p onClick={ handleAddChoiceClick } >Add choice<span style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
+                <p id="add-poll-choice" onClick={ handleAddChoiceClick } >Add choice<span style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
                 <input onChange={ handleImageChange } id="poll-img" type="file"/>
                 <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button>
-                {pollSaved ? <h2> Your poll can be found <a href={`${process.env.REACT_APP_WIDGET_URL}poll/`+ poll.id}> here </a></h2> : null}
+                {poll ? <h2> Your poll can be found <a href={`${process.env.REACT_APP_WIDGET_URL}poll/`+ poll.id}> here </a></h2> : null}
             </form>
             {pollSaved ? 
                 <div id="iframe-grab">
