@@ -48,31 +48,25 @@ const NewTriviaQuiz = ({ author }) =>{
 
     const outcomesToDisplay = outcomes.map(( outcome ) =>{
         return(
-            <>
-                <br></br>
-                <TriviaOutcome 
-                    key={ outcome.id } 
-                    outcomeID={ outcome.id } 
-                    quizID={ quizID }
-                    quizObject={ quizObject }
-                    setQuizObject={ setQuizObject }
-                />
-            </>
+            <TriviaOutcome 
+                key={ outcome.id } 
+                outcomeID={ outcome.id } 
+                quizID={ quizID }
+                quizObject={ quizObject }
+                setQuizObject={ setQuizObject }
+            />
         )
     })
 
     const questionsToDisplay = questions.map(( question ) => {
         return(
-            <>
-                <br></br>
-                <TriviaQuestion 
-                    key={ question.id } 
-                    questionId={ question.id } 
-                    quizID={ quizID } 
-                    quizObject={ quizObject }
-                    setQuizObject={ setQuizObject }
-                />
-            </>
+            <TriviaQuestion 
+                key={ question.id } 
+                questionId={ question.id } 
+                quizID={ quizID } 
+                quizObject={ quizObject }
+                setQuizObject={ setQuizObject }
+            />
         )
     })
 
@@ -100,32 +94,35 @@ const NewTriviaQuiz = ({ author }) =>{
         axios.put(`${process.env.REACT_APP_SERVER_URL}/quizzes/${quizID}`, quizObject)
     }
 
-    const submitQuiz = () => {
+    const submitQuiz = ( e ) => {
+        e.preventDefault()
         axios.put(`${process.env.REACT_APP_SERVER_URL}/quizzes/${quizID}`, quizObject)
         setTriviaQuizCreated( true )
     }
 
     return(
         <>
-            <h1> Let's create a new trivia quiz! </h1>
-            <h2>{ quizObject.quizName }</h2>
-            <label htmlFor="quiz_name_input"> Quiz title...</label>
-            <input id="quiz_name_input" value={ quizObject.quizName } onChange={ handleQuizNameChange } placeholder="Quiz title..."></input>
-            { questions.length === 0 ? null : <h2> Questions </h2> }
-            <div id="outcomes-wrapper">
-                { questionsToDisplay }
-            </div>
-            <h3 style={{ cursor: 'pointer'}} onClick={ handleAddQuestionClick }> Add question <span style={{color: 'red'}} id="add_question">+</span> </h3>
-            { outcomes.length === 0 ? null : <h2> Outcomes </h2> }
-            <div id="outcomes-wrapper">
-                { outcomesToDisplay }
-            </div>
-            <h3 style={{ cursor: 'pointer'}} onClick={ handleAddOutcomeClick }> Add outcome <span style={{ color: 'red' }} id="add_outcome">+</span> </h3>
-            <button id="build-quiz" onClick={submitQuiz}> Build my quiz!</button>
-            { triviaQuizCreated && <h2><a href={'http://localhost:3000/widgets/quiz/'+ quizID}> {'http://localhost:3000/widgets/quiz/'+ quizID} </a></h2>}
-            <p> Author: { author }</p>
+            <form onSubmit={submitQuiz} style={{width: '100%'}}>
+                <h1> Let's create a new trivia quiz! </h1>
+                <h2>{ quizObject.quizName }</h2>
+                <label htmlFor="quiz_name_input"> Quiz title...</label>
+                <input required id="quiz_name_input" value={ quizObject.quizName } onChange={ handleQuizNameChange } placeholder="Quiz title..."></input>
+                { questions.length === 0 ? null : <h2> Questions </h2> }
+                <div id="outcomes-wrapper">
+                    { questionsToDisplay }
+                </div>
+                <h3 style={{ cursor: 'pointer'}} onClick={ handleAddQuestionClick }> Add question <span style={{color: 'red'}} id="add_question">+</span> </h3>
+                <hr style={{width: '100%'}}></hr>
+                { outcomes.length === 0 ? null : <h2> Outcomes </h2> }
+                <div id="outcomes-wrapper">
+                    { outcomesToDisplay }
+                </div>
+                <h3 style={{ cursor: 'pointer'}} onClick={ handleAddOutcomeClick }> Add outcome <span style={{ color: 'red' }} id="add_outcome">+</span> </h3>
+                <button type="submit" id="build-quiz"> Build my quiz!</button>
+                { triviaQuizCreated && <h2><a href={'http://localhost:3000/widgets/quiz/'+ quizID}> {'http://localhost:3000/widgets/quiz/'+ quizID} </a></h2>}
+                <p> Author: { author }</p>
+            </form>
         </>
     )
 }
-
 export default NewTriviaQuiz

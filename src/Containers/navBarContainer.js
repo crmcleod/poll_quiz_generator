@@ -9,13 +9,13 @@ const NavBarContainer = () => {
         <nav id="nav-bar">
             <ul>
                 <li>
-                    <Link to ="/">Home</Link>
+                    <Link to="/">Home</Link>
                 </li>
                 <li>
-                    <Link to ="/quizzes">Your quizzes</Link>
+                    <Link to="/quizzes">Your quizzes</Link>
                 </li>
                 <li>
-                    <Link to ="/new_quiz"> New quiz </Link>
+                    <Link to="/new_quiz"> New quiz </Link>
                 </li>
             </ul>
         </nav>

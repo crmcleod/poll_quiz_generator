@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 
-const QuizCard = (props) =>{
+const QuizCard = ( props ) =>{
 
     const [ quizData, setQuizData ] = useState()
 

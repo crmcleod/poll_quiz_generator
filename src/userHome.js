@@ -10,6 +10,8 @@ import Home from './home'
 import NewQuizContainer from './Containers/newQuizContainer'
 import NavBarContainer from './Containers/navBarContainer'
 import QuizWidgetContainer from './Containers/quizWidgetContainer'
+import NewTriviaQuiz from './Components/newTriviaQuiz'
+import NewPoll from './Components/newPoll'
 
 const UserHome = ({ user }) =>{
 
@@ -84,10 +86,18 @@ const UserHome = ({ user }) =>{
                         render={() => <Home userDisplayName={ userName } />} />
                     <Route path="/widgets" component={ QuizWidgetContainer }
                         render={() => <QuizList ids={quizIds} quizNames={quizNames} />} />
-                    <Route path="/new_quiz" 
+                    <Route exact path="/new_quiz" 
                         render={() => <NewQuizContainer 
                             id={userId} 
                             author={userName} /> } />
+                    <Route path="/new_quiz/trivia" 
+                        render={() => <NewTriviaQuiz 
+                            id={userId} 
+                            author={userName} /> }/>
+                    <Route path="/new_quiz/poll" 
+                        render={() => <NewPoll
+                            id={userId} 
+                            author={userName} /> }/>
                     <Route component={ErrorPage} />
                 </Switch>
             </>

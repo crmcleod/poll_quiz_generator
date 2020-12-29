@@ -59,3 +59,24 @@ a{
 #sign-out-button{
 margin: 5em;
 }
+.new-quiz-button{
+  cursor: pointer;
+  width: 20%;
+  min-width: 300px;
+  background-color: rgba(255, 255, 255, 0.247);
+  margin: 0.5em;
+  border-radius: 0.2em;
+  border: solid 0.1em white;
+  box-shadow: 0.1em 0.1em 0.1em 0.05em rgb(9, 79, 107);
+  transition: all 0.2s ease ;
+  color: rgb(235, 232, 232);
+}
+.new-quiz-button:hover{
+transform: scale(1.05) rotate(0.5deg);
+box-shadow: 0 0 0.3em 0.1em rgb(9, 79, 107);
+
+}
+#new-quiz-buttons-wrapper{
+  display: flex;
+  flex-direction: row;
+}

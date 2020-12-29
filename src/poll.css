@@ -70,7 +70,19 @@
 #poll-form > * {
     margin: 0.3em;
 }
+#poll-form p{
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+#poll-form p:hover{
+    background-color: rgb(136, 190, 176);
+}
 #poll-img{
     background-color: rgba(245, 245, 245, 0.144);
     padding: 0.1em;
+}
+#poll-form > button{
+    font-family: 'Raleway';
+    font-weight: 700;
+    padding: 0.2em;
 }

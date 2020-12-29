@@ -1,41 +1,29 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
-import NewPoll from '../Components/newPoll'
-import NewTriviaQuiz from '../Components/newTriviaQuiz'
+import React from 'react'
+import { Link } from 'react-router-dom'
+// import NewPoll from '../Components/newPoll'
+// import NewTriviaQuiz from '../Components/newTriviaQuiz'
 
+// eslint-disable-next-line no-unused-vars
 const NewQuizContainer = ({ author }) =>{
-
-    const [ triviaQuizComponentActive, setTriviaQuizComponentActive ] = useState(false)
-    const [ pollComponentActive, setPollComponentActive ] = useState(false)
-    
-    const handleCreateTriviaQuiz = () => {
-        setPollComponentActive(false)
-        setTriviaQuizComponentActive(true)
-    }
-
-    const handleCreatePoll = () => {
-        setPollComponentActive(true)
-        setTriviaQuizComponentActive(false)
-    }
-
-    if(triviaQuizComponentActive){
-        return <NewTriviaQuiz author={ author } />
-    } 
-    if( pollComponentActive ){
-        return <NewPoll author={ author }/>
-    }
 
     return(
         <>
-            {()=>{
-
-            }}
             <h1> Let's create a new quiz! </h1>
             <h2> What are we trying to make here: </h2>
-            <h3 onClick={ handleCreateTriviaQuiz }> A trivia quiz? </h3>
-            <h3 onClick={ handleCreatePoll }> A Poll? </h3>
-
+            <div id="new-quiz-buttons-wrapper">
+                <Link to="/new_quiz/trivia">
+                    <div className='new-quiz-button'>
+                        <h3> A trivia quiz? </h3>
+                    </div>
+                </Link>
+                <Link to="/new_quiz/poll">
+                    <div className='new-quiz-button'>
+                        <h3> A Poll? </h3>
+                    </div>
+                </Link>
+            </div>
             {/* <h3> A poll; </h3>
             <h3> A picture quiz; </h3>
             <h3> A personality quiz; </h3> */}

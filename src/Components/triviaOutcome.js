@@ -31,8 +31,9 @@ const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject }) => {
         setOutcomeObject({ ...outcomeObject, conditionValue: e.target.value })
     }
 
-    const handleSaveOutcomeClick = () => {
+    const handleSaveOutcomeClick = ( e ) => {
         // eslint-disable-next-line no-undef
+        e.preventDefault()
         axios.put(`${process.env.REACT_APP_SERVER_URL}/outcomes/${outcomeID}`, outcomeObject)
             .then( res => setOutcomeObject( res.data ))
         setQuizObject({ ...quizObject, outcomes: [ ...quizObject.outcomes, outcomeObject ] })
@@ -44,18 +45,20 @@ const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject }) => {
     }
 
     return(
-        <div className="trivia-form">
+
+        <div onSubmit={ handleSaveOutcomeClick } className="trivia-form">
             <p> If score is </p>
             <select className={ 'disable' + outcomeID } onChange={ handleComparatorChange }>
                 <option value=">">greater than</option>
                 <option value="<">less than</option>
                 <option value="===">equal to</option>
             </select>
-            <input className={ 'disable' + outcomeID } onChange={ handleConditionValueChange } value={ outcomeObject.conditionValue } type="number" placeholder="Score..."></input>
-            <input className={ 'disable' + outcomeID } onChange={ handleHeadlineChange } type="text" value={ outcomeObject.outcomeName } placeholder="Outcome headline... e.g. 'Well done, you absolutely smashed it!'"></input>
-            <textarea className={ 'disable' + outcomeID } onChange={ handleBodyChange } rows="3" type="text" value={ outcomeObject.outcomeBody } placeholder="Outcome body... e.g. 'Better luck next time, you need to work on your trivia 😢"></textarea>
-            <button onClick={ handleSaveOutcomeClick } type="button">{ outcomeDisabled ? 'Edit Outcome' : 'Save Outcome' }</button>
+            <input required className={ 'disable' + outcomeID } onChange={ handleConditionValueChange } value={ outcomeObject.conditionValue } type="number" placeholder="Score..."></input>
+            <input required className={ 'disable' + outcomeID } onChange={ handleHeadlineChange } type="text" value={ outcomeObject.outcomeName } placeholder="Outcome headline... e.g. 'Well done, you absolutely smashed it!'"></input>
+            <textarea required className={ 'disable' + outcomeID } onChange={ handleBodyChange } rows="3" type="text" value={ outcomeObject.outcomeBody } placeholder="Outcome body... e.g. 'Better luck next time, you need to work on your trivia 😢"></textarea>
+            <button type="submit">{ outcomeDisabled ? 'Edit Outcome' : 'Save Outcome' }</button>
         </div>
+
     )
 }
 export default TriviaOutcome
