@@ -56,3 +56,6 @@ a{
   margin: 0 auto 0 auto;
   list-style: none;
 }
+#sign-out-button{
+margin: 5em;
+}

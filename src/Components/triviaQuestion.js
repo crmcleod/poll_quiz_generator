@@ -12,6 +12,7 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject }) => {
         quiz: { id: quizID },
         answers: [ '', '', '', '' ],
     })
+    const [ questionDisabled, setQuestionDisabled ] = useState( false )
 
     const handleQuestionBodyChange = ( event ) => { setQuestionBody({ ...questionBody, questionBody: event.target.value })}
     const handleQuestionNumberChange = ( event ) => { setQuestionBody({ ...questionBody, questionNumber: event.target.value })}
@@ -27,14 +28,30 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject }) => {
     const handleAnswerChange3 = event => setAnswers( 2, event )
     const handleAnswerChange4 = event => setAnswers( 3, event )
 
+
+    // checks all radio buttons so no alert after first question
     const handleSaveButtonClick = () => {
         handleRadioClick()
-        axios.put(`${process.env.REACT_APP_SERVER_URL}/questions/${questionId}`, questionBody)
-        const formFields = document.querySelectorAll(`.disable${ questionId }`)
-        for (const field of formFields){
-            field.disabled = !field.disabled
+        const radioButtons = document.querySelectorAll('input[type="radio"]')
+        let checked = false
+        for ( const button of radioButtons ){
+            if( button.checked ){
+                checked = true
+            }
         }
-        setQuizObject({ ...quizObject, questions: [ ...quizObject.questions, questionBody ] })
+        if( checked ){
+            axios.put(`${process.env.REACT_APP_SERVER_URL}/questions/${questionId}`, questionBody)
+            const formFields = document.querySelectorAll(`.disable${ questionId }`)
+            for (const field of formFields){
+                field.disabled = !field.disabled
+            }
+            setQuizObject({ ...quizObject, questions: [ ...quizObject.questions, questionBody ] })
+            setQuestionDisabled( !questionDisabled )
+        } else {
+            alert('You need to select the correct answer')
+        }
+        // replace with custom alert
+        // eslint-disable-next-line quotes
     }
 
     const handleRadioClick = ( e )  => {
@@ -53,41 +70,38 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject }) => {
 
     return(
 
-        <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div className="trivia-form">
             <input className={ 'disable' + questionId } type="text" onChange={ handleQuestionBodyChange } value={ questionBody.questionBody } placeholder="Question..."></input>
             <input className={ 'disable' + questionId } type="text" onChange={ handleQuestionNumberChange } value={ questionBody.questionNumber } placeHolder="Question number..."></input>
-            <select className={ 'disable' + questionId }>
+            {/* <select className={ 'disable' + questionId }>
                 <option>Single answer?</option>
                 <option>Multiple answers?</option>
-            </select>
-            <span>
+            </select> */}
+            <div>
                 <input className={ 'disable' + questionId} type="text" onChange={ handleAnswerChange1 } 
                     value={ questionBody.answers[0] } 
                     placeHolder="Answer..."></input>
-                <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" onClick={ handleRadioClick } value="0"/>
-            </span>
-            <span>
+                <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" required onClick={ handleRadioClick } value="0"/>
+            </div>
+            <div>
                 <input className={ 'disable' + questionId } type="text" onChange={ handleAnswerChange2 } 
                     value={ questionBody.answers[1] } 
                     placeHolder="Answer..."></input>
                 <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" onClick={ handleRadioClick } value="1"/>
-            </span>
-            <span>
+            </div>
+            <div>
                 <input className={ 'disable' + questionId } type="text" onChange={ handleAnswerChange3 } 
                     value={ questionBody.answers[2] } 
                     placeHolder="Answer..."></input>
                 <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" onClick={ handleRadioClick } value="2"/>
-            </span>
-            <span>
+            </div>
+            <div>
                 <input className={ 'disable' + questionId } type="text" onChange={ handleAnswerChange4 } 
                     value={ questionBody.answers[3] } 
                     placeHolder="Answer..."></input>
                 <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" onClick={ handleRadioClick } value="3"/>
-            </span>
-            <span>
-                <button onClick={ handleSaveButtonClick } type="button"> Save Question </button>
-                <button type="button"> Edit Question </button>
-            </span>
+            </div>
+            <button onClick={ handleSaveButtonClick } type="button"> { questionDisabled ? 'Edit Question' : 'Save Question'} </button>
         </div>
 
     )

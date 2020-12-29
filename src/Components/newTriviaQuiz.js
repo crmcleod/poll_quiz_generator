@@ -108,19 +108,22 @@ const NewTriviaQuiz = ({ author }) =>{
     return(
         <>
             <h1> Let's create a new trivia quiz! </h1>
-            <p>{quizObject.quizName}</p>
+            <h2>{ quizObject.quizName }</h2>
             <label htmlFor="quiz_name_input"> Quiz title...</label>
-            <input id="quiz_name_input" value={quizObject.quizName} onChange={ handleQuizNameChange } placeholder="Quiz title..."></input>
-            <p> Author: {author}</p>
-            { outcomesToDisplay }
-            <h3>Add outcome <span style={{ color: 'red' }} onClick={ handleAddOutcomeClick } id="add_outcome">+</span> </h3>
-            { questions.length === 0 ? null : <p>Questions...</p> }
-            { questionsToDisplay }
-            <input type="submit"></input>
-            <h3>Add question <span style={{color: 'red'}} onClick={ handleAddQuestionClick } id="add_question">+</span> </h3>
-            <br></br>
+            <input id="quiz_name_input" value={ quizObject.quizName } onChange={ handleQuizNameChange } placeholder="Quiz title..."></input>
+            { questions.length === 0 ? null : <h2> Questions </h2> }
+            <div id="outcomes-wrapper">
+                { questionsToDisplay }
+            </div>
+            <h3 style={{ cursor: 'pointer'}} onClick={ handleAddQuestionClick }> Add question <span style={{color: 'red'}} id="add_question">+</span> </h3>
+            { outcomes.length === 0 ? null : <h2> Outcomes </h2> }
+            <div id="outcomes-wrapper">
+                { outcomesToDisplay }
+            </div>
+            <h3 style={{ cursor: 'pointer'}} onClick={ handleAddOutcomeClick }> Add outcome <span style={{ color: 'red' }} id="add_outcome">+</span> </h3>
             <button id="build-quiz" onClick={submitQuiz}> Build my quiz!</button>
             { triviaQuizCreated && <h2><a href={'http://localhost:3000/widgets/quiz/'+ quizID}> {'http://localhost:3000/widgets/quiz/'+ quizID} </a></h2>}
+            <p> Author: { author }</p>
         </>
     )
 }

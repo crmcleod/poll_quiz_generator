@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios'
 import React, { useState } from 'react'
+import '../quiz.css'
 
 const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject }) => {
 
@@ -12,6 +13,7 @@ const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject }) => {
         conditionValue: 0,
         quiz: { id: quizID }
     })
+    const [ outcomeDisabled, setOutcomeDisabled ] = useState( false )
     
     const handleHeadlineChange = ( e ) => {
         setOutcomeObject({ ...outcomeObject, outcomeName: e.target.value })
@@ -30,23 +32,29 @@ const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject }) => {
     }
 
     const handleSaveOutcomeClick = () => {
+        // eslint-disable-next-line no-undef
         axios.put(`${process.env.REACT_APP_SERVER_URL}/outcomes/${outcomeID}`, outcomeObject)
             .then( res => setOutcomeObject( res.data ))
         setQuizObject({ ...quizObject, outcomes: [ ...quizObject.outcomes, outcomeObject ] })
+        let toBeDisabled = document.querySelectorAll(`.disable${outcomeID}`)
+        for( let el of toBeDisabled ){
+            el.disabled = !el.disabled
+        }
+        setOutcomeDisabled( !outcomeDisabled )
     }
 
     return(
-        <div style={{display: 'flex'}} className="outcome-form">
-            <input onChange={ handleHeadlineChange } type="text" value={ outcomeObject.outcomeName } placeholder="Outcome headline..."></input>
-            <textarea onChange={ handleBodyChange } type="text" value={ outcomeObject.outcomeBody } placeholder="Outcome body..."></textarea>
-            <p> if score is </p>
-            <select onChange={ handleComparatorChange }>
+        <div className="trivia-form">
+            <p> If score is </p>
+            <select className={ 'disable' + outcomeID } onChange={ handleComparatorChange }>
                 <option value=">">greater than</option>
                 <option value="<">less than</option>
                 <option value="===">equal to</option>
             </select>
-            <input onChange={ handleConditionValueChange } value={ outcomeObject.conditionValue } type="number" placeholder="Score..."></input>
-            <button onClick={ handleSaveOutcomeClick } type="button">Save Outcome</button>
+            <input className={ 'disable' + outcomeID } onChange={ handleConditionValueChange } value={ outcomeObject.conditionValue } type="number" placeholder="Score..."></input>
+            <input className={ 'disable' + outcomeID } onChange={ handleHeadlineChange } type="text" value={ outcomeObject.outcomeName } placeholder="Outcome headline... e.g. 'Well done, you absolutely smashed it!'"></input>
+            <textarea className={ 'disable' + outcomeID } onChange={ handleBodyChange } rows="3" type="text" value={ outcomeObject.outcomeBody } placeholder="Outcome body... e.g. 'Better luck next time, you need to work on your trivia 😢"></textarea>
+            <button onClick={ handleSaveOutcomeClick } type="button">{ outcomeDisabled ? 'Edit Outcome' : 'Save Outcome' }</button>
         </div>
     )
 }

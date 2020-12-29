@@ -3,6 +3,7 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios'
 import React, { useState } from 'react'
+import '../poll.css'
 
 const NewPoll = ({ author }) => {
 
@@ -72,10 +73,10 @@ const NewPoll = ({ author }) => {
             <h1> Let's create a new poll!</h1>
             <h2> Poll name / Question: <br></br>{ pollObject.pollName } </h2>
             <p> Author: { author }</p>
-            <form onSubmit={ handlePollSubmission }>
+            <form id="poll-form" onSubmit={ handlePollSubmission }>
                 <input className="poll-input" id="poll_name_input" value={ pollObject.pollName } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
                 { choicesToDisplay }
-                <p>Add choice<span onClick={ handleAddChoiceClick } style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
+                <p onClick={ handleAddChoiceClick } >Add choice<span style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
                 <input onChange={ handleImageChange } id="poll-img" type="file"/>
                 <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button>
                 {poll ? <h2> Your poll can be found at <a href={'http://localhost:3000/widgets/poll/'+ poll.id}> {'http://localhost:3000/widgets/poll/'+ poll.id } </a></h2> : null}

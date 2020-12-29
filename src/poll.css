@@ -58,3 +58,19 @@
     flex-direction: column;
     justify-content: space-around;
 }
+#poll-form{
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    margin: 1em;
+    padding: 0.5em;
+    border: solid 2px rgb(159, 190, 186);
+    background-color: rgba(255, 255, 255, 0.185);
+}
+#poll-form > * {
+    margin: 0.3em;
+}
+#poll-img{
+    background-color: rgba(245, 245, 245, 0.144);
+    padding: 0.1em;
+}
