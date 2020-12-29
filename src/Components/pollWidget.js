@@ -15,7 +15,7 @@ const PollWidget = ({ id }) => {
     const [ pollImage, setPollImage ] = useState()
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_DATABASE_URL}/polls/${ id }`)
+        axios.get(`${process.env.REACT_APP_SERVER_URL}/polls/${ id }`)
             .then( res => { 
                 setPoll( res.data ) 
             })
@@ -26,7 +26,7 @@ const PollWidget = ({ id }) => {
     }, [ poll, cookieState ])
 
     const handlePollChoice = ( e ) => {
-        axios.put(`${process.env.REACT_APP_DATABASE_URL}/polls/${ id }`, {...poll, responses: [ ...poll.responses, e ]})
+        axios.put(`${process.env.REACT_APP_SERVER_URL}/polls/${ id }`, {...poll, responses: [ ...poll.responses, e ]})
             .then( res => setPoll( res.data ))
         cookies.set(`poll${ id }`, `${ e }`)
         setCookieState( cookies.get(`poll${ id }`))
@@ -71,7 +71,7 @@ const PollWidget = ({ id }) => {
 
     // add env here
     const backgroundImg = poll ? poll.imgID ?
-        axios.get(`${process.env.REACT_APP_DATABASE_URL}/images/${poll.imgID}`)
+        axios.get(`${process.env.REACT_APP_SERVER_URL}/images/${poll.imgID}`)
             .then( res => setPollImage(res.data.image)) : null : null
 
     if( !pollImage ){

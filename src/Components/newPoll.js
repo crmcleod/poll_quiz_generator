@@ -57,7 +57,7 @@ const NewPoll = ({ author }) => {
         } else {
             let image = new FormData()
             image.append( 'image', e.target.files[ 0 ] )
-            axios.post( 'http://localhost:8080/upload', image )
+            axios.post( `${process.env.REACT_APP_SERVER_URL}/upload`, image )
                 .then( res => setPollObject({ ...pollObject, imgID: res.data }) )
         }
     }

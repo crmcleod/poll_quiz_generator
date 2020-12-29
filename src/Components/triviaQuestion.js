@@ -58,7 +58,7 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject }) => {
 
     return(
 
-        <div onSubmit={ handleSubmit } className="trivia-form">
+        <div className="trivia-form">
             <input required className={ 'disable' + questionId } type="text" onChange={ handleQuestionBodyChange } value={ questionBody.questionBody } placeholder="Question..."></input>
             <input required className={ 'disable' + questionId } type="text" onChange={ handleQuestionNumberChange } value={ questionBody.questionNumber } placeholder="Question number..."></input>
             <div>
@@ -85,7 +85,7 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject }) => {
                     placeholder="Answer..."></input>
                 <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" onClick={ handleRadioClick } value="3"/>
             </div>
-            <button type="submit"> { questionDisabled ? 'Edit Question' : 'Save Question'} </button>
+            <button onClick={ handleSubmit } type="button"> { questionDisabled ? 'Edit Question' : 'Save Question'} </button>
         </div>
 
     )

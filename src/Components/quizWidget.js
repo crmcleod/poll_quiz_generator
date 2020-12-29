@@ -17,7 +17,7 @@ const QuizWidget = ({ id }) => {
     const [ quizInProcess, setQuizInProcess ] = useState( true )
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_DATABASE_URL}/quizzes/${ id }`)
+        axios.get(`${process.env.REACT_APP_SERVER_URL}/quizzes/${ id }`)
             .then( res => { 
 
                 let orderedQuestions = []

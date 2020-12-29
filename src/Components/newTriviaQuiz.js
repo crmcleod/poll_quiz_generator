@@ -119,7 +119,11 @@ const NewTriviaQuiz = ({ author }) =>{
                 </div>
                 <h3 style={{ cursor: 'pointer'}} onClick={ handleAddOutcomeClick }> Add outcome <span style={{ color: 'red' }} id="add_outcome">+</span> </h3>
                 <button type="submit" id="build-quiz"> Build my quiz!</button>
-                { triviaQuizCreated && <h2><a href={'http://localhost:3000/widgets/quiz/'+ quizID}> {'http://localhost:3000/widgets/quiz/'+ quizID} </a></h2>}
+                { triviaQuizCreated && 
+                <h2> You can find your quiz here: 
+                    <br></br>
+                    <a href={'http://localhost:3000/widgets/quiz/'+ quizID}> {'http://localhost:3000/widgets/quiz/'+ quizID} </a>
+                </h2>}
                 <p> Author: { author }</p>
             </form>
         </>

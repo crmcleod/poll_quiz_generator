@@ -46,7 +46,7 @@ const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject }) => {
 
     return(
 
-        <div onSubmit={ handleSaveOutcomeClick } className="trivia-form">
+        <div className="trivia-form">
             <p> If score is </p>
             <select className={ 'disable' + outcomeID } onChange={ handleComparatorChange }>
                 <option value=">">greater than</option>
@@ -56,7 +56,7 @@ const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject }) => {
             <input required className={ 'disable' + outcomeID } onChange={ handleConditionValueChange } value={ outcomeObject.conditionValue } type="number" placeholder="Score..."></input>
             <input required className={ 'disable' + outcomeID } onChange={ handleHeadlineChange } type="text" value={ outcomeObject.outcomeName } placeholder="Outcome headline... e.g. 'Well done, you absolutely smashed it!'"></input>
             <textarea required className={ 'disable' + outcomeID } onChange={ handleBodyChange } rows="3" type="text" value={ outcomeObject.outcomeBody } placeholder="Outcome body... e.g. 'Better luck next time, you need to work on your trivia 😢"></textarea>
-            <button type="submit">{ outcomeDisabled ? 'Edit Outcome' : 'Save Outcome' }</button>
+            <button onClick={ handleSaveOutcomeClick } type="button">{ outcomeDisabled ? 'Edit Outcome' : 'Save Outcome' }</button>
         </div>
 
     )
