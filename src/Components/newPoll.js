@@ -5,14 +5,17 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import '../poll.css'
 
-const NewPoll = ({ author }) => {
+const NewPoll = ({ author, id }) => {
 
     const [ pollObject, setPollObject ] = useState({
         pollName: '',
         pollAuthor: author,
         responses: [],
         choices: [],
-        imgID: null
+        imgID: null,
+        user: {
+            id
+        }
     })
     const [ poll, setPoll ] = useState()
     const [ pollSaved, setPollSaved ] = useState( false )
@@ -71,7 +74,7 @@ const NewPoll = ({ author }) => {
 
     const handleIframeCopyCode = () =>{
         navigator.clipboard.writeText(
-            `<iframe src='${process.env.REACT_APP_WIDGET_URL}quiz/${quizID}' scrolling='disabled'></iframe>`
+            `<iframe src='${process.env.REACT_APP_WIDGET_URL}quiz/${poll.id}' scrolling='disabled'></iframe>`
         )
         setCopiedToClipboard( true )
     }

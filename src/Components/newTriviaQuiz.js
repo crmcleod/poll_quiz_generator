@@ -6,7 +6,7 @@ import axios from 'axios'
 import TriviaQuestion from './triviaQuestion'
 import TriviaOutcome from './triviaOutcome'
 
-const NewTriviaQuiz = ({ author }) =>{
+const NewTriviaQuiz = ({ author, id }) =>{
 
     const [ questionSchema, setQuestionSchema ] = useState({
         questionNumber: 0,
@@ -24,7 +24,9 @@ const NewTriviaQuiz = ({ author }) =>{
     })
     const [ questions, setQuestions ] = useState([])
     const [ outcomes, setOutcomes ] = useState([])
+    
     // const [ quizAuthor, setQuizAuthor ] = useState();
+
     const [ quizID, setQuizID ] = useState()
     const [ quizObject, setQuizObject ] = useState({
         quizName: '',
@@ -32,7 +34,7 @@ const NewTriviaQuiz = ({ author }) =>{
         questions: [],
         outcomes: [],
         user: {
-            id: 1
+            id
         }
     })
     const [ triviaQuizCreated, setTriviaQuizCreated ] = useState( false )

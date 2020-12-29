@@ -65,7 +65,7 @@ const UserHome = ({ user }) =>{
         return(
             <>
                 <h1> Looks like this is your first time, let's grab some details to personalise your experience!</h1>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={ handleSubmit }>
                     <label htmlFor="first_name">First name: </label>
                     <input type="text" id="first_name" placeholder="First name" onChange={handleFirstNameChange} value={signUpDetails.first_name}></input>
                     <label htmlFor="last_name">Last name: </label>
