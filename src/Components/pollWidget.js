@@ -16,8 +16,16 @@ const PollWidget = ({ id }) => {
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_URL}/polls/${ id }`)
-            .then( res => { 
-                setPoll( res.data ) 
+            .then( res => {
+                const r = res.data
+                setPoll({...poll,
+                    pollName: r.pollName,
+                    pollAuthor: r.pollAuthor,
+                    id: r.id,
+                    responses: r.responses,
+                    choices: r.choices,
+                    imgID: r.imgID 
+                })
             })
     },[ id ])
 
@@ -27,7 +35,17 @@ const PollWidget = ({ id }) => {
 
     const handlePollChoice = ( e ) => {
         axios.put(`${process.env.REACT_APP_SERVER_URL}/polls/${ id }`, {...poll, responses: [ ...poll.responses, e ]})
-            .then( res => setPoll( res.data ))
+            .then( res => {
+                const r = res.data
+                setPoll({...poll,
+                    pollName: r.pollName,
+                    pollAuthor: r.pollAuthor,
+                    id: r.id,
+                    responses: r.responses,
+                    choices: r.choices,
+                    imgID: r.imgID 
+                })
+            })
         cookies.set(`poll${ id }`, `${ e }`)
         setCookieState( cookies.get(`poll${ id }`))
         getPollResponses()
