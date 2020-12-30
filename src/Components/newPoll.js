@@ -4,6 +4,7 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 import '../poll.css'
+import { SketchPicker } from 'react-color'
 
 const NewPoll = ({ author, id }) => {
 
@@ -21,6 +22,8 @@ const NewPoll = ({ author, id }) => {
     const [ pollSaved, setPollSaved ] = useState( false )
     const [ pollPosted, setPollPosted ] = useState( false )
     const [ copiedToClipboard, setCopiedToClipboard ] = useState( false )
+    const [ backGroundColorOption, setBackGroundColorOption ] = useState( true )
+    const [ color, setColor ] = useState( '#fff')
 
     const handlePollSubmission = ( event ) => {
         event.preventDefault()
@@ -80,6 +83,15 @@ const NewPoll = ({ author, id }) => {
         setCopiedToClipboard( true )
     }
 
+    const handleColorChange = ( color ) => {
+        setColor( color.rgb )
+    }
+
+    const handleBackgroundPickChange = ( e ) => {
+        let bool = e.target.value === 'true'
+        setBackGroundColorOption( bool)
+    }
+
     return(
         <>
             <h1> Let's create a new poll!</h1>
@@ -89,7 +101,17 @@ const NewPoll = ({ author, id }) => {
                 <input className="poll-input" id="poll_name_input" value={ pollObject.pollName } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
                 { choicesToDisplay }
                 <p id="add-poll-choice" onClick={ handleAddChoiceClick } >Add choice<span style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
-                <input required onChange={ handleImageChange } id="poll-img" type="file"/>
+                <select onChange={ handleBackgroundPickChange } >
+                    <option value={ true }> Background colour </option>
+                    <option value={ false }> Background image </option>
+                </select>
+                { backGroundColorOption ? 
+                    <SketchPicker onChange={ handleColorChange } color={ color } />
+                    :
+                    <input required onChange={ handleImageChange } id="poll-img" type="file"/>            
+                }
+                
+                
                 <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button>
                 {poll ? <h2> Your poll can be found <a href={`${process.env.REACT_APP_WIDGET_URL}poll/`+ poll.id}> here </a></h2> : null}
             </form>
