@@ -90,9 +90,11 @@ const NewPoll = ({ author, id }) => {
     }
 
     const handleColorChange = ( color ) => {
+        let colPicker = document.querySelector('.sketch-picker').style
         let rgb = color.rgb
         setColor( rgb )
         setPollObject({ ...pollObject, backgroundColour: `${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a}` })
+        colPicker.boxShadow = ` 0 0 7px 3px rgba(${pollObject.backgroundColour})`
     }
 
     const handleBackgroundPickChange = ( e ) => {

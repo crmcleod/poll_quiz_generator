@@ -79,4 +79,8 @@ box-shadow: 0 0 0.3em 0.1em rgb(9, 79, 107);
 #new-quiz-buttons-wrapper{
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0 auto 0 auto;
+  flex-wrap: wrap;
 }

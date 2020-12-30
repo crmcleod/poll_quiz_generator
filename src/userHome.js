@@ -84,8 +84,12 @@ const UserHome = ({ user }) =>{
                 <Switch>
                     <Route exact path="/" 
                         render={() => <Home userDisplayName={ userName } />} />
-                    <Route path="/widgets" component={ QuizWidgetContainer }
-                        render={() => <QuizList ids={quizIds} quizNames={quizNames} />} />
+                    <Route path="/widgets" component={ QuizWidgetContainer } />
+                    <Route path="/quizzes"
+                        render={() => <QuizList
+                            ids={ quizIds }
+                            names={ quizNames }
+                        />} />
                     <Route exact path="/new_quiz" 
                         render={() => <NewQuizContainer 
                             id={userId} 

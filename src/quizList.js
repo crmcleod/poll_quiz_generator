@@ -2,15 +2,15 @@
 import React, { useState } from 'react'
 import QuizCard from './quizCard'
 import { Route, Switch, Link, withRouter } from 'react-router-dom'
-// import axios from 'axios'
+import axios from 'axios'
 
 
-const QuizList = ({ids, quizNames}) =>{
+const QuizList = ({ ids, names }) =>{
 
     const [ quizId, setQuizId ] = useState()
     const handleSelectChange = (e) =>{
         setQuizId(e.target.value)
-        // console.log(axios( `${process.env.REACT_APP_SERVER_URL}/quizzes/${e.target.value}`))
+        console.log(axios( `${process.env.REACT_APP_SERVER_URL}/quizzes/${e.target.value}`))
     }
 
     // let { id } = useParams;
@@ -25,14 +25,14 @@ const QuizList = ({ids, quizNames}) =>{
     //     }
     // }, [ids])
 
-    if(!quizNames){
+    if(!names){
         return(
             <h1> ... loading ... </h1>
         )
     }
 
     const quizzes = ids.map((id) => {
-        return <option id="quiz-list" key={id} value={id}>{quizNames[ids.indexOf(id)]}</option>})
+        return <option id="quiz-list" key={id} value={id}>{names[ids.indexOf(id)]}</option>})
         
     return(
         <>
