@@ -14,6 +14,7 @@ const NewPoll = ({ author, id }) => {
         responses: [],
         choices: [],
         imgID: null,
+        backgroundColour: null,
         user: {
             id
         }
@@ -84,7 +85,9 @@ const NewPoll = ({ author, id }) => {
     }
 
     const handleColorChange = ( color ) => {
-        setColor( color.rgb )
+        let rgb = color.rgb
+        setColor( rgb )
+        setPollObject({ ...pollObject, backgroundColour: `${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a}` })
     }
 
     const handleBackgroundPickChange = ( e ) => {
@@ -110,8 +113,6 @@ const NewPoll = ({ author, id }) => {
                     :
                     <input required onChange={ handleImageChange } id="poll-img" type="file"/>            
                 }
-                
-                
                 <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button>
                 {poll ? <h2> Your poll can be found <a href={`${process.env.REACT_APP_WIDGET_URL}poll/`+ poll.id}> here </a></h2> : null}
             </form>

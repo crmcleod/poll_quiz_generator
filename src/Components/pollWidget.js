@@ -24,7 +24,8 @@ const PollWidget = ({ id }) => {
                     id: r.id,
                     responses: r.responses,
                     choices: r.choices,
-                    imgID: r.imgID 
+                    imgID: r.imgID,
+                    backgroundColour: r.backgroundColour
                 })
             })
     },[ id ])
@@ -43,7 +44,8 @@ const PollWidget = ({ id }) => {
                     id: r.id,
                     responses: r.responses,
                     choices: r.choices,
-                    imgID: r.imgID 
+                    imgID: r.imgID, 
+                    backgroundColour: r.backgroundColour
                 })
             })
         cookies.set(`poll${ id }`, `${ e }`)
@@ -91,20 +93,21 @@ const PollWidget = ({ id }) => {
         axios.get(`${process.env.REACT_APP_SERVER_URL}/images/${poll.imgID}`)
             .then( res => setPollImage(res.data.image)) : null : null
 
-    if( !pollImage ){
+    if( !pollImage && !poll){
         return(
             <div id="loading-container">
                 <h1>...loading quiz now...</h1>
             </div>
         )
     }
-
+    
     return(
         <div id="poll-wrapper">
-            <div id="image-title-wrapper">
+            <div style={ pollImage ? null : { backgroundColor: `rgba(${poll.backgroundColour})`, width: '100%', height: '60vh' } } id="image-title-wrapper">
                 <h1> { poll && poll.pollName } </h1>
-                <img id="poll-image" src={`data:image/png;base64,${pollImage}`} />
+                { pollImage && <img id="poll-image" src={`data:image/png;base64,${pollImage}`} /> }
             </div>
+            <br></br>
             { cookieState ? responsesToDisplay : pollChoices }
         </div>
     )
