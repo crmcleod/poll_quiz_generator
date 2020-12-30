@@ -80,14 +80,6 @@
     background-color: rgb(136, 190, 176);
     font-weight: 600;
 }
-/* #poll-image{
-    background-color: rgba(245, 245, 245, 0.144);
-    padding: 0.1em;
-    width: 100%;
-    display: fixed;
-    bottom: 50%;
-    left: 0;
-} */
 #poll-form > button{
     font-family: 'Raleway';
     font-weight: 700;
@@ -97,4 +89,8 @@
     border: solid 0.08em;
     background-color: rgba(181, 241, 233, 0.349);
     border-radius: 0.2em;
+}
+#iframe-grab > button {
+    border-radius: 0.2em;
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.39);
 }

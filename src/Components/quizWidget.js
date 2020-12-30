@@ -50,6 +50,8 @@ const QuizWidget = ({ id }) => {
         )
     })
 
+    // work on this logic - breaks out of order
+    
     const outcomeToDisplay = () => {
         for( let outcome of outcomes){
             if( eval( score + outcome.conditionComparator + outcome.conditionValue ) ){

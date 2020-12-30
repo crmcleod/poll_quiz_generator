@@ -103,9 +103,9 @@ const PollWidget = ({ id }) => {
     
     return(
         <div id="poll-wrapper">
-            <div style={ pollImage ? null : { backgroundColor: `rgba(${poll.backgroundColour})`, width: '100%', height: '60vh' } } id="image-title-wrapper">
+            <div style={ pollImage ? null : { backgroundColor: `rgba(${poll.backgroundColour})`, width: '100%', height: '50vh' } } id="image-title-wrapper">
                 <h1> { poll && poll.pollName } </h1>
-                { pollImage && <img id="poll-image" src={`data:image/png;base64,${pollImage}`} /> }
+                { pollImage ? <img id="poll-image" src={`data:image/png;base64,${pollImage}`} /> : null}
             </div>
             <br></br>
             { cookieState ? responsesToDisplay : pollChoices }

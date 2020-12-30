@@ -154,10 +154,15 @@
     color: grey;
     border-style: none;
     transition: all 0.3s ease;
+    outline: none;
 }
 #iframe-grab > button:hover{
     color: rgb(255, 255, 255);
     background-color: rgb(58, 58, 58);
+}
+#iframe-grab > button:active{
+    transform: scale(0.98);
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.445);
 }
 #iframe-grab{
     margin: 0 auto 0 auto;

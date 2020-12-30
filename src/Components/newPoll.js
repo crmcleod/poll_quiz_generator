@@ -28,17 +28,22 @@ const NewPoll = ({ author, id }) => {
 
     const handlePollSubmission = ( event ) => {
         event.preventDefault()
-        setPollSaved( !pollSaved )
-        if( !pollPosted ){ 
-            axios.post( `${ process.env.REACT_APP_SERVER_URL }/polls`, pollObject )
-                .then(res => setPoll( res.data ))
+        if( pollObject.choices.length === 0){
+            // add custom alert
+            alert('You must have at least one choice!')
         } else {
-            axios.put( `${ process.env.REACT_APP_SERVER_URL }/polls/${ poll.id }`, pollObject )
-        }
-        setPollPosted( true )
-        const formFields = document.querySelectorAll( '.poll-input' )
-        for( let field of formFields ){
-            field.disabled = !pollSaved
+            setPollSaved( !pollSaved )
+            if( !pollPosted ){ 
+                axios.post( `${ process.env.REACT_APP_SERVER_URL }/polls`, pollObject )
+                    .then(res => setPoll( res.data ))
+            } else {
+                axios.put( `${ process.env.REACT_APP_SERVER_URL }/polls/${ poll.id }`, pollObject )
+            }
+            setPollPosted( true )
+            const formFields = document.querySelectorAll( '.poll-input' )
+            for( let field of formFields ){
+                field.disabled = !pollSaved
+            }
         }
     }
 
@@ -101,7 +106,7 @@ const NewPoll = ({ author, id }) => {
             <h2> Poll name / Question: <br></br>{ pollObject.pollName } </h2>
             <p> Author: { author }</p>
             <form id="poll-form" onSubmit={ handlePollSubmission }>
-                <input className="poll-input" id="poll_name_input" value={ pollObject.pollName } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
+                <input required className="poll-input" id="poll_name_input" value={ pollObject.pollName } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
                 { choicesToDisplay }
                 <p id="add-poll-choice" onClick={ handleAddChoiceClick } >Add choice<span style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
                 <select onChange={ handleBackgroundPickChange } >
@@ -109,23 +114,27 @@ const NewPoll = ({ author, id }) => {
                     <option value={ false }> Background image </option>
                 </select>
                 { backGroundColorOption ? 
-                    <SketchPicker onChange={ handleColorChange } color={ color } />
+                    <span style={ pollSaved ? {display: 'none'} : {display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                        <SketchPicker onChange={ handleColorChange } color={ color } />
+                    </span>
                     :
                     <input required onChange={ handleImageChange } id="poll-img" type="file"/>            
                 }
                 <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button>
-                {poll ? <h2> Your poll can be found <a href={`${process.env.REACT_APP_WIDGET_URL}poll/`+ poll.id}> here </a></h2> : null}
             </form>
-            {pollSaved ? 
-                <div id="iframe-grab">
-                    <h3> Get iframe code :</h3>
-                    <button onClick={ handleIframeCopyCode } type="button"> { copiedToClipboard ? 'Copied' : 'Copy iframe code to clipboard' } </button>
-                </div> 
-                : 
-                null
-            }
-
-            
+            {poll ? pollSaved ?
+                <>
+                    <h2> Your poll can be found 
+                        <br></br>
+                        <a style={{ color: 'rgb(215, 80, 18)', textDecoration: 'underline' }} href={`${process.env.REACT_APP_WIDGET_URL}poll/`+ poll.id}> here </a>
+                    </h2>
+                    <div id="iframe-grab">
+                        <h3> Get iframe code :</h3>
+                        <button onClick={ handleIframeCopyCode } type="button"> { copiedToClipboard ? 'Copied' : 'Copy iframe code to clipboard' } </button>
+                    </div> 
+                </>
+                : null
+                : null}   
         </>
     )
 }
