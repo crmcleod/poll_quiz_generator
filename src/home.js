@@ -10,9 +10,10 @@ const Home = ({ userDisplayName }) => {
             <h2><span style={{color: 'lightblue', fontWeight: '900'}}>{userDisplayName}</span> get started with a new quiz or change an existing one. </h2>
             <label htmlFor="existing-quizzes"></label>
             {/* <button onClick={ handleExistingQuizzesClick } id="existing-quizzes">View existing quizzes</button> */}
-            <Link to="/quizzes">Quizzes!</Link>
-            <Link to="/new_quiz"> Create a new quiz?</Link>
-
+            <div id="new-quiz-buttons-wrapper">
+                <Link className="new-quiz-button link-button" to="/quizzes">Quizzes!</Link>
+                <Link className="new-quiz-button link-button" to="/new_quiz"> Create a new quiz?</Link>
+            </div>
         </>
     )
 
