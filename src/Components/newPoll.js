@@ -55,6 +55,7 @@ const NewPoll = ({ author, id }) => {
     }
 
     const handleImageChange = ( e ) => {
+        console.log( e.target.files )
         if( e.target.files[ 0 ].size > 10000000){
             alert( 'The file is too large.' )
             document.querySelector( '#poll-img' ).value = ''

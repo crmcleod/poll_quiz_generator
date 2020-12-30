@@ -87,7 +87,6 @@ const PollWidget = ({ id }) => {
         )
     }) : null
 
-    // add env here
     const backgroundImg = poll ? poll.imgID ?
         axios.get(`${process.env.REACT_APP_SERVER_URL}/images/${poll.imgID}`)
             .then( res => setPollImage(res.data.image)) : null : null
@@ -99,11 +98,12 @@ const PollWidget = ({ id }) => {
             </div>
         )
     }
+
     return(
         <div id="poll-wrapper">
             <div id="image-title-wrapper">
                 <h1> { poll && poll.pollName } </h1>
-                <img id="poll-image" height="10px" width="10px" src={`data:image/png;base64,${pollImage}`} />
+                <img id="poll-image" src={`data:image/png;base64,${pollImage}`} />
             </div>
             { cookieState ? responsesToDisplay : pollChoices }
         </div>

@@ -1,5 +1,4 @@
 #poll-wrapper{
-    margin-top: 5%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -15,14 +14,16 @@
 }
 #image-title-wrapper > h1{
     position: absolute;
+    border-radius: 0.5em;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.479);
     width: 80%;
     padding: 5%;
     background-color: rgba(255, 255, 255, 0.568);
     text-align: center;
+    /* z-index: 1; */
 }
 #poll-image{
     width: 100%;
-    height: 30%;
     background-color: aliceblue;
     margin-bottom: 1vw;
 }
@@ -77,10 +78,14 @@
 #poll-form p:hover{
     background-color: rgb(136, 190, 176);
 }
-#poll-img{
+/* #poll-image{
     background-color: rgba(245, 245, 245, 0.144);
     padding: 0.1em;
-}
+    width: 100%;
+    display: fixed;
+    bottom: 50%;
+    left: 0;
+} */
 #poll-form > button{
     font-family: 'Raleway';
     font-weight: 700;
