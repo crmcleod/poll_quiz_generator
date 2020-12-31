@@ -48,7 +48,7 @@
   height: 60vh;
   transform: translateY(20%);
 }
-@keyframes spin {
+@keyframes pulse {
   0%, 100%{
     transform: scale(1);
   }
@@ -57,10 +57,9 @@
   }
 }
 #icon-load{
-  animation: spin 1s linear infinite;
+  animation: pulse 1s linear infinite;
   height: 40vh;
-  transform: translateY(20%);
-  margin: 2em;
+  margin: 4em;
 }
 #nav-bar ul{
   max-height: 60px;
@@ -113,4 +112,38 @@ box-shadow: 0 0 0.3em 0.1em rgb(9, 79, 107);
 .link-button{
   padding: 0.5em;
   font-weight: 600;
+}
+#loading-modal-container{
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+#loading-modal{
+  position: absolute;
+  border-radius: 0.6em;
+  box-shadow: 0 0 15px 8px rgba(0, 0, 0, 0.342);
+  height: 70%;
+  width: 50%;
+  background-color: rgba(131, 120, 167, 0.767);
+  backdrop-filter: blur(5px);
+  z-index: 2;
+  color: rgb(83, 43, 109);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  
+}
+#loading-modal img{
+  animation: pulse 1.5s linear infinite;
+  width: 40%;
+  margin-top: 2em;
+}
+#loading-modal p{
+  animation: pulse 1.5s linear infinite;
 }

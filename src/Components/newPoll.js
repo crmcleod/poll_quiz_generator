@@ -5,6 +5,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import '../poll.css'
 import { SketchPicker } from 'react-color'
+import LoadingModal from './loadingModal'
 
 const NewPoll = ({ author, id }) => {
 
@@ -25,6 +26,7 @@ const NewPoll = ({ author, id }) => {
     const [ copiedToClipboard, setCopiedToClipboard ] = useState( false )
     const [ backGroundColorOption, setBackGroundColorOption ] = useState( true )
     const [ color, setColor ] = useState( '#fff')
+    const [ imageLoading, setImageLoading ] = useState( false )
 
     const handlePollSubmission = ( event ) => {
         event.preventDefault()
@@ -63,8 +65,7 @@ const NewPoll = ({ author, id }) => {
         setPollObject({ ...pollObject, choices: prevChoices })
     }
 
-    const handleImageChange = ( e ) => {
-        console.log( e.target.files )
+    const saveImage = ( e ) => {
         if( e.target.files[ 0 ].size > 10000000){
             alert( 'The file is too large.' )
             document.querySelector( '#poll-img' ).value = ''
@@ -74,6 +75,12 @@ const NewPoll = ({ author, id }) => {
             axios.post( `${process.env.REACT_APP_SERVER_URL}/upload`, image )
                 .then( res => setPollObject({ ...pollObject, imgID: res.data }) )
         }
+    }
+
+    const handleImageChange = ( e ) => {
+        saveImage( e )
+        setImageLoading( true )
+        setTimeout(() => setImageLoading(false), 3000)
     }
 
     const choicesToDisplay = pollObject.choices.map(( choice, index ) => {
@@ -104,6 +111,13 @@ const NewPoll = ({ author, id }) => {
 
     return(
         <>
+            
+            { imageLoading && 
+                <div id="loading-modal-container">
+                    <LoadingModal />
+                </div>
+            }
+            
             <h1> Let's create a new poll!</h1>
             <h2> Poll name / Question: <br></br>{ pollObject.pollName } </h2>
             <p> Author: { author }</p>

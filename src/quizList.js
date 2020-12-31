@@ -35,8 +35,8 @@ const QuizList = ({ ids, names }) =>{
         
     return(
         <>
-            <select onChange={handleSelectChange}>
-                <option disabled selected>Pick Quiz</option>
+            <select defaultValue="Pick Quiz" onChange={handleSelectChange}>
+                <option disabled >Pick Quiz</option>
                 { quizzes }
             </select>
             <Link to={`/quizzes/${quizId}`}> Go to quiz</Link>
