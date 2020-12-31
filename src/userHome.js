@@ -60,8 +60,8 @@ const UserHome = ({ user }) =>{
                 setUserName( signUpDetails.firstName )
             })
     }
-
-    if( !userName ){
+    
+    if( !user ){
         return(
             <>
                 <h1> Looks like this is your first time, let's grab some details to personalise your experience!</h1>

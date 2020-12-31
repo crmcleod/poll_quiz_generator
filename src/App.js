@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 import './App.css'
+import icon from './assets/You_Doodle_2020-12-31T12_19_55Z.PNG'
 import React, { useState, useEffect } from 'react'
 import firebase from 'firebase/app'
 
@@ -22,6 +23,7 @@ const providers = {
 function App(props) {
 
     const [ dbCheck, setDbCheck ] = useState()
+    const [ loading, setLoading ] = useState( true )
 
     const {
         user, 
@@ -36,6 +38,28 @@ function App(props) {
     useEffect(() => {
         checkDb()
     }, [])
+
+    useEffect(() =>{
+        setTimeout(() => {
+            setLoading( false )
+        }, 2000)
+    }, [])
+
+    if( loading ){
+        return(
+            <div className="App-header">
+                <img id="hero-image" src={ icon }/>
+            </div>
+        )
+    }
+
+    if( !dbCheck ){
+        return(
+            <div className="App-header">
+                <img id="hero-image" src={ icon }/>
+            </div>
+        )
+    }
 
     if( dbCheck === true){
         return(
@@ -54,14 +78,18 @@ function App(props) {
             <header className="App-header">
                 {
                     user
-                        ? <UserHome user={user} />
-                        : <p>Please sign in.</p>
+                        ? <UserHome user={ user } />
+                        :
+                        <> 
+                            <p>Please sign in.</p>
+                        </>
                 }
                 {
                     user
                         ? <button id="sign-out-button" onClick={signOut}>Sign out</button>
                         : <button onClick={signInWithGoogle}>Sign in with Google</button>
                 }
+                { user ? null : <img id="hero-image" src={ icon }/> }
             </header>
         </div>
     )

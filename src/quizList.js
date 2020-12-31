@@ -1,9 +1,8 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react'
-import QuizCard from './quizCard'
-import { Route, Switch, Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
-
+import { Route, Switch, Link, withRouter } from 'react-router-dom'
 
 const QuizList = ({ ids, names }) =>{
 
@@ -41,10 +40,10 @@ const QuizList = ({ ids, names }) =>{
                 { quizzes }
             </select>
             <Link to={`/quizzes/${quizId}`}> Go to quiz</Link>
-            <Switch>
+            {/* <Switch>
                 <Route exact path={'/quizzes/:id'} 
                     render={() => <QuizCard />} />
-            </Switch>
+            </Switch> */}
         </>
     )
 
