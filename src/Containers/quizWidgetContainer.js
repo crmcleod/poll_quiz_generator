@@ -7,8 +7,8 @@ import QuizWidget from '../Components/quizWidget'
 const QuizWidgetContainer = () => {
 
     useEffect(() => {
-        const header = document.querySelector('header').style
-        header.display = 'none'
+        const appWrapper = document.querySelector('.app-wrapper').style
+        appWrapper.display = 'none'
     })
     
     const { type, id } = useParams()

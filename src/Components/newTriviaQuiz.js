@@ -40,7 +40,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
             id
         }
     })
-    
+
     const [ triviaQuizCreated, setTriviaQuizCreated ] = useState( false )
     const [ copiedToClipboard, setCopiedToClipboard ] = useState( false )
 
@@ -91,7 +91,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
         )
     })
 
-    const questionsToDisplay = questions.map(( question ) => {
+    const questionsToDisplay = questions.map(( question, index ) => {
         return(
             <TriviaQuestion 
                 key={ question.id } 
@@ -99,6 +99,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
                 quizID={ quizID } 
                 quizObject={ quizObject }
                 setQuizObject={ setQuizObject }
+                questionNumber={ index + 1}
             />
         )
     })

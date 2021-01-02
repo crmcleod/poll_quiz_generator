@@ -116,7 +116,7 @@ const UserHome = ({ user, dbCheck }) =>{
         )
     }
     return(
-        <div className="App-header">
+        <div className="app-wrapper">
             <img id="hero-image" src={ icon }/>
         </div>
     )

@@ -47,7 +47,7 @@ function App(props) {
 
     if( loading ){
         return(
-            <div className="App-header">
+            <div className="app-wrapper">
                 <img id="hero-image" src={ icon }/>
             </div>
         )
@@ -55,7 +55,7 @@ function App(props) {
 
     if( dbCheck === true ){
         return(
-            <div className="App-header">
+            <div className="app-wrapper">
                 <img id="hero-image" src={ icon }/>
             </div>
         )

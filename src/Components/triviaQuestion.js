@@ -3,12 +3,12 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 
-const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject }) => {
+const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questionNumber }) => {
 
     const [ questionBody, setQuestionBody ] = useState({
         correctAnswer: '',
         questionBody: '',
-        questionNumber: '',
+        questionNumber,
         quiz: { id: quizID },
         answers: [ '', '', '', '' ],
     })
@@ -59,8 +59,11 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject }) => {
     return(
 
         <div className="trivia-form">
+            <span id="question-and-label">
+                <label htmlFor="question-number">Question number...</label>
+                <input required className={ 'disable' + questionId } id="question-number" type="number" onChange={ handleQuestionNumberChange } value={ questionBody.questionNumber }></input>
+            </span>
             <input required className={ 'disable' + questionId } type="text" onChange={ handleQuestionBodyChange } value={ questionBody.questionBody } placeholder="Question..."></input>
-            <input required className={ 'disable' + questionId } type="text" onChange={ handleQuestionNumberChange } value={ questionBody.questionNumber } placeholder="Question number..."></input>
             <div>
                 <input required className={ 'disable' + questionId} type="text" onChange={ handleAnswerChange1 } 
                     value={ questionBody.answers[0] } 

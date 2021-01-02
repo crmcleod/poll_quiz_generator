@@ -81,7 +81,6 @@
     border: solid 2px rgb(159, 190, 186);
     border-radius: 0.2em;
     background-color: rgba(255, 255, 255, 0.185);
-
 }
 .trivia-form > * {
     margin: 0.2em;
@@ -173,4 +172,18 @@
     justify-content: space-between;
     height: 3em;
     width: 10em;
+}
+#question-and-label{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 0.5em;
+    padding: 0%;
+}
+#question-number{
+    font-family: 'Raleway';
+    color: rgb(56, 56, 56);
+    font-weight: 700;
+    width: 40%;
+    text-align: center;
 }
