@@ -1,17 +1,22 @@
 /* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react'
-import {Link, withRouter} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import icon from './assets/You_Doodle_2020-12-31T12_19_55Z.PNG'
 
 const Home = ({ userDisplayName }) => {
 
     const [ loading, setLoading ] = useState( true )
 
-    useEffect(() => {
-        setTimeout(() => {
-            setLoading( false )
-        }, 2000 )
-    })
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setLoading( false )
+    //     }, 2000 )
+    // })
+
+    setTimeout(() => {
+        if( userDisplayName ) setLoading( false )
+    }, 2000 )
 
     return(
         <>
@@ -33,4 +38,4 @@ const Home = ({ userDisplayName }) => {
     )
 
 }
-export default withRouter(Home)
+export default Home

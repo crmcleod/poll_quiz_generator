@@ -100,6 +100,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
                 quizObject={ quizObject }
                 setQuizObject={ setQuizObject }
                 questionNumber={ index + 1}
+                index={ index }
             />
         )
     })
@@ -130,8 +131,27 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
 
     const submitQuiz = ( e ) => {
         e.preventDefault()
-        axios.put(`${process.env.REACT_APP_SERVER_URL}/quizzes/${quizID}`, quizObject)
-        setTriviaQuizCreated( true )
+        if ( quizObject.questions.length < 1 || quizObject.outcomes.length < 1){
+            // add custom alert modal
+            alert('Your quiz must contain both questions and outcomes, please add at least 1 question and 1 outcome')
+        } else {
+            let created = false
+            for( let i = 0; i < quizObject.questions.length; i++){
+                for( let j = i + 1; j < quizObject.questions.length; j++){
+                    console.log(quizObject.questions[i].questionNumber, quizObject.questions[j].questionNumber)
+                    if( quizObject.questions[i].questionNumber == quizObject.questions[j].questionNumber ){
+                        // add custom alert modal
+                        return alert( 'Question numbers should be unique, please adjust and try submitting again' )
+                    } else {
+                        created = true
+                    }
+                }
+            }
+            if( created ){
+                axios.put(`${process.env.REACT_APP_SERVER_URL}/quizzes/${quizID}`, quizObject)
+                setTriviaQuizCreated( true )
+            }
+        }
     }
 
     const handleIframeCopyCode = () =>{
@@ -150,9 +170,11 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
             }
             <form onSubmit={ submitQuiz } style={{width: '100%'}}>
                 <h1> Let's create a new trivia quiz! </h1>
-                <h2>{ quizObject.quizName }</h2>
-                <label htmlFor="quiz_name_input"> Quiz title...</label>
-                <input required id="quiz_name_input" value={ quizObject.quizName } onChange={ handleQuizNameChange } placeholder="Quiz title..."></input>
+                <h2 id="quiz-name">{ quizObject.quizName || 'Quiz'}</h2>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <label htmlFor="quiz_name_input"> Quiz title... </label>
+                    <input required id="quiz_name_input" value={ quizObject.quizName } onChange={ handleQuizNameChange } placeholder="Quiz title..."></input>
+                </div>
                 { questions.length === 0 ? null : <h2> Questions </h2> }
                 <div id="outcomes-wrapper">
                     { questionsToDisplay }
@@ -167,7 +189,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
                 <button type="submit" id="build-quiz"> Build my quiz!</button>
                 { triviaQuizCreated && 
                 <>
-                    <h2> You can find your quiz here: 
+                    <h2> You can find your quiz: 
                         <br></br>
                         <a style={{ color: 'lightblue', fontWeight: '800'}} href={`${process.env.REACT_APP_WIDGET_URL}quiz/`+ quizID}>here</a>
                     </h2>

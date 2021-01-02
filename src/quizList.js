@@ -6,11 +6,12 @@ import { Route, Switch, Link, withRouter } from 'react-router-dom'
 
 const QuizList = ({ ids, names }) =>{
 
-    const [ quizId, setQuizId ] = useState()
-    const handleSelectChange = (e) =>{
-        setQuizId(e.target.value)
-        console.log(axios( `${process.env.REACT_APP_SERVER_URL}/quizzes/${e.target.value}`))
-    }
+    // const [ quizId, setQuizId ] = useState()
+
+    // const handleSelectChange = (e) =>{
+    //     setQuizId(e.target.value)
+    //     console.log(axios( `${process.env.REACT_APP_SERVER_URL}/quizzes/${e.target.value}`))
+    // }
 
     // let { id } = useParams;
 
@@ -49,4 +50,4 @@ const QuizList = ({ ids, names }) =>{
     )
 
 }
-export default withRouter(QuizList)
+export default QuizList

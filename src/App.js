@@ -20,7 +20,7 @@ const providers = {
     googleProvider: new firebase.auth.GoogleAuthProvider(),
 }
 
-function App(props) {
+const App = (props) => {
 
     const [ dbCheck, setDbCheck ] = useState()
     const [ loading, setLoading ] = useState( true )
@@ -36,7 +36,7 @@ function App(props) {
         .catch( err => setDbCheck(err.isAxiosError))
 
     useEffect(() => {
-        checkDb()
+        setTimeout( () => { checkDb() }, 1000)  
     }, [])
 
     useEffect(() =>{

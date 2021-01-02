@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 // import NewTriviaQuiz from '../Components/newTriviaQuiz'
 
 // eslint-disable-next-line no-unused-vars
-const NewQuizContainer = ({ author }) =>{
+const NewQuizContainer = () => {
 
     return(
         <>

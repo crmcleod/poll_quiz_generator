@@ -10,6 +10,8 @@
 }
 #quiz-name{
     font-size: 2.5em;
+    color: rgba(209, 84, 84, 0.795);
+    word-break: keep-all;
 }
 #question-number{
     font-size: 1.5em;
@@ -81,6 +83,7 @@
     border: solid 2px rgb(159, 190, 186);
     border-radius: 0.2em;
     background-color: rgba(255, 255, 255, 0.185);
+    box-shadow: 2px 2px 10px 5px rgba(0, 0, 0, 0.473);
 }
 .trivia-form > * {
     margin: 0.2em;
@@ -105,6 +108,8 @@
 }
 #quiz_name_input{
     width: 50%;
+    border-radius: 0.25em;
+    border: none;
     height: 3em;
     font-size: 0.6em;
 }
@@ -182,8 +187,9 @@
 }
 #question-number{
     font-family: 'Raleway';
-    color: rgb(56, 56, 56);
+    color: rgb(95, 94, 94);
     font-weight: 700;
-    width: 40%;
-    text-align: center;
+    width: 20%;
+    text-align: left;
+    padding: 0em  0 0.2em 0.5em;
 }

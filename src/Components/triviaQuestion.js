@@ -3,7 +3,7 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 
-const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questionNumber }) => {
+const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questionNumber, index }) => {
 
     const [ questionBody, setQuestionBody ] = useState({
         correctAnswer: '',
@@ -15,7 +15,11 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
     const [ questionDisabled, setQuestionDisabled ] = useState( false )
 
     const handleQuestionBodyChange = ( event ) => { setQuestionBody({ ...questionBody, questionBody: event.target.value })}
-    const handleQuestionNumberChange = ( event ) => { setQuestionBody({ ...questionBody, questionNumber: event.target.value })}
+    const handleQuestionNumberChange = ( event ) => { 
+        if( event.target.value > 0) {
+            setQuestionBody({ ...questionBody, questionNumber: event.target.value })
+        }
+    }
 
     const setAnswers = ( questionIndex, event ) => {
         const newAnswers = [ ...questionBody.answers ]
@@ -28,8 +32,6 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
     const handleAnswerChange3 = event => setAnswers( 2, event )
     const handleAnswerChange4 = event => setAnswers( 3, event )
 
-
-    // checks all radio buttons so no alert after first question
     const handleSubmit = ( e ) => {
         e.preventDefault()
         handleRadioClick()
@@ -38,7 +40,9 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
         for (const field of formFields){
             field.disabled = !field.disabled
         }
-        setQuizObject({ ...quizObject, questions: [ ...quizObject.questions, questionBody ] })
+        let newQuestions = quizObject.questions.map(( question ) => question)
+        newQuestions[ index ] = questionBody
+        setQuizObject({ ...quizObject, questions: newQuestions })
         setQuestionDisabled( !questionDisabled )
     }
 

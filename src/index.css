@@ -2,9 +2,10 @@
 
 body {
   margin: 0;
-  font-family: 'Raleway';
+  font-family: 'Raleway', Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  word-break: break-all;
 }
 
 code {
