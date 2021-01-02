@@ -35,11 +35,12 @@ const QuizList = ({ ids, names }) =>{
         
     return(
         <>
-            <select defaultValue="Pick Quiz" onChange={handleSelectChange}>
+            <h1> Under construction </h1>
+            {/* <select defaultValue="Pick Quiz" onChange={handleSelectChange}>
                 <option disabled >Pick Quiz</option>
                 { quizzes }
             </select>
-            <Link to={`/quizzes/${quizId}`}> Go to quiz</Link>
+            <Link to={`/quizzes/${quizId}`}> Go to quiz</Link> */}
             {/* <Switch>
                 <Route exact path={'/quizzes/:id'} 
                     render={() => <QuizCard />} />

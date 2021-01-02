@@ -4,7 +4,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import '../quiz.css'
 
-const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject }) => {
+const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject, organiseLogic }) => {
 
     const [ outcomeObject, setOutcomeObject ] = useState({
         outcomeName: '',
@@ -42,6 +42,7 @@ const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject }) => {
             el.disabled = !el.disabled
         }
         setOutcomeDisabled( !outcomeDisabled )
+        organiseLogic()
     }
 
     return(

@@ -111,7 +111,6 @@ const NewPoll = ({ author, id }) => {
 
     return(
         <>
-            
             { imageLoading && 
                 <div id="loading-modal-container">
                     <LoadingModal />
@@ -134,6 +133,7 @@ const NewPoll = ({ author, id }) => {
                         <SketchPicker onChange={ handleColorChange } color={ color } />
                     </span>
                     :
+                    // https://www.npmjs.com/package/react-easy-crop //
                     <input required onChange={ handleImageChange } id="poll-img" type="file"/>            
                 }
                 <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button>

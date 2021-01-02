@@ -12,8 +12,10 @@ import NavBarContainer from './Containers/navBarContainer'
 import QuizWidgetContainer from './Containers/quizWidgetContainer'
 import NewTriviaQuiz from './Components/newTriviaQuiz'
 import NewPoll from './Components/newPoll'
+import icon from './assets/You_Doodle_2020-12-31T12_19_55Z.PNG'
 
-const UserHome = ({ user }) =>{
+
+const UserHome = ({ user, dbCheck }) =>{
 
     const [ userEmail ] = useState(user.email)
     const [ userEmailVerified, setUserEmailVerified ] = useState(user.emailVerified)
@@ -77,35 +79,46 @@ const UserHome = ({ user }) =>{
                 <h2>{ signUpDetails.first_name }{ signUpDetails.last_name }</h2>
             </>
         )}
+    if ( userId ){
+        return(
+            <Router>
+                <>
+                    <NavBarContainer />  
+                    <Switch>
+                        <Route exact path="/" 
+                            render={() => <Home userDisplayName={ userName } />} />
+                        <Route path="/widgets" component={ QuizWidgetContainer } />
+                        <Route path="/quizzes"
+                            render={() => <QuizList
+                                ids={ quizIds }
+                                names={ quizNames }
+                            />} />
+                        <Route exact path="/new_quiz" 
+                            render={() => <NewQuizContainer 
+                                id={userId} 
+                                author={userName}
+                                dbCheck={ dbCheck }
+                            /> } />
+                        <Route path="/new_quiz/trivia" 
+                            render={() => <NewTriviaQuiz 
+                                id={userId} 
+                                author={userName} 
+                                dbCheck={ dbCheck }    
+                            /> }/>
+                        <Route path="/new_quiz/poll" 
+                            render={() => <NewPoll
+                                id={userId} 
+                                author={userName} /> }/>
+                        <Route component={ErrorPage} />
+                    </Switch>
+                </>
+            </Router>
+        )
+    }
     return(
-        <Router>
-            <>
-                <NavBarContainer />  
-                <Switch>
-                    <Route exact path="/" 
-                        render={() => <Home userDisplayName={ userName } />} />
-                    <Route path="/widgets" component={ QuizWidgetContainer } />
-                    <Route path="/quizzes"
-                        render={() => <QuizList
-                            ids={ quizIds }
-                            names={ quizNames }
-                        />} />
-                    <Route exact path="/new_quiz" 
-                        render={() => <NewQuizContainer 
-                            id={userId} 
-                            author={userName} /> } />
-                    <Route path="/new_quiz/trivia" 
-                        render={() => <NewTriviaQuiz 
-                            id={userId} 
-                            author={userName} /> }/>
-                    <Route path="/new_quiz/poll" 
-                        render={() => <NewPoll
-                            id={userId} 
-                            author={userName} /> }/>
-                    <Route component={ErrorPage} />
-                </Switch>
-            </>
-        </Router>
+        <div className="App-header">
+            <img id="hero-image" src={ icon }/>
+        </div>
     )
 }
 

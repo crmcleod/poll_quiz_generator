@@ -53,7 +53,7 @@ function App(props) {
         )
     }
 
-    if( !dbCheck ){
+    if( dbCheck === true ){
         return(
             <div className="App-header">
                 <img id="hero-image" src={ icon }/>
@@ -75,10 +75,10 @@ function App(props) {
                 </Switch>
             </Router>
 
-            <header className="App-header">
+            <div className="app-wrapper">
                 {
                     user
-                        ? <UserHome user={ user } />
+                        ? <UserHome user={ user } dbCheck={ dbCheck }/>
                         :
                         <> 
                             <p>Please sign in.</p>
@@ -90,7 +90,7 @@ function App(props) {
                         : <button onClick={signInWithGoogle}>Sign in with Google</button>
                 }
                 { user ? null : <img id="hero-image" src={ icon }/> }
-            </header>
+            </div>
         </div>
     )
 }

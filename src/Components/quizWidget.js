@@ -51,7 +51,7 @@ const QuizWidget = ({ id }) => {
     })
 
     // work on this logic - breaks out of order
-    
+
     const outcomeToDisplay = () => {
         for( let outcome of outcomes){
             if( eval( score + outcome.conditionComparator + outcome.conditionValue ) ){
@@ -101,10 +101,13 @@ const QuizWidget = ({ id }) => {
         )}
 
     return(
-        <h3>
-            You scored { score } out of { questions.length }
+        <>
+            <h1>
+                You scored { score } out of { questions.length }
+            </h1>
             { outcomeToDisplay() }
-        </h3>
+        </>
+
     )
 }
 

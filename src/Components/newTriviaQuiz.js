@@ -5,8 +5,9 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import TriviaQuestion from './triviaQuestion'
 import TriviaOutcome from './triviaOutcome'
+import LoadingModal from './loadingModal'
 
-const NewTriviaQuiz = ({ author, id }) =>{
+const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
 
     const [ questionSchema, setQuestionSchema ] = useState({
         questionNumber: 0,
@@ -24,10 +25,12 @@ const NewTriviaQuiz = ({ author, id }) =>{
     })
     const [ questions, setQuestions ] = useState([])
     const [ outcomes, setOutcomes ] = useState([])
-    
+
     // const [ quizAuthor, setQuizAuthor ] = useState();
 
     const [ quizID, setQuizID ] = useState()
+
+    // sort asynchronouse user id preventing posting
     const [ quizObject, setQuizObject ] = useState({
         quizName: '',
         quizAuthor: author,
@@ -37,17 +40,43 @@ const NewTriviaQuiz = ({ author, id }) =>{
             id
         }
     })
+    
     const [ triviaQuizCreated, setTriviaQuizCreated ] = useState( false )
     const [ copiedToClipboard, setCopiedToClipboard ] = useState( false )
 
     const postQuizToGetID = () => {
         axios.post(`${ process.env.REACT_APP_SERVER_URL }/quizzes`, quizObject)
             .then( res => setQuizID(res.data.id))
+            .catch( err => console.log( err ))
     }
-
-    useEffect( () => {
+    
+    useEffect(() => {
         postQuizToGetID()
     }, [])
+
+    const organiseLogic = () => {
+        let newOutcomes = [ ...quizObject.outcomes ]
+        for( let i = 0; i < newOutcomes.length; i++){
+            for( let j = 0; j < newOutcomes.length - i - 1; j++){
+                let adjustment = ( x ) => {
+                    if( newOutcomes[ x ].conditionComparator === '<'){
+                        return( -1 )
+                    } else if (
+                        newOutcomes[ x ].conditionComparator === '>' ){
+                        return( + 1 )
+                    } else {
+                        return( 0 )
+                    }
+                }
+                if( newOutcomes[ j + 1].conditionValue + adjustment( j + 1) < newOutcomes[ j ].conditionValue + adjustment[ j ] ){
+                    [ newOutcomes[ j + 1 ], newOutcomes[ j ]] = [ newOutcomes[ j ], newOutcomes[ j + 1 ]]
+                }
+            }
+            setQuizObject({ ...quizObject, outcomes: newOutcomes })
+        }
+        console.log( newOutcomes )
+
+    }
 
     const outcomesToDisplay = outcomes.map(( outcome ) =>{
         return(
@@ -57,6 +86,7 @@ const NewTriviaQuiz = ({ author, id }) =>{
                 quizID={ quizID }
                 quizObject={ quizObject }
                 setQuizObject={ setQuizObject }
+                organiseLogic={ organiseLogic }
             />
         )
     })
@@ -112,7 +142,12 @@ const NewTriviaQuiz = ({ author, id }) =>{
 
     return(
         <>
-            <form onSubmit={submitQuiz} style={{width: '100%'}}>
+            { dbCheck === true && 
+                    <div id="loading-modal-container">
+                        <LoadingModal />
+                    </div>
+            }
+            <form onSubmit={ submitQuiz } style={{width: '100%'}}>
                 <h1> Let's create a new trivia quiz! </h1>
                 <h2>{ quizObject.quizName }</h2>
                 <label htmlFor="quiz_name_input"> Quiz title...</label>
