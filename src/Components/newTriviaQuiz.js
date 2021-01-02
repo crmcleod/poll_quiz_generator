@@ -33,7 +33,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
     // sort asynchronouse user id preventing posting
     const [ quizObject, setQuizObject ] = useState({
         quizName: '',
-        quizAuthor: author,
+        quizAuthor: '',
         questions: [],
         outcomes: [],
         user: {
@@ -52,6 +52,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
     
     useEffect(() => {
         postQuizToGetID()
+        setQuizObject({ ...quizObject, quizAuthor: author})
     }, [])
 
     const organiseLogic = () => {

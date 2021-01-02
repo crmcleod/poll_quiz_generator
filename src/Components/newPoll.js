@@ -96,12 +96,13 @@ const NewPoll = ({ author, id }) => {
         setCopiedToClipboard( true )
     }
 
-    const handleColorChange = ( color ) => {
+    const handleColorChange = async ( color ) => {
         let colPicker = document.querySelector('.sketch-picker').style
         let rgb = color.rgb
-        setColor( rgb )
-        setPollObject({ ...pollObject, backgroundColour: `${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a}` })
-        colPicker.boxShadow = ` 0 0 7px 3px rgba(${pollObject.backgroundColour})`
+        let rgbSplit = `${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a}`
+        setColor( await rgb )
+        setPollObject({ ...pollObject, backgroundColour: rgbSplit })
+        colPicker.boxShadow = ` 0 0 7px 3px rgba(${rgbSplit})`
     }
 
     const handleBackgroundPickChange = ( e ) => {

@@ -8,22 +8,23 @@ const Home = ({ userDisplayName }) => {
 
     const [ loading, setLoading ] = useState( true )
 
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         setLoading( false )
-    //     }, 2000 )
-    // })
-
-    setTimeout(() => {
-        if( userDisplayName ) setLoading( false )
-    }, 2000 )
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading( false )
+        }, 1000 )
+    
+        return () => {
+            clearTimeout(setLoading( false ))
+        }
+    }
+    )
 
     return(
         <>
             { !loading ?
                 <>
                     <h1> Welcome to the quiz generator! </h1>
-                    <h2><span style={{color: 'lightblue', fontWeight: '900'}}>{userDisplayName}</span> get started with a new quiz or change an existing one. </h2>
+                    <h2><span style={{color: 'lightblue', fontWeight: '900'}}>{ userDisplayName }</span> get started with a new quiz or change an existing one. </h2>
                     <label htmlFor="existing-quizzes"></label>
                     {/* <button onClick={ handleExistingQuizzesClick } id="existing-quizzes">View existing quizzes</button> */}
                     <div id="new-quiz-buttons-wrapper">
