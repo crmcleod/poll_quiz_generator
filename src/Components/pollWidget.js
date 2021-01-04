@@ -4,6 +4,7 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import '../poll.css'
 import Cookies from 'universal-cookie'
+import CroppedImage from './croppedImage'
 
 const cookies = new Cookies()
 
@@ -25,7 +26,11 @@ const PollWidget = ({ id }) => {
                     responses: r.responses,
                     choices: r.choices,
                     imgID: r.imgID,
-                    backgroundColour: r.backgroundColour
+                    backgroundColour: r.backgroundColour,
+                    croppedHeight: r.croppedHeight,
+                    croppedWidth: r.croppedWidth,
+                    croppedX: r.croppedX,
+                    croppedY: r.croppedY
                 })
             })
     },[ id ])
@@ -88,7 +93,8 @@ const PollWidget = ({ id }) => {
             <div key={ index } onClick={ ( ) => handlePollChoice( poll ) } value={ poll } className="poll-choice"> { poll } </div>
         )
     }) : null
-
+ 
+    // this needs looked at \/\/\/
     const backgroundImg = poll ? poll.imgID ?
         axios.get(`${process.env.REACT_APP_SERVER_URL}/images/${poll.imgID}`)
             .then( res => setPollImage(res.data.image)) : null : null
@@ -105,7 +111,13 @@ const PollWidget = ({ id }) => {
         <div id="poll-wrapper">
             <div style={ pollImage ? null : { backgroundColor: `rgba(${poll.backgroundColour})`, width: '100%', height: '50vh' } } id="image-title-wrapper">
                 <h1> { poll && poll.pollName } </h1>
-                { pollImage ? <img id="poll-image" src={`data:image/png;base64,${pollImage}`} /> : null}
+                { pollImage ? <CroppedImage 
+                    imageSrc={ `data:image/png;base64,${pollImage}` }
+                    croppedHeight={ poll.croppedHeight }
+                    croppedWidth={ poll.croppedWidth }
+                    croppedX={ poll.croppedX }
+                    croppedY={ poll.croppedY }
+                /> : null}
             </div>
             <br></br>
             { cookieState ? responsesToDisplay : pollChoices }

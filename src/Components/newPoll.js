@@ -38,7 +38,7 @@ const NewPoll = ({ author, id }) => {
         image: null,
         crop: { x: 0, y: 0},
         zoom: 1,
-        aspect: 5/3,
+        aspect: 5/2,
         cropSaved: false,
         croppedArea: null,
         croppedAreaPixels: null
@@ -156,7 +156,9 @@ const NewPoll = ({ author, id }) => {
         setCropperState({ ...cropperState, zoom})
     }
 
-    // 
+    const handleZoomSliderChange = ( e ) => {
+        handleZoomChage( e.target.value )
+    } 
     return(
         <>
             { imageLoading && 
@@ -180,20 +182,22 @@ const NewPoll = ({ author, id }) => {
                         <SketchPicker onChange={ handleColorChange } color={ color } />
                     </span>
                     :
-                    // https://www.npmjs.com/package/react-easy-crop //
                     <>
-                        { cropperState.image ? 
-                            <div style={{position: 'relative', width: '300px', height: '300px'}}>
-                                <Cropper
-                                    image={ cropperState.image }
-                                    crop={ cropperState.crop }
-                                    zoom={ cropperState.zoom }
-                                    aspect={ cropperState.aspect }
-                                    onCropChange={ handleCropChange }
-                                    onCropComplete={ handleCropComplete }
-                                    onZoomChange={ handleZoomChage }
-                                />
-                            </div>
+                        { cropperState.image ?
+                            <>
+                                <div style={{position: 'relative', width: '300px', height: '300px'}}>
+                                    <Cropper
+                                        image={ cropperState.image }
+                                        crop={ cropperState.crop }
+                                        zoom={ cropperState.zoom }
+                                        aspect={ cropperState.aspect }
+                                        onCropChange={ handleCropChange }
+                                        onCropComplete={ handleCropComplete }
+                                        onZoomChange={ handleZoomChage }
+                                    />
+                                </div>
+                                <input type="range" min="1" max="5" step="0.1" value={ cropperState.zoom } onChange={ handleZoomSliderChange }/>
+                            </>
                             :
                             null
                         }
