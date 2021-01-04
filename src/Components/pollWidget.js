@@ -106,7 +106,6 @@ const PollWidget = ({ id }) => {
             </div>
         )
     }
-    
     return(
         <div id="poll-wrapper">
             <div style={ pollImage ? null : { backgroundColor: `rgba(${poll.backgroundColour})`, width: '100%', height: '50vh' } } id="image-title-wrapper">

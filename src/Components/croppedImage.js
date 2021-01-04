@@ -7,7 +7,8 @@ const CroppedImage = ({
     croppedHeight, 
     croppedWidth, 
     croppedX, 
-    croppedY }) => {
+    croppedY
+}) => {
 
     // const handleCroppedImageSave = async ( ) => {
     //     setCropperState({ ...cropperState, cropSaved: true })
@@ -88,10 +89,6 @@ const CroppedImage = ({
     useEffect(() => {
         showCroppedImage()
     }, [])
-    // const [ blahblaj, setBlah ] = useState()
-    // axios.get(`${process.env.REACT_APP_SERVER_URL}/images/155`)
-    //     .then( res => setBlah( res.data.image))
-
 
     return(
         <img id="poll-image" src={ croppedImageState }/>

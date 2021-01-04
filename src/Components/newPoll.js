@@ -173,7 +173,7 @@ const NewPoll = ({ author, id }) => {
                 <input required className="poll-input" id="poll_name_input" value={ pollObject.pollName } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
                 { choicesToDisplay }
                 <p id="add-poll-choice" onClick={ handleAddChoiceClick } >Add choice<span style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
-                <select onChange={ handleBackgroundPickChange } >
+                <select className="poll-input" onChange={ handleBackgroundPickChange } >
                     <option value={ true }> Background colour </option>
                     <option value={ false }> Background image </option>
                 </select>
@@ -184,7 +184,7 @@ const NewPoll = ({ author, id }) => {
                     :
                     <>
                         { cropperState.image ?
-                            <>
+                            <div style={ pollSaved ? {display: 'none'} : null} >
                                 <div style={{position: 'relative', width: '300px', height: '300px'}}>
                                     <Cropper
                                         image={ cropperState.image }
@@ -197,11 +197,11 @@ const NewPoll = ({ author, id }) => {
                                     />
                                 </div>
                                 <input type="range" min="1" max="5" step="0.1" value={ cropperState.zoom } onChange={ handleZoomSliderChange }/>
-                            </>
+                            </div>
                             :
                             null
                         }
-                        <input required onChange={ handleImageChange } id="poll-img" type="file"/>            
+                        <input required onChange={ handleImageChange } id="poll-img" className="poll-input" type="file"/>            
                     </>
 
                 }
