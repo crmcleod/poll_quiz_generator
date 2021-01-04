@@ -2,13 +2,14 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import axios from 'axios'
-import React, { useState } from 'react'
+// eslint-disable-next-line no-unused-vars
+import React, { useRef, useState, useCallback } from 'react'
 import '../poll.css'
 import { SketchPicker } from 'react-color'
 import LoadingModal from './loadingModal'
+import Cropper from 'react-easy-crop'
 
 const NewPoll = ({ author, id }) => {
-
     const [ pollObject, setPollObject ] = useState({
         pollName: '',
         pollAuthor: author,
@@ -18,8 +19,13 @@ const NewPoll = ({ author, id }) => {
         backgroundColour: null,
         user: {
             id
-        }
+        },
+        croppedHeight: 0,
+        croppedWidth: 0,
+        croppedX: 0,
+        croppedY: 0
     })
+
     const [ poll, setPoll ] = useState()
     const [ pollSaved, setPollSaved ] = useState( false )
     const [ pollPosted, setPollPosted ] = useState( false )
@@ -27,6 +33,16 @@ const NewPoll = ({ author, id }) => {
     const [ backGroundColorOption, setBackGroundColorOption ] = useState( true )
     const [ color, setColor ] = useState( '#fff')
     const [ imageLoading, setImageLoading ] = useState( false )
+    // eslint-disable-next-line no-unused-vars
+    const [ cropperState, setCropperState ] = useState({
+        image: null,
+        crop: { x: 0, y: 0},
+        zoom: 1,
+        aspect: 5/3,
+        cropSaved: false,
+        croppedArea: null,
+        croppedAreaPixels: null
+    })
 
     const handlePollSubmission = ( event ) => {
         event.preventDefault()
@@ -40,6 +56,7 @@ const NewPoll = ({ author, id }) => {
                     .then(res => setPoll( res.data ))
             } else {
                 axios.put( `${ process.env.REACT_APP_SERVER_URL }/polls/${ poll.id }`, pollObject )
+                    .then(res => setPoll( res.data ))
             }
             setPollPosted( true )
             const formFields = document.querySelectorAll( '.poll-input' )
@@ -65,7 +82,15 @@ const NewPoll = ({ author, id }) => {
         setPollObject({ ...pollObject, choices: prevChoices })
     }
 
-    const saveImage = ( e ) => {
+    const handleImageGrab = async ( id ) => {
+        axios.get(`${process.env.REACT_APP_SERVER_URL}/images/${await id}`)
+            .then( res => {
+                let resB64 = `data:image/png;base64,${res.data.image}`
+                setCropperState({ ...cropperState, image: resB64 })
+            })
+    }
+
+    const saveImage = async ( e ) => {
         if( e.target.files[ 0 ].size > 10000000){
             alert( 'The file is too large.' )
             document.querySelector( '#poll-img' ).value = ''
@@ -73,7 +98,10 @@ const NewPoll = ({ author, id }) => {
             let image = new FormData()
             image.append( 'image', e.target.files[ 0 ] )
             axios.post( `${process.env.REACT_APP_SERVER_URL}/upload`, image )
-                .then( res => setPollObject({ ...pollObject, imgID: res.data }) )
+                .then( res => {
+                    setPollObject({ ...pollObject, imgID: res.data }) 
+                    handleImageGrab( res.data )
+                })
         }
     }
 
@@ -110,6 +138,25 @@ const NewPoll = ({ author, id }) => {
         setBackGroundColorOption( bool)
     }
 
+    const handleCropChange = ( crop ) => {
+        setCropperState({ ...cropperState, crop })
+    }
+
+    const handleCropComplete = ( croppedArea, croppedAreaPixels ) => {
+        setCropperState({ ...cropperState, croppedArea, croppedAreaPixels})
+        setPollObject({ ...pollObject,
+            croppedHeight: croppedAreaPixels.height,
+            croppedWidth: croppedAreaPixels.width,
+            croppedX: croppedAreaPixels.x,
+            croppedY: croppedAreaPixels.y
+        })
+    }
+
+    const handleZoomChage = ( zoom ) => {
+        setCropperState({ ...cropperState, zoom})
+    }
+
+    // 
     return(
         <>
             { imageLoading && 
@@ -117,7 +164,6 @@ const NewPoll = ({ author, id }) => {
                     <LoadingModal />
                 </div>
             }
-            
             <h1> Let's create a new poll!</h1>
             <h2> Poll name / Question: <br></br>{ pollObject.pollName } </h2>
             <p> Author: { author }</p>
@@ -135,9 +181,30 @@ const NewPoll = ({ author, id }) => {
                     </span>
                     :
                     // https://www.npmjs.com/package/react-easy-crop //
-                    <input required onChange={ handleImageChange } id="poll-img" type="file"/>            
+                    <>
+                        { cropperState.image ? 
+                            <div style={{position: 'relative', width: '300px', height: '300px'}}>
+                                <Cropper
+                                    image={ cropperState.image }
+                                    crop={ cropperState.crop }
+                                    zoom={ cropperState.zoom }
+                                    aspect={ cropperState.aspect }
+                                    onCropChange={ handleCropChange }
+                                    onCropComplete={ handleCropComplete }
+                                    onZoomChange={ handleZoomChage }
+                                />
+                            </div>
+                            :
+                            null
+                        }
+                        <input required onChange={ handleImageChange } id="poll-img" type="file"/>            
+                    </>
+
                 }
-                <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button>
+
+                {/* add condition to hide button if image not cropped */}
+                { backGroundColorOption ? <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button> : <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button> }
+                
             </form>
             {poll ? pollSaved ?
                 <>

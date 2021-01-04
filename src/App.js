@@ -61,11 +61,11 @@ const App = (props) => {
         )
     }
 
-    if( dbCheck === true){
-        return(
-            <h1> There seems to be a gremlin in the works, please try again! 👹 </h1>
-        )
-    }
+    // if( dbCheck === true){
+    //     return(
+    //         <h1> There seems to be a gremlin in the works, please try again! 👹 </h1>
+    //     )
+    // }
     return (
         <div className="App">
             <Router>

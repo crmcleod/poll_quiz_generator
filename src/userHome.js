@@ -63,7 +63,7 @@ const UserHome = ({ user, dbCheck }) =>{
             })
     }
     
-    if( !user ){
+    if( !userId ){
         return(
             <>
                 <h1> Looks like this is your first time, let's grab some details to personalise your experience!</h1>
