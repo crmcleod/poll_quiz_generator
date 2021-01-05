@@ -97,9 +97,9 @@ const NewPoll = ({ author, id }) => {
                 { choicesToDisplay }
                 <p id="add-poll-choice" onClick={ handleAddChoiceClick } >Add choice<span style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
                 <BackgroundHandler 
-                    pollObject={ pollObject }
-                    setPollObject={ setPollObject }
-                    pollSaved={ pollSaved }
+                    quizObject={ pollObject }
+                    setQuizObject={ setPollObject }
+                    quizSaved={ pollSaved }
                     imageLoading={ imageLoading }
                     setImageLoading={ setImageLoading }
                 />

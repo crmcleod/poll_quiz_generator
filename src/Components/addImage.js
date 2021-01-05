@@ -3,7 +3,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import Cropper from 'react-easy-crop'
 
-const AddImage = ({ pollSaved, pollObject, setPollObject, setImageLoading }) => {
+const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => {
 
     const [ cropperState, setCropperState ] = useState({
         image: null,
@@ -21,7 +21,7 @@ const AddImage = ({ pollSaved, pollObject, setPollObject, setImageLoading }) => 
 
     const handleCropComplete = ( croppedArea, croppedAreaPixels ) => {
         setCropperState({ ...cropperState, croppedArea, croppedAreaPixels})
-        setPollObject({ ...pollObject,
+        setQuizObject({ ...quizObject,
             croppedHeight: croppedAreaPixels.height,
             croppedWidth: croppedAreaPixels.width,
             croppedX: croppedAreaPixels.x,
@@ -46,7 +46,7 @@ const AddImage = ({ pollSaved, pollObject, setPollObject, setImageLoading }) => 
             image.append( 'image', e.target.files[ 0 ] )
             axios.post( `${process.env.REACT_APP_SERVER_URL}/upload`, image )
                 .then( res => {
-                    setPollObject({ ...pollObject, imgID: res.data }) 
+                    setQuizObject({ ...quizObject, imgID: res.data }) 
                     handleImageGrab( res.data )
                 })
         }
@@ -67,9 +67,9 @@ const AddImage = ({ pollSaved, pollObject, setPollObject, setImageLoading }) => 
     }
 
     return(
-        <>
+        <div style={{display: 'flex', flexDirection: 'column'}}>
             { cropperState.image ?
-                <div style={ pollSaved ? {display: 'none'} : null} >
+                <div style={ quizSaved ? {display: 'none'} : null} >
                     <div style={{position: 'relative', width: '300px', height: '300px'}}>
                         <Cropper
                             image={ cropperState.image }
@@ -86,8 +86,8 @@ const AddImage = ({ pollSaved, pollObject, setPollObject, setImageLoading }) => 
                 :
                 null
             }
-            <input required onChange={ handleImageChange } id="poll-img" className="poll-input" type="file"/>            
-        </>
+            { quizSaved ? null : <input required onChange={ handleImageChange } id="poll-img" className="poll-input" type="file"/> }
+        </div>
     )
 }
 

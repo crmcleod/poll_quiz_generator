@@ -81,7 +81,7 @@
     cursor: pointer;
     transition: all 0.2s ease;
 }
-#poll-form p:hover{
+#poll-form p:hover, #add-poll-choice:hover{
     background-color: rgb(136, 190, 176);
     font-weight: 600;
 }
@@ -91,9 +91,14 @@
     padding: 0.2em;
 }
 #add-poll-choice{
+    margin: 0.7em auto 0.7em auto;
     border: solid 0.08em;
     background-color: rgba(181, 241, 233, 0.349);
     border-radius: 0.2em;
+    transition: all 0.2s ease;
+    width: 8em;
+    padding: 0.3em;
+    font-weight: 400;
 }
 #iframe-grab > button {
     border-radius: 0.2em;

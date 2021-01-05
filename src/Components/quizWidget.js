@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import '../quiz.css'
+import QuizWidgetQuestion from './quizWidgetQuestion'
 
 const QuizWidget = ({ id }) => {
 
@@ -44,16 +45,11 @@ const QuizWidget = ({ id }) => {
             setResponses( prevResponses )}
     }
 
-    const questionAnswersToDisplay = ( currentQuestion )  => questions[currentQuestion].answers.map(( question, index ) => {
-        return(
-            <div className={ 'answers' + ' ' + ( currentResponse === question ? 'selected' : '') } onClick={ () => handleTriviaAnswerClick( question ) } key={ index } >{ question } </div>
-        )
-    })
-
     // work on this logic - breaks out of order
 
     const outcomeToDisplay = () => {
         for( let outcome of outcomes){
+            console.log( outcome )
             if( eval( score + outcome.conditionComparator + outcome.conditionValue ) ){
                 return (
                     <>
@@ -87,9 +83,14 @@ const QuizWidget = ({ id }) => {
         return(
             <div id="trivia-widget-wrapper">
                 <h1 id="quiz-name"> { quizName }</h1>
-                <h2 id="question-number"> Question no.{ questionCount+1 }</h2>
-                <h3 id="question-title"> { questions[questionCount].questionBody }</h3>
-                { questionAnswersToDisplay( questionCount ) }
+                <QuizWidgetQuestion 
+                    questionNumber={ questionCount + 1}
+                    questionTitle={ questions[questionCount].questionBody }
+                    questionCount={ questionCount }
+                    handleTriviaAnswerClick={ handleTriviaAnswerClick } 
+                    currentResponse={ currentResponse }
+                    questions={ questions }
+                />
                 <div id="question-nav-wrapper">
                     { questionCount !== 0 && <button className="quiz-button prev" onClick={ handlePrevQClick } type="button">Previous Question </button> }
                     { questionCount + 1 < questions.length ? 

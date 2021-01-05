@@ -2,6 +2,8 @@
 /* eslint-disable no-undef */
 import axios from 'axios'
 import React, { useState } from 'react'
+import BackgroundHandler from '../Containers/backgroundHandler'
+import LoadingModal from './loadingModal'
 
 const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questionNumber, index }) => {
 
@@ -11,8 +13,16 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
         questionNumber,
         quiz: { id: quizID },
         answers: [ '', '', '', '' ],
+        imgID: null,
+        backgroundColour: null,
+        croppedHeight: 0,
+        croppedWidth: 0,
+        croppedX: 0,
+        croppedY: 0,
+        id: questionId
     })
     const [ questionDisabled, setQuestionDisabled ] = useState( false )
+    const [ imageLoading, setImageLoading ] = useState( false )
 
     const handleQuestionBodyChange = ( event ) => { setQuestionBody({ ...questionBody, questionBody: event.target.value })}
     const handleQuestionNumberChange = ( event ) => { 
@@ -61,40 +71,53 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
     }
 
     return(
-
-        <div className="trivia-form">
-            <span id="question-and-label">
-                <label htmlFor="question-number">Question number...</label>
-                <input required className={ 'disable' + questionId } id="question-number" type="number" onChange={ handleQuestionNumberChange } value={ questionBody.questionNumber }></input>
-            </span>
-            <input required className={ 'disable' + questionId } type="text" onChange={ handleQuestionBodyChange } value={ questionBody.questionBody } placeholder="Question..."></input>
-            <div>
-                <input required className={ 'disable' + questionId} type="text" onChange={ handleAnswerChange1 } 
-                    value={ questionBody.answers[0] } 
-                    placeholder="Answer..."></input>
-                <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" required onClick={ handleRadioClick } value="0"/>
+        <>
+            { imageLoading && 
+                <div id="loading-modal-container">
+                    <LoadingModal />
+                </div>
+            }
+            <div className="trivia-form">
+                <span id="question-and-label">
+                    <label htmlFor="question-number">Question number...</label>
+                    <input required className={ 'disable' + questionId } id="question-number" type="number" onChange={ handleQuestionNumberChange } value={ questionBody.questionNumber }></input>
+                </span>
+                <input required className={ 'disable' + questionId } type="text" onChange={ handleQuestionBodyChange } value={ questionBody.questionBody } placeholder="Question..."></input>
+                <div>
+                    <input required className={ 'disable' + questionId} type="text" onChange={ handleAnswerChange1 } 
+                        value={ questionBody.answers[0] } 
+                        placeholder="Answer..."></input>
+                    <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" required onClick={ handleRadioClick } value="0"/>
+                </div>
+                <div>
+                    <input required className={ 'disable' + questionId } type="text" onChange={ handleAnswerChange2 } 
+                        value={ questionBody.answers[1] } 
+                        placeholder="Answer..."></input>
+                    <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" onClick={ handleRadioClick } value="1"/>
+                </div>
+                <div>
+                    <input required className={ 'disable' + questionId } type="text" onChange={ handleAnswerChange3 } 
+                        value={ questionBody.answers[2] } 
+                        placeholder="Answer..."></input>
+                    <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" onClick={ handleRadioClick } value="2"/>
+                </div>
+                <div>
+                    <input required className={ 'disable' + questionId } type="text" onChange={ handleAnswerChange4 } 
+                        value={ questionBody.answers[3] } 
+                        placeholder="Answer..."></input>
+                    <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" onClick={ handleRadioClick } value="3"/>
+                </div>
+                <BackgroundHandler 
+                    setImageLoading={ setImageLoading }
+                    quizObject={ questionBody }
+                    setQuizObject={ setQuestionBody }
+                    quizSaved={ questionDisabled }
+                    imageLoading={ imageLoading }
+                    questionId={ questionId }
+                />
+                <button onClick={ handleSubmit } type="button"> { questionDisabled ? 'Edit Question' : 'Save Question'} </button>
             </div>
-            <div>
-                <input required className={ 'disable' + questionId } type="text" onChange={ handleAnswerChange2 } 
-                    value={ questionBody.answers[1] } 
-                    placeholder="Answer..."></input>
-                <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" onClick={ handleRadioClick } value="1"/>
-            </div>
-            <div>
-                <input required className={ 'disable' + questionId } type="text" onChange={ handleAnswerChange3 } 
-                    value={ questionBody.answers[2] } 
-                    placeholder="Answer..."></input>
-                <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" onClick={ handleRadioClick } value="2"/>
-            </div>
-            <div>
-                <input required className={ 'disable' + questionId } type="text" onChange={ handleAnswerChange4 } 
-                    value={ questionBody.answers[3] } 
-                    placeholder="Answer..."></input>
-                <input name={'correct-answer'+ questionId} className={'correct-answer'+ questionId} type="radio" onClick={ handleRadioClick } value="3"/>
-            </div>
-            <button onClick={ handleSubmit } type="button"> { questionDisabled ? 'Edit Question' : 'Save Question'} </button>
-        </div>
-
+        </>
     )
 
 }

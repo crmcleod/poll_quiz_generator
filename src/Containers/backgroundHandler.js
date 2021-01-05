@@ -4,7 +4,7 @@ import AddColour from '../Components/addColour'
 import AddImage from '../Components/addImage'
 
 // eslint-disable-next-line no-unused-vars
-const BackgroundHandler = ({ pollObject, setPollObject, pollSaved, imageLoading, setImageLoading }) => {
+const BackgroundHandler = ({ quizObject, setQuizObject, quizSaved, imageLoading, setImageLoading, questionId }) => {
 
     const [ backGroundColorOption, setBackGroundColorOption ] = useState( true )
     
@@ -15,22 +15,23 @@ const BackgroundHandler = ({ pollObject, setPollObject, pollSaved, imageLoading,
 
     return(
         <>
-            <select className="poll-input" onChange={ handleBackgroundPickChange } >
+            <select className={'poll-input ' + 'disable'+questionId} onChange={ handleBackgroundPickChange } >
                 <option value={ true }> Background colour </option>
                 <option value={ false }> Background image </option>
             </select>
             { backGroundColorOption ? 
                 <AddColour 
-                    pollObject={ pollObject }
-                    setPollObject={ setPollObject }
-                    pollSaved={ pollSaved }
+                    quizObject={ quizObject }
+                    setQuizObject={ setQuizObject }
+                    pollSaved={ quizSaved }
                 />
                 :
                 <AddImage 
-                    pollObject={ pollObject }
-                    setPollObject={ setPollObject }
-                    pollSaved={ pollSaved }
+                    quizObject={ quizObject }
+                    setQuizObject={ setQuizObject }
+                    quizSaved={ quizSaved }
                     setImageLoading={ setImageLoading }
+                    questionId={ questionId }
                 />
             }
         </>

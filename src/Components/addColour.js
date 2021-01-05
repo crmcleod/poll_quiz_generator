@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { SketchPicker } from 'react-color'
 
-const AddColour = ({ pollObject, setPollObject, pollSaved }) => {
+const AddColour = ({ quizObject, setQuizObject, pollSaved }) => {
 
     const [ color, setColor ] = useState({
         a: 1,
@@ -18,7 +18,7 @@ const AddColour = ({ pollObject, setPollObject, pollSaved }) => {
         let rgbSplit = `${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a}`
         setColor( await rgb )
         setBoxShadow( await rgbSplit )
-        setPollObject({ ...pollObject, backgroundColour: rgbSplit })
+        setQuizObject({ ...quizObject, backgroundColour: rgbSplit })
         colPicker.boxShadow = ` 0 0 7px 3px rgba(${boxShadow})`
     }
 

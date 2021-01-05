@@ -93,11 +93,12 @@ const PollWidget = ({ id }) => {
             <div key={ index } onClick={ ( ) => handlePollChoice( poll ) } value={ poll } className="poll-choice"> { poll } </div>
         )
     }) : null
- 
-    // this needs looked at \/\/\/
-    const backgroundImg = poll ? poll.imgID ?
-        axios.get(`${process.env.REACT_APP_SERVER_URL}/images/${poll.imgID}`)
-            .then( res => setPollImage(res.data.image)) : null : null
+
+    useEffect(() => {
+        poll ? poll.imgID ?
+            axios.get(`${process.env.REACT_APP_SERVER_URL}/images/${poll.imgID}`)
+                .then( res => setPollImage(res.data.image)) : null : null
+    }, [ poll ])
 
     if( !pollImage && !poll){
         return(

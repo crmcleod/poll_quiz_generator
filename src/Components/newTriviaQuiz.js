@@ -14,7 +14,13 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
         questionBody: '',
         correctAnswer: false,
         quiz: {},
-        answers: []
+        answers: [],
+        imgID: null,
+        backgroundColour: null,
+        croppedHeight: 0,
+        croppedWidth: 0,
+        croppedX: 0,
+        croppedY: 0
     })
     const [ outcomeSchema, setOutcomeSchema ] = useState({
         outcomeName: '',
@@ -137,16 +143,19 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
             alert('Your quiz must contain both questions and outcomes, please add at least 1 question and 1 outcome')
         } else {
             let created = false
-            for( let i = 0; i < quizObject.questions.length; i++){
-                for( let j = i + 1; j < quizObject.questions.length; j++){
-                    console.log(quizObject.questions[i].questionNumber, quizObject.questions[j].questionNumber)
-                    if( quizObject.questions[i].questionNumber == quizObject.questions[j].questionNumber ){
-                        // add custom alert modal
-                        return alert( 'Question numbers should be unique, please adjust and try submitting again' )
-                    } else {
-                        created = true
+            if( quizObject.questions.length > 1) {
+                for( let i = 0; i < quizObject.questions.length; i++){
+                    for( let j = i + 1; j < quizObject.questions.length; j++){
+                        if( quizObject.questions[i].questionNumber == quizObject.questions[j].questionNumber ){
+                            // add custom alert modal
+                            return alert( 'Question numbers should be unique, please adjust and try submitting again' )
+                        } else {
+                            created = true
+                        }
                     }
                 }
+            } else {
+                created = true
             }
             if( created ){
                 axios.put(`${process.env.REACT_APP_SERVER_URL}/quizzes/${quizID}`, quizObject)
@@ -180,13 +189,13 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
                 <div id="outcomes-wrapper">
                     { questionsToDisplay }
                 </div>
-                <h3 style={{ cursor: 'pointer'}} onClick={ handleAddQuestionClick }> Add question <span style={{color: 'red'}} id="add_question">+</span> </h3>
+                <h3 id="add-poll-choice" style={{ cursor: 'pointer'}} onClick={ handleAddQuestionClick }> Add question <span style={{color: 'red'}} id="add_question">+</span> </h3>
                 <hr style={{width: '100%'}}></hr>
                 { outcomes.length === 0 ? null : <h2> Outcomes </h2> }
                 <div id="outcomes-wrapper">
                     { outcomesToDisplay }
                 </div>
-                <h3 style={{ cursor: 'pointer'}} onClick={ handleAddOutcomeClick }> Add outcome <span style={{ color: 'red' }} id="add_outcome">+</span> </h3>
+                <h3 id="add-poll-choice" style={{ cursor: 'pointer'}} onClick={ handleAddOutcomeClick }> Add outcome <span style={{ color: 'red' }} id="add_outcome">+</span> </h3>
                 <button type="submit" id="build-quiz"> Build my quiz!</button>
                 { triviaQuizCreated && 
                 <>
