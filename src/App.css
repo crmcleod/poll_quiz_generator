@@ -88,6 +88,11 @@ a{
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  transition: 0.2s all linear;
+}
+#nav-bar > ul > li > a:hover{
+  transform: translate(5px);
+filter: drop-shadow(-6px 0 1px rgba(144, 221, 144, 0.418));
 }
 #nav-bar > ul > li > a > img{
   align-self: center;

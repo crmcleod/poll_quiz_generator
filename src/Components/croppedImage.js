@@ -10,14 +10,6 @@ const CroppedImage = ({
     croppedY
 }) => {
 
-    // const handleCroppedImageSave = async ( ) => {
-    //     setCropperState({ ...cropperState, cropSaved: true })
-    //     try {
-    //         getCroppedImg( cropperState.image, cropperState.croppedAreaPixels )
-    //     } catch( e ) { 
-    //         console.error( e )}
-    // }
-
     const createImage = ( url ) => 
         new Promise((resolve, reject) => {
             const image = new Image()
@@ -27,7 +19,6 @@ const CroppedImage = ({
             image.src = url
         })
 
-    // // eslint-disable-next-line no-unused-vars
     const getCroppedImg = async ( img, pixelCropH, pixelCropW, pixelCropX, pixelCropY ) => {
         const newImage = await createImage( img )
         const canvas = document.createElement('canvas')
@@ -60,7 +51,7 @@ const CroppedImage = ({
             Math.round(0 - safeArea / 2 + newImage.height * 0.5 - pixelCropY)
         )
 
-        return canvas.toDataURL('image/jpeg')
+        return canvas.toDataURL('image/png')
     }
     // eslint-disable-next-line no-unused-vars
     const [ croppedImageState, setCroppedImage ] = useState()

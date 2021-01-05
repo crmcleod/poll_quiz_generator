@@ -80,8 +80,8 @@ const PollWidget = ({ id }) => {
                 <div key={index} style={{ background: `linear-gradient(90deg, ${ responseColour } ${ response.percentage }%, white ${ response.percentage }%)`}}  
                     className={'poll-result ' + classExtension}> 
                     <span>{ response.choice }</span> 
-                    <span>{ response.percentage }%</span>
-                    <span>{ (`${response.total}/${poll.responses.length}`) } votes</span>
+                    <span>{ response.percentage.toFixed(1) }%</span>
+                    <span id="poll-votes">{ (`${response.total}/${poll.responses.length}`) } votes</span>
                 </div>
             )
         })
@@ -108,7 +108,7 @@ const PollWidget = ({ id }) => {
     }
     return(
         <div id="poll-wrapper">
-            <div style={ pollImage ? null : { backgroundColor: `rgba(${poll.backgroundColour})`, width: '100%', height: '50vh' } } id="image-title-wrapper">
+            <div style={ pollImage ? null : { backgroundColor: `rgba(${poll.backgroundColour})`, width: '100%', height: '40vh' } } id="image-title-wrapper">
                 <h1> { poll && poll.pollName } </h1>
                 { pollImage ? <CroppedImage 
                     imageSrc={ `data:image/png;base64,${pollImage}` }

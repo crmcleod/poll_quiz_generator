@@ -119,7 +119,7 @@ const NewPoll = ({ author, id }) => {
 
     const handleIframeCopyCode = () =>{
         navigator.clipboard.writeText(
-            `<iframe src='${process.env.REACT_APP_WIDGET_URL}quiz/${poll.id}' scrolling='disabled'></iframe>`
+            `<iframe style={{ backgroundColor: 'white', borderStyle: 'none', margin: '1em'}} width="300" height="400" src='${process.env.REACT_APP_WIDGET_URL}poll/${poll.id}' scrolling='disabled' sandbox="allow-scripts allow-forms allow-same-origin"></iframe>`
         )
         setCopiedToClipboard( true )
     }
@@ -222,7 +222,7 @@ const NewPoll = ({ author, id }) => {
                     </div> 
                 </>
                 : null
-                : null}   
+                : null}
         </>
     )
 }

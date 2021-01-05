@@ -157,7 +157,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
 
     const handleIframeCopyCode = () =>{
         navigator.clipboard.writeText(
-            `<iframe src='${process.env.REACT_APP_WIDGET_URL}quiz/${quizID}' scrolling='disabled'></iframe>`
+            `<iframe src='${process.env.REACT_APP_WIDGET_URL}quiz/${quizID}' scrolling='disabled' sandbox="allow></iframe>`
         )
         setCopiedToClipboard( true )
     }
