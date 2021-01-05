@@ -82,6 +82,8 @@ const QuizWidget = ({ id }) => {
     if( quizInProcess ){
         return(
             <div id="trivia-widget-wrapper">
+                <div id="quiz-name-wrapper">
+                </div>
                 <h1 id="quiz-name"> { quizName }</h1>
                 <QuizWidgetQuestion 
                     questionNumber={ questionCount + 1}
