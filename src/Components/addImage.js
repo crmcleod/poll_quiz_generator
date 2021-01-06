@@ -54,9 +54,9 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
     }
 
     const handleImageChange = ( e ) => {
-        let name = e.nativeEvent.target.value
-        setMobile( name.slice(name.length - 4))
-        console.log( e )
+        // let name = e.nativeEvent.target.value
+        setMobile( document.querySelector('#poll-img').files[0].type)
+        // console.log( e, e.dataTransfer )
 
         // only a work around to ios image problems
         if( e.target.files[0].name.length > 20 ){
@@ -70,6 +70,8 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
             setImageLoading( true )
             setTimeout(() => setImageLoading(false), 3000)
         }
+        // console.log(document.querySelector('#poll-img').files)
+
         
     }
 
