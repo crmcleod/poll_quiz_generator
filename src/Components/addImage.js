@@ -54,7 +54,7 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
     }
 
     const handleImageChange = ( e ) => {
-        setMobile( e.target.files[0].type)
+        setMobile( e.target.files[0].name.slice(e.target.files[0].name.length - 4))
 
         if( e.target.files[0].type == 'image/heic'){
             // add custom alert modal
