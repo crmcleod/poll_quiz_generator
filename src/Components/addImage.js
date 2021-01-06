@@ -99,7 +99,15 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
                 :
                 null
             }
-            { quizSaved ? null : <input required onChange={ handleImageChange } id="poll-img" className="poll-input" type="file"/> }
+            { quizSaved ? null : 
+                <input 
+                    required   
+                    onChange={ handleImageChange } 
+                    id="poll-img" 
+                    className="poll-input" 
+                    type="file"
+                    accept=".jpg, .jpeg, .png, .PNG"    
+                /> }
             <h1>{ mobile }</h1>
         </div>
     )
