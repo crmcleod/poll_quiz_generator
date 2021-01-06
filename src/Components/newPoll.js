@@ -95,7 +95,7 @@ const NewPoll = ({ author, id }) => {
             <form id="poll-form" onSubmit={ handlePollSubmission }>
                 <input required className="poll-input" id="poll_name_input" value={ pollObject.pollName } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
                 { choicesToDisplay }
-                <p id="add-poll-choice" onClick={ handleAddChoiceClick } >Add choice<span style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
+                <p id="add-poll-choice" onClick={ handleAddChoiceClick } >Add choice<span id="add_question" style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
                 <BackgroundHandler 
                     quizObject={ pollObject }
                     setQuizObject={ setPollObject }

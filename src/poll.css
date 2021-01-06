@@ -22,6 +22,9 @@
     background-color: rgba(250, 239, 228, 0.637);
     text-align: center;
     color: rgb(68, 64, 64);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 #poll-image{
@@ -100,6 +103,16 @@
     width: 8em;
     padding: 0.3em;
     font-weight: 400;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+#add_question, #add_outcome{
+    font-size: larger;
+    font-weight: 700;
+    -webkit-text-stroke: white 1px;
+
 }
 #iframe-grab > button {
     border-radius: 0.2em;

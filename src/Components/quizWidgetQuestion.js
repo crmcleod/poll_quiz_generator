@@ -46,7 +46,7 @@ const QuizWidgetQuestion = ({
                     {/* Question no. { questionNumber }
                     <br></br>
                     { questions[questionCount].questionBody } */}
-                    <h2 id="widget-question-number"> Question no.{ questionNumber }</h2>
+                    <h2 id="widget-question-number"> Question no. { questionNumber }</h2>
                     <h3 id="question-title"> { questions[questionCount].questionBody }</h3>
                 </> 
                 }

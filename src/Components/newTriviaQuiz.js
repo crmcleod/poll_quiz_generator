@@ -180,7 +180,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
             }
             <form onSubmit={ submitQuiz } style={{width: '100%'}}>
                 <h1> Let's create a new trivia quiz! </h1>
-                <h2 id="quiz-name">{ quizObject.quizName || 'Quiz'}</h2>
+                <h2 id="new-quiz-name">{ quizObject.quizName || 'Quiz'}</h2>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <label htmlFor="quiz_name_input"> Quiz title... </label>
                     <input required id="quiz_name_input" value={ quizObject.quizName } onChange={ handleQuizNameChange } placeholder="Quiz title..."></input>
