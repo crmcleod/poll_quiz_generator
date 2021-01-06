@@ -14,7 +14,6 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
         croppedArea: null,
         croppedAreaPixels: null
     })
-    const [ mobile, setMobile ] = useState()
 
     const handleCropChange = ( crop ) => {
         setCropperState({ ...cropperState, crop })
@@ -54,43 +53,24 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
     }
 
     const handleImageChange = ( e ) => {
-        // let name = e.nativeEvent.target.value
-        let blob = e.target.files[0]
-        console.log(blob.type)
-        setMobile( blob.type)
-
-
-        // let reader = new FileReader()
-        // reader.readAsArrayBuffer( e.target.files[0])
-        // reader.onloadend = ( e ) =>{
-        //     if( e.target.readyState === FileReader.DONE) {
-        //         // let bytes = new Uint8Array(e.target.result)
-        //         console.log(reader)
-        //     }
-        // } 
-        
-
-        // only a work around to ios image problems
-        if( e.target.files[0].name.length > 20 ){
+        if( e.target.files[0].type == 'image/heic'){
             // add custom alert modal
-            alert('The image type may be incompatible, please try another file type')
-            // e.target.value=''
-            // setCropperState({ ...cropperState, image: null })
-            // setMobile( e.target.files[0].type)
+            alert('.heic images are incompatible with this application')
+            e.target.value=''
+            setCropperState({ ...cropperState, image: null })
+
         } else {
             saveImage( e )
             setImageLoading( true )
             setTimeout(() => setImageLoading(false), 3000)
         }
-        // console.log(document.querySelector('#poll-img').files)
-
         
     }
 
     const handleImageGrab = async ( id ) => {
         axios.get(`${process.env.REACT_APP_SERVER_URL}/images/${await id}`)
             .then( res => {
-                let resB64 = `data:image/jpg;base64,${res.data.image}`
+                let resB64 = `data:image/png;base64,${res.data.image}`
                 setCropperState({ ...cropperState, image: resB64 })
             })
     }
@@ -115,16 +95,7 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
                 :
                 null
             }
-            { quizSaved ? null : 
-                <input 
-                    required   
-                    onChange={ handleImageChange } 
-                    id="poll-img" 
-                    className="poll-input" 
-                    type="file"
-                    // accept=".jpg, .jpeg, .png, .PNG"    
-                /> }
-            <h1>{ mobile }</h1>
+            { quizSaved ? null : <input required onChange={ handleImageChange } id="poll-img" className="poll-input" type="file"/> }
         </div>
     )
 }
