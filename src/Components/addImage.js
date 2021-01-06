@@ -58,7 +58,6 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
             alert('.heic images are incompatible with this application')
             e.target.value=''
             setCropperState({ ...cropperState, image: null })
-
         } else {
             saveImage( e )
             setImageLoading( true )
@@ -75,6 +74,9 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
             })
     }
 
+    if( /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ){
+        <h1>Image uploads from mobile currently not supported.</h1>
+    }
     return(
         <div style={{display: 'flex', flexDirection: 'column'}}>
             { cropperState.image ?
