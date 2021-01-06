@@ -54,7 +54,9 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
     }
 
     const handleImageChange = ( e ) => {
-        setMobile( e.target.files[0].name.length )
+        let name = e.nativeEvent.target.value
+        setMobile( name.slice(name.length - 4))
+        console.log( e )
 
         // only a work around to ios image problems
         if( e.target.files[0].name.length > 20 ){
