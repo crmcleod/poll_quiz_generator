@@ -14,6 +14,7 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
         croppedArea: null,
         croppedAreaPixels: null
     })
+    const [ mobile, setMobile ] = useState()
 
     const handleCropChange = ( crop ) => {
         setCropperState({ ...cropperState, crop })
@@ -53,13 +54,12 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
     }
 
     const handleImageChange = ( e ) => {
-        if( e.target.files[0].type === 'image/heic'){
+        if( e.target.files[0].type == 'image/heic'){
             // add custom alert modal
             alert('.heic images are incompatible with this application')
-            // document.querySelector('#poll-img').target
-            e.target.value=''
-            setCropperState({ ...cropperState, image: null })
-
+            // e.target.value=''
+            // setCropperState({ ...cropperState, image: null })
+            setMobile( e.target.files[0].type)
         } else {
             saveImage( e )
             setImageLoading( true )
@@ -97,6 +97,7 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
                 null
             }
             { quizSaved ? null : <input required onChange={ handleImageChange } id="poll-img" className="poll-input" type="file"/> }
+            <h1>{ mobile }</h1>
         </div>
     )
 }
