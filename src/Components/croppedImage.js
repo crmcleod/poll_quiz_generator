@@ -51,7 +51,7 @@ const CroppedImage = ({
             Math.round(0 - safeArea / 2 + newImage.height * 0.5 - pixelCropY)
         )
 
-        return canvas.toDataURL('image/png')
+        return canvas.toDataURL('image/jpg')
     }
     // eslint-disable-next-line no-unused-vars
     const [ croppedImageState, setCroppedImage ] = useState()

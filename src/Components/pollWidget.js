@@ -112,7 +112,7 @@ const PollWidget = ({ id }) => {
             <div style={ pollImage ? null : { backgroundColor: `rgba(${poll.backgroundColour})`, width: '100%', height: '40vh' } } id="image-title-wrapper">
                 <h1> { poll && poll.pollName } </h1>
                 { pollImage ? <CroppedImage 
-                    imageSrc={ `data:image/png;base64,${pollImage}` }
+                    imageSrc={ `data:image/jpg;base64,${pollImage}` }
                     croppedHeight={ poll.croppedHeight }
                     croppedWidth={ poll.croppedWidth }
                     croppedX={ poll.croppedX }
