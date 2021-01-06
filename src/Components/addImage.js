@@ -56,6 +56,10 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
         if( e.target.files[0].type === 'image/heic'){
             // add custom alert modal
             alert('.heic images are incompatible with this application')
+            // document.querySelector('#poll-img').target
+            e.target.value=''
+            setCropperState({ ...cropperState, image: null })
+
         } else {
             saveImage( e )
             setImageLoading( true )
