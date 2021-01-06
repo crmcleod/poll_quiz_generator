@@ -54,7 +54,7 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
     }
 
     const handleImageChange = ( e ) => {
-        setMobile( e.target.files[0].name.slice(e.target.files[0].name.length - 8))
+        setMobile( e.target.files[0].name)
         console.log(e.target.files)
 
         if( e.target.files[0].type == 'image/heic'){
@@ -74,7 +74,7 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
     const handleImageGrab = async ( id ) => {
         axios.get(`${process.env.REACT_APP_SERVER_URL}/images/${await id}`)
             .then( res => {
-                let resB64 = `data:image/png;base64,${res.data.image}`
+                let resB64 = `data:image/jpg;base64,${res.data.image}`
                 setCropperState({ ...cropperState, image: resB64 })
             })
     }
