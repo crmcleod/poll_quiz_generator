@@ -75,7 +75,9 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
     }
 
     if( /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ){
-        <h1>Image uploads from mobile currently not supported.</h1>
+        return(
+            <h3 style={{width: '300px'}}>Image uploads from mobile currently not supported.</h3>
+        )
     }
     return(
         <div style={{display: 'flex', flexDirection: 'column'}}>
