@@ -54,12 +54,14 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
     }
 
     const handleImageChange = ( e ) => {
+        setMobile( e.target.files[0].type)
+
         if( e.target.files[0].type == 'image/heic'){
             // add custom alert modal
             alert('.heic images are incompatible with this application')
             // e.target.value=''
             // setCropperState({ ...cropperState, image: null })
-            setMobile( e.target.files[0].type)
+            // setMobile( e.target.files[0].type)
         } else {
             saveImage( e )
             setImageLoading( true )
