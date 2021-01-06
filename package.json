@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.0",
     "firebase": "^8.0.2",
+    "heic2any": "0.0.3",
     "react": "^17.0.1",
     "react-color": "^2.19.3",
     "react-cookie": "^4.0.3",

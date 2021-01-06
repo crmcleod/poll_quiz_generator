@@ -53,9 +53,15 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
     }
 
     const handleImageChange = ( e ) => {
-        saveImage( e )
-        setImageLoading( true )
-        setTimeout(() => setImageLoading(false), 3000)
+        if( e.target.files[0].type === 'image/heic'){
+            // add custom alert modal
+            alert('.heic images are incompatible with this application')
+        } else {
+            saveImage( e )
+            setImageLoading( true )
+            setTimeout(() => setImageLoading(false), 3000)
+        }
+        
     }
 
     const handleImageGrab = async ( id ) => {
