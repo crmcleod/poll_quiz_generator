@@ -1,8 +1,17 @@
-/* eslint-disable react/react-in-jsx-scope */
+import React from 'react'
+import { Helmet } from 'react-helmet-async'
+
 const ErrorPage = () => {
 
     return(
-        <h1>404 - Page not found </h1>
+        <>
+            <Helmet>
+                <title>
+                    ERR 404
+                </title>
+            </Helmet>
+            <h1>404 - Page not found </h1>
+        </>
     )
 }
 export default ErrorPage

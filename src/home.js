@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import icon from './assets/You_Doodle_2020-12-31T12_19_55Z.PNG'
+import { Helmet } from 'react-helmet-async'
 
 const Home = ({ userDisplayName }) => {
 
@@ -23,6 +24,11 @@ const Home = ({ userDisplayName }) => {
         <>
             { !loading ?
                 <>
+                    <Helmet>
+                        <title>
+                            Home
+                        </title>
+                    </Helmet>
                     <h1> Welcome to the quiz generator! </h1>
                     <h2><span style={{color: 'lightblue', fontWeight: '900'}}>{ userDisplayName }</span> get started with a new quiz or change an existing one. </h2>
                     <label htmlFor="existing-quizzes"></label>

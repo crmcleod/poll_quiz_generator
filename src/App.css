@@ -54,7 +54,7 @@
   width: 50vw;
   min-width: 250px;
   max-width: 700px;
-  transform: translateY(20%);
+  transform: translateY(10%);
 }
 @keyframes pulse {
   0%, 100%{

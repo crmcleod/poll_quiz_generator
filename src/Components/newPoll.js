@@ -7,6 +7,7 @@ import React, { useRef, useState, useCallback } from 'react'
 import '../poll.css'
 import LoadingModal from './loadingModal'
 import BackgroundHandler from '../Containers/backgroundHandler'
+import { Helmet } from 'react-helmet-async'
 
 const NewPoll = ({ author, id }) => {
     const [ pollObject, setPollObject ] = useState({
@@ -84,6 +85,11 @@ const NewPoll = ({ author, id }) => {
 
     return(
         <>
+            <Helmet>
+                <title>
+                    New Poll
+                </title>
+            </Helmet>
             { imageLoading && 
                 <div id="loading-modal-container">
                     <LoadingModal />

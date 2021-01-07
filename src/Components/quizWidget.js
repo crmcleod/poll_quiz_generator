@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import '../quiz.css'
 import QuizWidgetQuestion from './quizWidgetQuestion'
+import { Helmet } from 'react-helmet-async'
 
 const QuizWidget = ({ id }) => {
 
@@ -82,6 +83,11 @@ const QuizWidget = ({ id }) => {
     if( quizInProcess ){
         return(
             <div id="trivia-widget-wrapper">
+                <Helmet>
+                    <title>
+                        Trivia
+                    </title>
+                </Helmet>
                 <div id="quiz-name-wrapper">
                 </div>
                 <h1 id="quiz-name"> { quizName }</h1>
@@ -104,12 +110,14 @@ const QuizWidget = ({ id }) => {
         )}
 
     return(
-        <>
-            <h1>
-                You scored { score } out of { questions.length }
-            </h1>
-            { outcomeToDisplay() }
-        </>
+        < div id="quiz-outcome-wrapper">
+            <div id="quiz-outcome">
+                <h1>
+                    You scored { score } out of { questions.length }
+                </h1>
+                { outcomeToDisplay() }
+            </div>
+        </div>
 
     )
 }

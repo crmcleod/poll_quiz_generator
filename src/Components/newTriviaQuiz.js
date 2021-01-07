@@ -6,6 +6,7 @@ import axios from 'axios'
 import TriviaQuestion from './triviaQuestion'
 import TriviaOutcome from './triviaOutcome'
 import LoadingModal from './loadingModal'
+import { Helmet } from 'react-helmet-async'
 
 const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
 
@@ -173,6 +174,11 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
 
     return(
         <>
+            <Helmet>
+                <title>
+                    New Trivia Quiz
+                </title>
+            </Helmet>
             { dbCheck === true && 
                     <div id="loading-modal-container">
                         <LoadingModal />

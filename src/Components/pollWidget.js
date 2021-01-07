@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react'
 import '../poll.css'
 import Cookies from 'universal-cookie'
 import CroppedImage from './croppedImage'
+import { Helmet } from 'react-helmet-async'
 
 const cookies = new Cookies()
 
@@ -109,6 +110,11 @@ const PollWidget = ({ id }) => {
     }
     return(
         <div id="poll-wrapper">
+            <Helmet>
+                <title>
+                    Poll
+                </title>
+            </Helmet>
             <div style={ pollImage ? null : { backgroundColor: `rgba(${poll.backgroundColour})`, width: '100%', height: '40vh' } } id="image-title-wrapper">
                 <h1> { poll && poll.pollName } </h1>
                 { pollImage ? <CroppedImage 

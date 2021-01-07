@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { Route, Switch, Link, withRouter } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 
 const QuizList = ({ ids, names }) =>{
 
@@ -36,6 +37,11 @@ const QuizList = ({ ids, names }) =>{
         
     return(
         <>
+            <Helmet>
+                <title>
+                    Your quizzes
+                </title>
+            </Helmet>
             <h1> Under construction </h1>
             {/* <select defaultValue="Pick Quiz" onChange={handleSelectChange}>
                 <option disabled >Pick Quiz</option>

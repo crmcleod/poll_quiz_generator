@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import React from 'react'
+import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 // import NewPoll from '../Components/newPoll'
 // import NewTriviaQuiz from '../Components/newTriviaQuiz'
@@ -10,6 +11,11 @@ const NewQuizContainer = () => {
 
     return(
         <>
+            <Helmet>
+                <title>
+                    Create New
+                </title>
+            </Helmet>
             <h1> Let's create a new quiz! </h1>
             <h2> What are we trying to make here: </h2>
             <div id="new-quiz-buttons-wrapper">

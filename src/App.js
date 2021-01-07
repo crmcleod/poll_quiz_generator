@@ -36,7 +36,7 @@ const App = (props) => {
         .catch( err => setDbCheck(err.isAxiosError))
 
     useEffect(() => {
-        setTimeout( () => { checkDb() }, 1000)  
+        setTimeout(() => { checkDb() }, 1000)  
     }, [])
 
     useEffect(() =>{
@@ -86,8 +86,8 @@ const App = (props) => {
                 }
                 {
                     user
-                        ? <button id="sign-out-button" onClick={signOut}>Sign out</button>
-                        : <button onClick={signInWithGoogle}>Sign in with Google</button>
+                        ? <button id="sign-out-button" onClick={ signOut }>Sign out</button>
+                        : <button onClick={ signInWithGoogle }>Sign in with Google</button>
                 }
                 { user ? null : <img id="hero-image" src={ icon }/> }
             </div>
