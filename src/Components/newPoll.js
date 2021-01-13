@@ -8,6 +8,7 @@ import '../poll.css'
 import LoadingModal from './loadingModal'
 import BackgroundHandler from '../Containers/backgroundHandler'
 import { Helmet } from 'react-helmet-async'
+import { Prompt } from 'react-router-dom'
 
 const NewPoll = ({ author, id }) => {
     const [ pollObject, setPollObject ] = useState({
@@ -95,6 +96,10 @@ const NewPoll = ({ author, id }) => {
                     <LoadingModal />
                 </div>
             }
+            <Prompt
+                when={ !pollPosted }
+                message={ 'Are you sure you want to leave this page, any changes will be lost?' }
+            />
             <h1> Let's create a new poll!</h1>
             <h2> {pollObject.pollName || 'Poll name / Question:'} </h2>
             <p> Author: { author }</p>

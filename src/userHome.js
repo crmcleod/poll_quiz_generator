@@ -21,8 +21,7 @@ const UserHome = ({ user, dbCheck }) =>{
     const [ userEmailVerified, setUserEmailVerified ] = useState(user.emailVerified)
     const [ userName, setUserName ] = useState()
     const [ userId, setUserId ] = useState()
-    const [ quizIds, setQuizIds ] = useState()
-    const [ quizNames, setQuizNames ] = useState()
+    // const [ quizzes, setQuizzes ] = useState()
     const [ signUpDetails, setSignUpDetails ] = useState({
         'firstName': null,
         'lastName': null,
@@ -35,11 +34,9 @@ const UserHome = ({ user, dbCheck }) =>{
         axios.get( `${process.env.REACT_APP_SERVER_URL}/users?email=${userEmail}`)
             .then(res => {
                 if(res.data.length !== 0){
-                    let quizIds = res.data[0].quizzes.map((quiz) => { return quiz.id})
-                    let quizNames = res.data[0].quizzes.map((quiz) => { return quiz.quizName})
+                    // let quizzes = res.data[0].quizzes.map((quiz) => { return { quizName: quiz.quizName, id: quiz.id } })
                     let userNameDB = res.data[0].firstName
-                    setQuizIds(quizIds)
-                    setQuizNames(quizNames)
+                    // setQuizzes(quizzes)
                     setUserName(userNameDB)
                     setUserId(res.data[0].id)}})
 
@@ -90,8 +87,7 @@ const UserHome = ({ user, dbCheck }) =>{
                         <Route path="/widgets" component={ QuizWidgetContainer } />
                         <Route path="/quizzes"
                             render={() => <QuizList
-                                ids={ quizIds }
-                                names={ quizNames }
+                                userEmail={ userEmail }
                             />} />
                         <Route exact path="/new_quiz" 
                             render={() => <NewQuizContainer 

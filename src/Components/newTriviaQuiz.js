@@ -1,12 +1,13 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import TriviaQuestion from './triviaQuestion'
 import TriviaOutcome from './triviaOutcome'
 import LoadingModal from './loadingModal'
 import { Helmet } from 'react-helmet-async'
+import { Prompt } from 'react-router-dom'
 
 const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
 
@@ -36,8 +37,6 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
     // const [ quizAuthor, setQuizAuthor ] = useState();
 
     const [ quizID, setQuizID ] = useState()
-
-    // sort asynchronouse user id preventing posting
     const [ quizObject, setQuizObject ] = useState({
         quizName: '',
         quizAuthor: '',
@@ -57,9 +56,29 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
             .catch( err => console.log( err ))
     }
     
+    const quizIDRef = useRef()
+    const quizNameRef = useRef()
+    const quizQuestionsRef = useRef()
+    const quizOutcomesRef = useRef()
+
+    useEffect(() => {
+        quizIDRef.current = quizID
+        quizNameRef.current = quizObject.quizName
+        quizQuestionsRef.current = quizObject.questions
+        quizOutcomesRef.current = quizObject.outcomes
+    }, [ quizID, quizObject ])
+
     useEffect(() => {
         postQuizToGetID()
         setQuizObject({ ...quizObject, quizAuthor: author})
+        return () => {
+            if( !quizNameRef.current || quizQuestionsRef.current.length === 0 || quizOutcomesRef.current.length === 0 ){
+                console.log( ' has fired ', quizQuestionsRef.current.length, quizNameRef.current, quizOutcomesRef.current.length )
+                axios.delete( `${ process.env.REACT_APP_SERVER_URL }/quizzes/${ quizIDRef.current }` )
+                    .then( res => res )
+                    .catch( err => console.error( err ))
+            }
+        }
     }, [])
 
     const organiseLogic = () => {
@@ -82,7 +101,6 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
             }
             setQuizObject({ ...quizObject, outcomes: newOutcomes })
         }
-        console.log( newOutcomes )
 
     }
 
@@ -179,6 +197,10 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
                     New Trivia Quiz
                 </title>
             </Helmet>
+            <Prompt 
+                when={ !triviaQuizCreated }
+                message={ 'Are you sure you want to leave this page, any changes will be lost?' }
+            />
             { dbCheck === true && 
                     <div id="loading-modal-container">
                         <LoadingModal />
