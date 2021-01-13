@@ -25,7 +25,6 @@ const QuizList = ({ userEmail }) =>{
             .then( res => {
                 if( res.data.length !== 0){
                     let quizzesDB = res.data[0].quizzes.map( quiz => quiz )
-                    // let quizzesDB = res.data[0].quizzes.map(( quiz ) => { return <option id={`quiz-list-option${quiz.id}`} key={quiz.id} value={quiz.id}>{ quiz.quizName }</option> })
                     setQuizzes( quizzesDB )
                 }
             })
@@ -41,9 +40,6 @@ const QuizList = ({ userEmail }) =>{
             <h1> ... loading ... </h1>
         )
     }
-
-    // const quizOptions = quizzes.map(( quiz ) => {
-    //     return <option id="quiz-list" key={quiz.id} value={quiz.id}>{ quiz.quizName }</option>})
         
     return(
         <>
@@ -58,7 +54,7 @@ const QuizList = ({ userEmail }) =>{
                 <select defaultValue="Pick Quiz" name="your-quizzes" id="your-quizzes" onChange={ handleSelectChange }>
                     <option disabled >Pick Quiz</option>
                     <optgroup label="Trivia Quizzes">
-                        { quizzes.map((quiz) => <option className="quiz-list-option" key={ quiz.id } value={ quiz.id } > {quiz.quizName } </option>
+                        { quizzes.map((quiz) => <option className="quiz-list-option" key={ quiz.id } value={ quiz.id } > { quiz.quizName } </option>
                         )}
                     </optgroup>
                     <optgroup label="Polls">
