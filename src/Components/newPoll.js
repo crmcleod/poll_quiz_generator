@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios'
 // eslint-disable-next-line no-unused-vars
-import React, { useRef, useState, useCallback } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import '../poll.css'
 import LoadingModal from './loadingModal'
 import BackgroundHandler from '../Containers/backgroundHandler'
@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet-async'
 import { Prompt } from 'react-router-dom'
 
 const NewPoll = ({ author, id }) => {
-    const [ pollObject, setPollObject ] = useState({
+    const [ pollObject ] = useState({
         pollName: '',
         pollAuthor: author,
         responses: [],
@@ -33,20 +33,20 @@ const NewPoll = ({ author, id }) => {
     const [ copiedToClipboard, setCopiedToClipboard ] = useState( false )
     const [ imageLoading, setImageLoading ] = useState( false )
 
+    useEffect(() => {
+        axios.post( `${ process.env.REACT_APP_SERVER_URL }/polls`, pollObject )
+            .then(res => setPoll( res.data ))
+    }, [])
+
     const handlePollSubmission = ( event ) => {
         event.preventDefault()
-        if( pollObject.choices.length === 0){
+        if( poll.choices.length === 0){
             // add custom alert
             alert('You must have at least one choice!')
         } else {
             setPollSaved( !pollSaved )
-            if( !pollPosted ){ 
-                axios.post( `${ process.env.REACT_APP_SERVER_URL }/polls`, pollObject )
-                    .then(res => setPoll( res.data ))
-            } else {
-                axios.put( `${ process.env.REACT_APP_SERVER_URL }/polls/${ poll.id }`, pollObject )
-                    .then(res => setPoll( res.data ))
-            }
+            axios.put( `${ process.env.REACT_APP_SERVER_URL }/polls/${ poll.id }`, poll )
+                .then(res => setPoll( res.data ))
             setPollPosted( true )
             const formFields = document.querySelectorAll( '.poll-input, .delete-from-quiz')
             for( let field of formFields ){
@@ -56,7 +56,7 @@ const NewPoll = ({ author, id }) => {
     }
 
     const handlePollNameChange = ( event ) => {
-        setPollObject({ ...pollObject, pollName: event.target.value })
+        setPoll({ ...poll, pollName: event.target.value })
     }
 
     const handleAddChoiceClick = () => {
@@ -64,27 +64,40 @@ const NewPoll = ({ author, id }) => {
             // add custom modal
             alert('You must edit the poll to add more choices.')}
         else {
-            const prevChoices = [ ...pollObject.choices ]
+            const prevChoices = [ ...poll.choices ]
+            const prevResponses = [ ...poll.responses ]
             prevChoices.push( '' )
-            setPollObject({ ...pollObject, choices: prevChoices })
+            axios.post(`${process.env.REACT_APP_SERVER_URL}/responses`, {
+                'response': ' ',
+                'responseCount': 0,
+                'poll': { 'id': poll.id }
+            })
+                .then( res => prevResponses.push(res.data))
+                .then( setPoll({ ...poll, choices: prevChoices, responses: prevResponses }))
+            // setPollObject({ ...pollObject, choices: prevChoices, responses: prevResponses })
         }
     }
 
     const handleChoiceChange = ( index, event ) => {
-        const prevChoices = [ ...pollObject.choices ]
+        const prevChoices = [ ...poll.choices ]
+        const prevResponses = [ ...poll.responses ]
         prevChoices[ index ] = event.target.value
-        setPollObject({ ...pollObject, choices: prevChoices })
+        prevResponses[ index ] = {...prevResponses[ index ], response: event.target.value }
+        setPoll({ ...poll, choices: prevChoices, responses: prevResponses })
+        axios.put(`${process.env.REACT_APP_SERVER_URL}/responses/${poll.responses[index].id}`, poll.responses[ index ])
     }
 
-    const handlePollChoiceDelete = ( i ) => {
-        const newChoices = [ ...pollObject.choices ]
+    const handlePollChoiceDelete = async ( i ) => {
+        const newChoices = [ ...poll.choices ]
+        const newResponses = [ ...poll.responses ]
         newChoices.splice( i, 1 )
-        setPollObject({ ...pollObject, choices: newChoices })
-        console.log( i, newChoices )
+        setPoll({ ...poll, choices: newChoices, responses: newResponses })
+        await axios.delete(`${process.env.REACT_APP_SERVER_URL}/responses/${poll.responses[ i ].id}`)
+            .then( newResponses.splice( i, 1 ) )
         
     }
 
-    const choicesToDisplay = pollObject.choices.map(( choice, index ) => {
+    const choicesToDisplay = !poll ? null : poll.choices.map(( choice, index ) => {
         return(
             <div className="poll-input-wrapper" key={ index }>
                 <input required key={ index } className="poll-input" type="text" value={ choice } onChange={ ( e ) => handleChoiceChange(index, e) } placeholder="Choice..."></input>
@@ -117,15 +130,15 @@ const NewPoll = ({ author, id }) => {
                 message={ 'Are you sure you want to leave this page, any changes will be lost?' }
             />
             <h1> Let's create a new poll!</h1>
-            <h2> {pollObject.pollName || 'Poll name / Question:'} </h2>
+            <h2> { (!poll || !poll.pollname) ? 'Poll name / Question:' : poll.pollName} </h2>
             <p> Author: { author }</p>
             <form id="poll-form" onSubmit={ handlePollSubmission }>
-                <input required className="poll-input" id="poll_name_input" value={ pollObject.pollName } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
+                <input required className="poll-input" id="poll_name_input" value={ poll && poll.pollName } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
                 { choicesToDisplay }
                 <p id="add-poll-choice" onClick={ handleAddChoiceClick } >Add choice<span id="add_question" style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
                 <BackgroundHandler 
-                    quizObject={ pollObject }
-                    setQuizObject={ setPollObject }
+                    quizObject={ poll }
+                    setQuizObject={ setPoll }
                     quizSaved={ pollSaved }
                     imageLoading={ imageLoading }
                     setImageLoading={ setImageLoading }
