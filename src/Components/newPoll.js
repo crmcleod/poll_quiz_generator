@@ -61,6 +61,7 @@ const NewPoll = ({ author, id }) => {
 
     const handleAddChoiceClick = () => {
         if( pollSaved ) {
+            // add custom modal
             alert('You must edit the poll to add more choices.')}
         else {
             const prevChoices = [ ...pollObject.choices ]
