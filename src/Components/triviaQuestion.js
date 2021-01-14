@@ -70,8 +70,13 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
         }
     }
 
+    const removeQuestionFromDatabase = ( id ) => {
+        axios.delete( `${process.env.REACT_APP_SERVER_URL}/questions/${ id }` )
+    }
+    
     const handleQuestionDelete = ( index ) => {
         deleteQuestion( index )
+        removeQuestionFromDatabase( questionId )
     }
     
     return(

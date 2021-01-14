@@ -45,8 +45,14 @@ const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject, organiseL
         organiseLogic()
     }
 
+    const removeOutcomeFromDatabase = ( id ) => {
+        axios.delete( `${process.env.REACT_APP_SERVER_URL}/outcomes/${ id }` )
+    }
+
     const handleOutcomeDelete = ( index ) => {
         deleteOutcome( index )
+        removeOutcomeFromDatabase( outcomeID )
+        
     }
 
     return(

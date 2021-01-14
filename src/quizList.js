@@ -32,7 +32,6 @@ const QuizList = ({ userEmail }) =>{
 
     const handleSelectChange = (e) =>{
         setQuizId(e.target.value)
-        console.log(axios( `${process.env.REACT_APP_SERVER_URL}/quizzes/${e.target.value}`))
     }
 
     if( !quizzes ){
