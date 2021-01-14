@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import BackgroundHandler from '../Containers/backgroundHandler'
 import LoadingModal from './loadingModal'
 
-const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questionNumber, index }) => {
+const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questionNumber, index, deleteQuestion }) => {
 
     const [ questionBody, setQuestionBody ] = useState({
         correctAnswer: '',
@@ -45,8 +45,8 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
     const handleSubmit = ( e ) => {
         e.preventDefault()
         handleRadioClick()
-        axios.put(`${process.env.REACT_APP_SERVER_URL}/questions/${questionId}`, questionBody)
-        const formFields = document.querySelectorAll(`.disable${ questionId }`)
+        axios.put(`${process.env.REACT_APP_SERVER_URL}/questions/${ questionId }`, questionBody)
+        const formFields = document.querySelectorAll(`.disable${ questionId }, .correct-answer${ questionId }`)
         for (const field of formFields){
             field.disabled = !field.disabled
         }
@@ -61,7 +61,7 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
             let correctAnswer = e.target.value
             setQuestionBody({ ...questionBody, correctAnswer: questionBody.answers[ correctAnswer ]})
         } else {
-            let nodes = document.querySelectorAll(`.correct-answer${questionId}`)
+            let nodes = document.querySelectorAll(`.correct-answer${ questionId }`)
             for ( let node in nodes){
                 if( nodes[node].checked ){
                     setQuestionBody({ ...questionBody, correctAnswer: questionBody.answers[ node ]})
@@ -70,6 +70,10 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
         }
     }
 
+    const handleQuestionDelete = ( index ) => {
+        deleteQuestion( index )
+    }
+    
     return(
         <>
             { imageLoading && 
@@ -116,6 +120,7 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
                     questionId={ questionId }
                 />
                 <button onClick={ handleSubmit } type="button"> { questionDisabled ? 'Edit Question' : 'Save Question'} </button>
+                <button className="delete-from-quiz" type="button" onClick={ () => handleQuestionDelete( index ) }> Delete Question</button>
             </div>
         </>
     )

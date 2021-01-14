@@ -289,3 +289,35 @@
 #quiz-outcome * {
     padding: 0 1em 0 1em;
 }
+.delete-from-quiz{
+    background-color: rgb(241, 3, 3);
+    border-style: none;
+    border: 1px rgb(250, 126, 126) solid;
+    color: white;
+    border-radius: 2px;
+    transition: 0.1s ease all;
+    font-weight: bolder;
+    transform-origin: -50%;
+}
+.delete-from-quiz:hover{
+    border: 1px rgb(202, 2, 2) solid;
+    background-color: rgb(240, 3, 3);
+}
+
+.delete-from-quiz:active{
+    outline: none;
+    outline-style: none;
+    outline-width: 0;
+    border: 1px rgb(253, 41, 41) solid;
+
+}
+.delete-from-quiz:focus{
+    outline: none;
+    outline-style: none;
+    outline-width: 0;
+    border: 1px rgb(253, 41, 41) solid;
+
+}
+.trivia-form > button{
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.336);
+}

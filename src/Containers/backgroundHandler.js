@@ -15,7 +15,7 @@ const BackgroundHandler = ({ quizObject, setQuizObject, quizSaved, imageLoading,
 
     return(
         <>
-            <select className={'poll-input ' + 'disable'+questionId} onChange={ handleBackgroundPickChange } >
+            <select className={'poll-input ' + 'disable'+questionId + ' background-selector'} onChange={ handleBackgroundPickChange } >
                 <option value={ true }> Background colour </option>
                 <option value={ false }> Background image </option>
             </select>

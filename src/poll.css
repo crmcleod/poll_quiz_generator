@@ -119,3 +119,13 @@
     box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.39);
     background-color: rgb(238, 237, 237);
 }
+.poll-input-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0.1em !important;
+    width: 97% !important;
+}
+.poll-input-wrapper > .poll-input{
+    width: 90%;
+}

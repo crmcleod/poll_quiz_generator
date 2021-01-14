@@ -48,7 +48,7 @@ const NewPoll = ({ author, id }) => {
                     .then(res => setPoll( res.data ))
             }
             setPollPosted( true )
-            const formFields = document.querySelectorAll( '.poll-input' )
+            const formFields = document.querySelectorAll( '.poll-input, .delete-from-quiz')
             for( let field of formFields ){
                 field.disabled = !pollSaved
             }
@@ -60,9 +60,13 @@ const NewPoll = ({ author, id }) => {
     }
 
     const handleAddChoiceClick = () => {
-        const prevChoices = [ ...pollObject.choices ]
-        prevChoices.push( '' )
-        setPollObject({ ...pollObject, choices: prevChoices })
+        if( pollSaved ) {
+            alert('You must edit the poll to add more choices.')}
+        else {
+            const prevChoices = [ ...pollObject.choices ]
+            prevChoices.push( '' )
+            setPollObject({ ...pollObject, choices: prevChoices })
+        }
     }
 
     const handleChoiceChange = ( index, event ) => {
@@ -71,9 +75,20 @@ const NewPoll = ({ author, id }) => {
         setPollObject({ ...pollObject, choices: prevChoices })
     }
 
+    const handlePollChoiceDelete = ( i ) => {
+        const newChoices = [ ...pollObject.choices ]
+        newChoices.splice( i, 1 )
+        setPollObject({ ...pollObject, choices: newChoices })
+        console.log( i, newChoices )
+        
+    }
+
     const choicesToDisplay = pollObject.choices.map(( choice, index ) => {
         return(
-            <input required key={ index } className="poll-input" type="text" value={ choice } onChange={ (e) => handleChoiceChange(index, e) } placeholder="Choice..."></input>
+            <div className="poll-input-wrapper" key={ index }>
+                <input required key={ index } className="poll-input" type="text" value={ choice } onChange={ ( e ) => handleChoiceChange(index, e) } placeholder="Choice..."></input>
+                <button className="delete-from-quiz" onClick={ ( e ) => handlePollChoiceDelete( index, e ) }> x </button>
+            </div>
         )
     })
 

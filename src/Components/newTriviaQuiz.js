@@ -104,7 +104,19 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
 
     }
 
-    const outcomesToDisplay = outcomes.map(( outcome ) =>{
+    const deleteOutcome = ( index ) => {
+        const newOutcomes = [ ...outcomes ]
+        newOutcomes.splice( index, 1 )
+        setOutcomes( newOutcomes )
+    }
+
+    const deleteQuestion = ( index ) => {
+        const newQuestions = [ ...questions ]
+        newQuestions.splice( index, 1 )
+        setQuestions( newQuestions )
+    }
+
+    const outcomesToDisplay = outcomes.map(( outcome, index ) =>{
         return(
             <TriviaOutcome 
                 key={ outcome.id } 
@@ -113,6 +125,8 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
                 quizObject={ quizObject }
                 setQuizObject={ setQuizObject }
                 organiseLogic={ organiseLogic }
+                index={ index }
+                deleteOutcome={ deleteOutcome }
             />
         )
     })
@@ -127,6 +141,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
                 setQuizObject={ setQuizObject }
                 questionNumber={ index + 1}
                 index={ index }
+                deleteQuestion={ deleteQuestion }
             />
         )
     })

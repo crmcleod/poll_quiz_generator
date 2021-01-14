@@ -4,7 +4,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import '../quiz.css'
 
-const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject, organiseLogic }) => {
+const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject, organiseLogic, deleteOutcome, index }) => {
 
     const [ outcomeObject, setOutcomeObject ] = useState({
         outcomeName: '',
@@ -45,6 +45,10 @@ const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject, organiseL
         organiseLogic()
     }
 
+    const handleOutcomeDelete = ( index ) => {
+        deleteOutcome( index )
+    }
+
     return(
 
         <div className="trivia-form">
@@ -58,6 +62,7 @@ const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject, organiseL
             <input required className={ 'disable-outcome' + outcomeID } onChange={ handleHeadlineChange } type="text" value={ outcomeObject.outcomeName } placeholder="Outcome headline... e.g. 'Well done, you absolutely smashed it!'"></input>
             <textarea required className={ 'disable-outcome' + outcomeID } onChange={ handleBodyChange } rows="3" type="text" value={ outcomeObject.outcomeBody } placeholder="Outcome body... e.g. 'Better luck next time, you need to work on your trivia 😢"></textarea>
             <button onClick={ handleSaveOutcomeClick } type="button">{ outcomeDisabled ? 'Edit Outcome' : 'Save Outcome' }</button>
+            <button className="delete-from-quiz" type="button" onClick={ () => handleOutcomeDelete( index ) }>Delete outcome</button>
         </div>
 
     )
