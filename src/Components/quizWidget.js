@@ -50,7 +50,6 @@ const QuizWidget = ({ id }) => {
 
     const outcomeToDisplay = () => {
         for( let outcome of outcomes){
-            console.log( outcome )
             if( eval( score + outcome.conditionComparator + outcome.conditionValue ) ){
                 return (
                     <>

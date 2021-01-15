@@ -73,7 +73,6 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
         setQuizObject({ ...quizObject, quizAuthor: author})
         return () => {
             if( !quizNameRef.current || quizQuestionsRef.current.length === 0 || quizOutcomesRef.current.length === 0 ){
-                console.log( ' has fired ', quizQuestionsRef.current.length, quizNameRef.current, quizOutcomesRef.current.length )
                 axios.delete( `${ process.env.REACT_APP_SERVER_URL }/quizzes/${ quizIDRef.current }` )
                     .then( res => res )
                     .catch( err => console.error( err ))

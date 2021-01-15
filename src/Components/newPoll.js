@@ -17,7 +17,7 @@ const NewPoll = ({ author, id }) => {
         responses: [],
         choices: [],
         imgID: null,
-        backgroundColour: null,
+        backgroundColour: '182, 206, 240, 1',
         user: {
             id
         },
@@ -133,7 +133,7 @@ const NewPoll = ({ author, id }) => {
             <h2> { (!poll || !poll.pollname) ? 'Poll name / Question:' : poll.pollName} </h2>
             <p> Author: { author }</p>
             <form id="poll-form" onSubmit={ handlePollSubmission }>
-                <input required className="poll-input" id="poll_name_input" value={ poll && poll.pollName } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
+                <input required className="poll-input" id="poll_name_input" value={ poll ? poll.pollName : '' } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
                 { choicesToDisplay }
                 <p id="add-poll-choice" onClick={ handleAddChoiceClick } >Add choice<span id="add_question" style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
                 <BackgroundHandler 
