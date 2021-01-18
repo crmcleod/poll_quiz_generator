@@ -50,6 +50,9 @@ const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
             setPollSaved( !pollSaved )
             axios.put( `${ process.env.REACT_APP_SERVER_URL }/polls/${ poll.id }`, poll )
                 .then(res => setPoll( res.data ))
+            for ( const index in  poll.responses ){
+                axios.put(`${process.env.REACT_APP_SERVER_URL}/responses/${poll.responses[index].id}`, poll.responses[ index ])
+            }
             setPollPosted( true )
             const formFields = document.querySelectorAll( '.poll-input, .delete-from-quiz')
             for( let field of formFields ){
@@ -85,9 +88,8 @@ const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
         const prevChoices = [ ...poll.choices ]
         const prevResponses = [ ...poll.responses ]
         prevChoices[ index ] = event.target.value
-        prevResponses[ index ] = {...prevResponses[ index ], response: event.target.value }
+        prevResponses[ index ] = {...prevResponses[ index ], poll: {id: poll.id}, response: event.target.value }
         setPoll({ ...poll, choices: prevChoices, responses: prevResponses })
-        axios.put(`${process.env.REACT_APP_SERVER_URL}/responses/${poll.responses[index].id}`, poll.responses[ index ])
     }
 
     const handlePollChoiceDelete = async ( i ) => {
@@ -137,7 +139,8 @@ const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
                     <h1> Let's create a new poll!</h1>
                     <h2> { (!poll || !poll.pollname) ? 'Poll name / Question:' : poll.pollName} </h2>
                     <p> Author: { author }</p>
-                </> } 
+                </> }
+
             <form id="poll-form" onSubmit={ handlePollSubmission }>
                 <input required className="poll-input" id="poll_name_input" value={ poll ? poll.pollName : '' } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
                 { choicesToDisplay }
@@ -155,10 +158,11 @@ const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
             </form>
             {poll ? pollSaved ?
                 <>
-                    <h2> Your poll can be found 
-                        <br></br>
-                        <a style={{ color: 'rgb(215, 80, 18)', textDecoration: 'underline' }} href={`${process.env.REACT_APP_WIDGET_URL}poll/`+ poll.id}> here </a>
-                    </h2>
+                    { existingPoll ? null : 
+                        <h2> Your poll can be found 
+                            <br></br>
+                            <a style={{ color: 'rgb(215, 80, 18)', textDecoration: 'underline' }} href={`${process.env.REACT_APP_WIDGET_URL}poll/`+ poll.id}> here </a>
+                        </h2>}
                     <div id="iframe-grab">
                         <h3> Get iframe code :</h3>
                         <button onClick={ handleIframeCopyCode } type="button"> { copiedToClipboard ? 'Copied' : 'Copy iframe code to clipboard' } </button>

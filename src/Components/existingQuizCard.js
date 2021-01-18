@@ -20,6 +20,7 @@ const ExistingQuizCard = ({
 
     const [ editing, setEditing ] = useState( false )
     const [ quiz, setQuiz ] = useState()
+    const [ checkDelete, setCheckDelete ] = useState( false )
 
     const getCurrentQuiz = () => {
         axios.get( `${process.env.REACT_APP_SERVER_URL}/${currentQuizType}/${id}`)
@@ -29,6 +30,7 @@ const ExistingQuizCard = ({
     useEffect(() => {
         getCurrentQuiz()
     }, [ id ])
+
     const handleDelete = async () => {
         await axios.delete(`${ process.env.REACT_APP_SERVER_URL }/${ currentQuizType }/${ id }`)
             .then( res => {
@@ -46,9 +48,12 @@ const ExistingQuizCard = ({
 
     }
 
+    const handleDeleteCheck = () => {
+        setCheckDelete( !checkDelete )
+    }
+
     const handleEditClick = ( e ) => {
         setEditing( !editing )
-        console.log( e )
     }
 
     return(
@@ -64,10 +69,16 @@ const ExistingQuizCard = ({
                 :
                 null
             }
-            <span>
-                <button onClick={ handleDelete } type="button"> Delete this quiz? </button>
-                <button onClick={ handleEditClick } type={ editing ? 'submit' : 'button' } value={ editing ? 'submit' : 'edit'}> { editing ? 'See widget' : 'Edit' } </button>
-            </span>
+            { checkDelete ? 
+                <span>
+                    <button onClick={ handleDelete } type="button"> Delete </button>
+                    <button onClick={ handleDeleteCheck } type={ 'button' }> Cancel </button>
+                </span>
+                :
+                <span>
+                    <button onClick={ handleDeleteCheck } type="button"> Delete this quiz? </button>
+                    <button onClick={ handleEditClick } type={ editing ? 'submit' : 'button' } value={ editing ? 'submit' : 'edit'}> { editing ? 'See widget' : 'Edit' } </button>
+                </span> }
         </>
     )
 }
