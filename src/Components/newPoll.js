@@ -10,7 +10,7 @@ import BackgroundHandler from '../Containers/backgroundHandler'
 import { Helmet } from 'react-helmet-async'
 import { Prompt } from 'react-router-dom'
 
-const NewPoll = ({ author, id }) => {
+const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
     const [ pollObject ] = useState({
         pollName: '',
         pollAuthor: author,
@@ -34,8 +34,11 @@ const NewPoll = ({ author, id }) => {
     const [ imageLoading, setImageLoading ] = useState( false )
 
     useEffect(() => {
-        axios.post( `${ process.env.REACT_APP_SERVER_URL }/polls`, pollObject )
-            .then(res => setPoll( res.data ))
+        existingPoll ? 
+            axios.get( `${ process.env.REACT_APP_SERVER_URL }/polls/${existingPollID}`)
+                .then( res => setPoll( res.data )) :
+            axios.post( `${ process.env.REACT_APP_SERVER_URL }/polls`, pollObject )
+                .then(res => setPoll( res.data ))
     }, [])
 
     const handlePollSubmission = ( event ) => {
@@ -129,9 +132,12 @@ const NewPoll = ({ author, id }) => {
                 when={ !pollPosted }
                 message={ 'Are you sure you want to leave this page, any changes will be lost?' }
             />
-            <h1> Let's create a new poll!</h1>
-            <h2> { (!poll || !poll.pollname) ? 'Poll name / Question:' : poll.pollName} </h2>
-            <p> Author: { author }</p>
+            { existingPoll ? null :
+                <>
+                    <h1> Let's create a new poll!</h1>
+                    <h2> { (!poll || !poll.pollname) ? 'Poll name / Question:' : poll.pollName} </h2>
+                    <p> Author: { author }</p>
+                </> } 
             <form id="poll-form" onSubmit={ handlePollSubmission }>
                 <input required className="poll-input" id="poll_name_input" value={ poll ? poll.pollName : '' } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
                 { choicesToDisplay }
