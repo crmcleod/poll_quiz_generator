@@ -321,3 +321,11 @@
 .trivia-form > button{
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.336);
 }
+#quiz-landing-card{
+    width: 90vw;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 5%;
+}

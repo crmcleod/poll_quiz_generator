@@ -9,7 +9,10 @@ import ExistingQuizCard from './Components/existingQuizCard'
 const QuizList = ({ userEmail }) =>{
 
     const [ quizId, setQuizId ] = useState()
+    const [ currentQuizType, setCurrentQuizType ] = useState()
+    const [ pollId, setPollId ] = useState()
     const [ quizzes, setQuizzes ] = useState()
+    const [ polls, setPolls ] = useState()
     const [ loading, setLoading ] = useState( true )
 
     useEffect(() => {
@@ -21,20 +24,26 @@ const QuizList = ({ userEmail }) =>{
     }, [])
 
     const populateQuizState = () => {
-        axios.get( `${process.env.REACT_APP_SERVER_URL}/users?email=${userEmail}`)
+        axios.get( `${ process.env.REACT_APP_SERVER_URL }/users?email=${ userEmail }`)
             .then( res => {
-                if( res.data.length !== 0){
-                    let quizzesDB = res.data[0].quizzes.map( quiz => quiz )
+                if( res.data.length !== 0 ){
+                    let quizzesDB = res.data[ 0 ].quizzes.map( quiz => quiz )
+                    let pollsDB = res.data[ 0 ].polls.map( poll => poll )
                     setQuizzes( quizzesDB )
+                    setPolls( pollsDB )
                 }
             })
     }
 
-    const handleSelectChange = (e) =>{
-        setQuizId(e.target.value)
+    const handleSelectChange = ( e ) =>{
+        let result = e.target.value.split(' ')
+        let targetType = result[0]
+        let targetID = parseInt(result[1])
+        setQuizId( targetID )
+        setCurrentQuizType( targetType )
     }
 
-    if( !quizzes ){
+    if( !quizzes || !polls ){
         return(
             <h1> ... loading ... </h1>
         )
@@ -53,11 +62,12 @@ const QuizList = ({ userEmail }) =>{
                 <select defaultValue="Pick Quiz" name="your-quizzes" id="your-quizzes" onChange={ handleSelectChange }>
                     <option disabled >Pick Quiz</option>
                     <optgroup label="Trivia Quizzes">
-                        { quizzes.map((quiz) => <option className="quiz-list-option" key={ quiz.id } value={ quiz.id } > { quiz.quizName } </option>
+                        { quizzes.map(( quiz ) => <option className="quiz-list-option" key={ quiz.id } value={ `quizzes ${quiz.id}` } > { quiz.quizName } </option>
                         )}
                     </optgroup>
-                    <optgroup label="Polls">
-                        
+                    <optgroup value="polls" label="Polls">
+                        { polls.map(( poll ) => <option className="quiz-list-option" key={ poll.id } value={ `polls ${poll.id}` } > { poll.pollName } </option>
+                        )}
                     </optgroup>
                 </select>
             }
@@ -68,7 +78,10 @@ const QuizList = ({ userEmail }) =>{
                 populateQuizState={ populateQuizState } 
                 setQuizId={ setQuizId } 
                 quizzes={ quizzes }
-                setQuizzes={ setQuizzes }    
+                setQuizzes={ setQuizzes }
+                polls={ polls }
+                setPolls={ setPolls }
+                currentQuizType={ currentQuizType }  
             /> }
             
             

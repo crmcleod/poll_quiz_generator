@@ -18,7 +18,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
         quiz: {},
         answers: [],
         imgID: null,
-        backgroundColour: null,
+        backgroundColour: '182, 206, 240, 1',
         croppedHeight: 0,
         croppedWidth: 0,
         croppedX: 0,
@@ -33,9 +33,6 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
     })
     const [ questions, setQuestions ] = useState([])
     const [ outcomes, setOutcomes ] = useState([])
-
-    // const [ quizAuthor, setQuizAuthor ] = useState();
-
     const [ quizID, setQuizID ] = useState()
     const [ quizObject, setQuizObject ] = useState({
         quizName: '',

@@ -21,10 +21,14 @@ const AddColour = ({ quizObject, setQuizObject, pollSaved }) => {
         setQuizObject({ ...quizObject, backgroundColour: rgbSplit })
         colPicker.boxShadow = ` 0 0 7px 3px rgba(${boxShadow})`
     }
+    
+    const handleClick = ( e ) => {
+        e.preventDefault()
+    }
 
     return(
         <span style={ pollSaved ? {display: 'none'} : {display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            <SketchPicker onChange={ handleColorChange } color={ color } />
+            <SketchPicker onClick={ handleClick } onChange={ handleColorChange } color={ color } />
         </span>
     )
 }

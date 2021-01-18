@@ -16,7 +16,8 @@ const QuizWidget = ({ id }) => {
     const [ responses, setResponses ] = useState([])
     const [ currentResponse, setCurrentResponse ] = useState()
     const [ score, setScore ] = useState( 0 )
-    const [ quizInProcess, setQuizInProcess ] = useState( true )
+    const [ quizInProcess, setQuizInProcess ] = useState( false )
+    const [ quizCompleted, setQuizCompleted ] = useState( false )
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_URL}/quizzes/${ id }`)
@@ -64,7 +65,7 @@ const QuizWidget = ({ id }) => {
     const handleSubmitQuizAnswers = () => {
         const finalScore = responses.filter(( response ) => response === true).length
         setScore( finalScore )
-        setQuizInProcess( false )
+        setQuizCompleted( false )
     }
 
     const handleNextQClick = () => {
@@ -74,9 +75,22 @@ const QuizWidget = ({ id }) => {
     const handlePrevQClick = () => {
         setQuestionCount(questionCount - 1)
     }
+
+    const handleQuizStartClick = () => {
+        setQuizInProcess( true )
+    }
+
     if( !questions ){
         return(
             <h1>Just fetching the quiz</h1>
+        )
+    }
+    if( !quizInProcess){
+        return(
+            <div id="quiz-landing-card">
+                <h1> { quizName } </h1>
+                <button type="button" onClick={ handleQuizStartClick }> Let&apos;s Start!</button>
+            </div>
         )
     }
     if( quizInProcess ){
@@ -87,9 +101,9 @@ const QuizWidget = ({ id }) => {
                         Trivia
                     </title>
                 </Helmet>
-                <div id="quiz-name-wrapper">
-                </div>
-                <h1 id="quiz-name"> { quizName }</h1>
+                {/* <div id="quiz-name-wrapper">
+                </div> */}
+                {/* <h1 id="quiz-name"> { quizName }</h1> */}
                 <QuizWidgetQuestion 
                     questionNumber={ questionCount + 1}
                     questionTitle={ questions[questionCount].questionBody }
@@ -107,18 +121,19 @@ const QuizWidget = ({ id }) => {
                 </div>
             </div>
         )}
-
-    return(
-        < div id="quiz-outcome-wrapper">
-            <div id="quiz-outcome">
-                <h1>
-                    You scored { score } out of { questions.length }
-                </h1>
-                { outcomeToDisplay() }
+    if( quizCompleted ){
+        return(
+            < div id="quiz-outcome-wrapper">
+                <div id="quiz-outcome">
+                    <h1>
+                        You scored { score } out of { questions.length }
+                    </h1>
+                    { outcomeToDisplay() }
+                </div>
             </div>
-        </div>
 
-    )
+        )
+    }
 }
 
 export default QuizWidget

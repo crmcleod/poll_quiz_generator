@@ -53,7 +53,7 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
     }
 
     const handleImageChange = ( e ) => {
-        if( e.target.files[0].type == 'image/heic'){
+        if( e.target.files[0].type == 'image/heic' ){
             // add custom alert modal
             alert('.heic images are incompatible with this application')
             e.target.value=''

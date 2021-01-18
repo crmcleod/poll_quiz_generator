@@ -3,15 +3,29 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 
-const ExistingQuizCard = ({ id, setQuizId, populateQuizState, quizzes, setQuizzes }) => {
+const ExistingQuizCard = ({ 
+    id, 
+    setQuizId, 
+    populateQuizState, 
+    quizzes, 
+    setQuizzes, 
+    polls, 
+    setPolls, 
+    currentQuizType 
+}) => {
 
     const [ editing ] = useState( false )
 
     const handleDelete = async () => {
-        await axios.delete(`${ process.env.REACT_APP_SERVER_URL }/quizzes/${ id }`)
+        await axios.delete(`${ process.env.REACT_APP_SERVER_URL }/${ currentQuizType }/${ id }`)
             .then( res => {
-                let newQuizzes = quizzes.filter( quiz => res.data != quiz.id )
-                setQuizzes( newQuizzes )
+                if( currentQuizType === 'polls'){
+                    let newQuizzes = quizzes.filter( quiz => res.data != quiz.id )
+                    setQuizzes( newQuizzes )}
+                else if ( currentQuizType === 'quizzes'){
+                    let newPolls = polls.filter( poll => res.data != poll.id)
+                    setPolls( newPolls )
+                }
             })
             .catch( err => console.error( err ))
         setQuizId('')
