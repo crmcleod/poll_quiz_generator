@@ -65,7 +65,8 @@ const QuizWidget = ({ id }) => {
     const handleSubmitQuizAnswers = () => {
         const finalScore = responses.filter(( response ) => response === true).length
         setScore( finalScore )
-        setQuizCompleted( false )
+        setQuizCompleted( true )
+        setQuizInProcess( false )
     }
 
     const handleNextQClick = () => {
@@ -85,7 +86,7 @@ const QuizWidget = ({ id }) => {
             <h1>Just fetching the quiz</h1>
         )
     }
-    if( !quizInProcess){
+    if( !quizInProcess && !quizCompleted ){
         return(
             <div id="quiz-landing-card">
                 <h1> { quizName } </h1>
