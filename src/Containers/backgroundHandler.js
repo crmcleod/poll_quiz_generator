@@ -1,10 +1,20 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react'
 import AddColour from '../Components/addColour'
 import AddImage from '../Components/addImage'
 
-// eslint-disable-next-line no-unused-vars
-const BackgroundHandler = ({ quizObject, setQuizObject, quizSaved, imageLoading, setImageLoading, questionId }) => {
+
+const BackgroundHandler = ({ 
+    quizObject, 
+    setQuizObject, 
+    quizSaved, 
+    imageLoading, 
+    setImageLoading, 
+    questionId, 
+    index,
+    existingQuiz
+}) => {
 
     const [ backGroundColorOption, setBackGroundColorOption ] = useState( true )
     
@@ -24,6 +34,8 @@ const BackgroundHandler = ({ quizObject, setQuizObject, quizSaved, imageLoading,
                     quizObject={ quizObject }
                     setQuizObject={ setQuizObject }
                     pollSaved={ quizSaved }
+                    index={ index }
+                    existingQuiz={ existingQuiz }
                 />
                 :
                 <AddImage 

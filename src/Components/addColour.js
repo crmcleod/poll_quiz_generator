@@ -1,8 +1,14 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SketchPicker } from 'react-color'
 
-const AddColour = ({ quizObject, setQuizObject, pollSaved }) => {
+const AddColour = ({ 
+    quizObject, 
+    setQuizObject, 
+    pollSaved, 
+    index,
+    existingQuiz
+}) => {
 
     const [ color, setColor ] = useState({
         a: 1,
@@ -10,18 +16,34 @@ const AddColour = ({ quizObject, setQuizObject, pollSaved }) => {
         g: 206,
         r: 182
     })
-    const [ boxShadow, setBoxShadow ] = useState(240, 206, 182, 1)
+    const [ boxShadow, setBoxShadow ] = useState('240, 206, 182, 1')
 
-    const handleColorChange = async ( color ) => {
-        let colPicker = document.querySelector('.sketch-picker').style
+    useEffect( async () => {
+        handleBoxShadow()
+        if( existingQuiz && quizObject.backgroundColour ){
+            let cols = quizObject.backgroundColour.split(' ')
+            setColor({ 
+                r: parseInt(cols[3]),
+                g: parseInt(cols[2]),
+                b: parseInt(cols[1]),
+                a: parseInt(cols[0])
+            })
+        }
+    }, [])
+
+    const handleColorChange = ( color ) => {
         let rgb = color.rgb
         let rgbSplit = `${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a}`
-        setColor( await rgb )
-        setBoxShadow( await rgbSplit )
+        setColor( rgb )
         setQuizObject({ ...quizObject, backgroundColour: rgbSplit })
-        colPicker.boxShadow = ` 0 0 7px 3px rgba(${boxShadow})`
+        handleBoxShadow( rgbSplit )
     }
-    
+    const handleBoxShadow = ( rgb ) => {
+        let colPicker = document.querySelectorAll('.sketch-picker')
+        colPicker[ index ? index : 0 ].style.boxShadow = ` 0 0 7px 3px rgba(${boxShadow})`
+        setBoxShadow( rgb )
+    }
+
     const handleClick = ( e ) => {
         e.preventDefault()
     }

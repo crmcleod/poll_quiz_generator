@@ -6,7 +6,7 @@ import { Route, Switch, Link, withRouter } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import ExistingQuizCard from './Components/existingQuizCard'
 
-const QuizList = ({ userEmail }) =>{
+const QuizList = ({ userEmail, author }) =>{
 
     const [ quizId, setQuizId ] = useState()
     const [ currentQuizType, setCurrentQuizType ] = useState()
@@ -81,7 +81,8 @@ const QuizList = ({ userEmail }) =>{
                 setQuizzes={ setQuizzes }
                 polls={ polls }
                 setPolls={ setPolls }
-                currentQuizType={ currentQuizType }  
+                currentQuizType={ currentQuizType }
+                author={ author }  
             /> }
             
             

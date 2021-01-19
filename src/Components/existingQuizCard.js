@@ -6,6 +6,7 @@ import NewPoll from './newPoll'
 import PollWidget from './pollWidget'
 import '../poll.css'
 import '../quiz.css'
+import NewTriviaQuiz from './newTriviaQuiz'
 
 const ExistingQuizCard = ({ 
     id, 
@@ -15,7 +16,8 @@ const ExistingQuizCard = ({
     setQuizzes, 
     polls, 
     setPolls, 
-    currentQuizType 
+    currentQuizType,
+    author
 }) => {
 
     const [ editing, setEditing ] = useState( false )
@@ -58,14 +60,42 @@ const ExistingQuizCard = ({
 
     return(
         <>
-            { currentQuizType === 'polls' ? editing ? <NewPoll 
-                existingPoll={ true }
-                existingPollID={ id }
-            /> :
-                <iframe style={{ backgroundColor: 'white',
-                // borderStyle: 'none', 
-                    margin: '1em'
-                }} frameBorder="0" width="300" height="400" src={`${process.env.REACT_APP_WIDGET_URL}poll/${id}`}></iframe>
+            { currentQuizType === 'polls' ? editing ? 
+                <NewPoll 
+                    existingPoll={ true }
+                    existingPollID={ id }
+                    author={ author }
+                /> :
+                <iframe 
+                    style={{ backgroundColor: 'white', margin: '1em'}} 
+                    frameBorder="0" 
+                    width="300" 
+                    height="400" 
+                    src={`${process.env.REACT_APP_WIDGET_URL}poll/${id}`} />
+                :
+                null
+            }
+            { currentQuizType === 'quizzes' ? editing ? 
+                <div style={{
+                    width: '80%', 
+                    backgroundColor: 'rgba(255,255,255,0.1)', 
+                    border: '2px rgba(255,255,255,0.3) solid',
+                    padding: '1em',
+                    margin: '1em',
+                    borderRadius: '0.5em'
+                }}>
+                    <NewTriviaQuiz  
+                        existingQuiz={ true }
+                        existingQuizID={ id }
+                        author={ author }
+                    />
+                </div> :
+                <iframe 
+                    style={{ backgroundColor: 'white', margin: '1em'}} 
+                    frameBorder="0" 
+                    width="300" 
+                    height="400" 
+                    src={`${process.env.REACT_APP_WIDGET_URL}quiz/${id}`} />
                 :
                 null
             }

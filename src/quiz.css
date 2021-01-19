@@ -208,7 +208,7 @@
     margin-block: 0;
     font-size: 1em;
 }
-#question-number{
+.question-number{
     font-family: 'Raleway';
     color: rgb(95, 94, 94);
     font-weight: 700;

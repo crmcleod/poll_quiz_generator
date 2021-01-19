@@ -1,20 +1,36 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../quiz.css'
 
-const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject, organiseLogic, deleteOutcome, index }) => {
+const TriviaOutcome = ({ 
+    outcomeID, 
+    quizID, 
+    quizObject, 
+    setQuizObject, 
+    organiseLogic, 
+    deleteOutcome, 
+    index, 
+    existingQuiz, 
+    existingQuizID,
+    outcome }) => {
 
     const [ outcomeObject, setOutcomeObject ] = useState({
         outcomeName: '',
         outcomeBody: '',
         conditionComparator: '>',
         conditionValue: 0,
-        quiz: { id: quizID }
+        quiz: { id: existingQuiz ? existingQuizID : quizID }
     })
     const [ outcomeDisabled, setOutcomeDisabled ] = useState( false )
     
+    useEffect(() => {
+        if( existingQuiz && outcome.outcomeBody ){
+            setOutcomeObject({ ...outcomeObject, ...outcome, quiz: { id: existingQuizID }})
+        }
+    }, [])
+
     const handleHeadlineChange = ( e ) => {
         setOutcomeObject({ ...outcomeObject, outcomeName: e.target.value })
     }
@@ -35,8 +51,11 @@ const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject, organiseL
         // eslint-disable-next-line no-undef
         e.preventDefault()
         axios.put(`${process.env.REACT_APP_SERVER_URL}/outcomes/${outcomeID}`, outcomeObject)
-            .then( res => setOutcomeObject( res.data ))
-        setQuizObject({ ...quizObject, outcomes: [ ...quizObject.outcomes, outcomeObject ] })
+            .then( res => setOutcomeObject({ ...res.data, quiz: { id: quizID || existingQuizID }}))
+            .then( () => {
+                let newOutcomes = [ ...quizObject.outcomes ]
+                newOutcomes[ index ] = outcomeObject
+                setQuizObject({ ...quizObject,  outcomes: newOutcomes })})
         let toBeDisabled = document.querySelectorAll(`.disable-outcome${outcomeID}`)
         for( let el of toBeDisabled ){
             el.disabled = !el.disabled
@@ -59,10 +78,10 @@ const TriviaOutcome = ({ outcomeID, quizID, quizObject, setQuizObject, organiseL
 
         <div className="trivia-form">
             <p> If score is </p>
-            <select className={ 'disable-outcome' + outcomeID } onChange={ handleComparatorChange }>
-                <option value=">">greater than</option>
-                <option value="<">less than</option>
-                <option value="===">equal to</option>
+            <select className={ 'disable-outcome' + outcomeID } onChange={ handleComparatorChange } value={ outcomeObject.conditionComparator }>
+                <option value=">" >greater than</option>
+                <option value="<" >less than</option>
+                <option value="===" >equal to</option>
             </select>
             <input required className={ 'disable-outcome' + outcomeID } onChange={ handleConditionValueChange } value={ outcomeObject.conditionValue } type="number" placeholder="Score..."></input>
             <input required className={ 'disable-outcome' + outcomeID } onChange={ handleHeadlineChange } type="text" value={ outcomeObject.outcomeName } placeholder="Outcome headline... e.g. 'Well done, you absolutely smashed it!'"></input>

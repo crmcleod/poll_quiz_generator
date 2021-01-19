@@ -88,6 +88,7 @@ const UserHome = ({ user, dbCheck }) =>{
                         <Route path="/quizzes"
                             render={() => <QuizList
                                 userEmail={ userEmail }
+                                author={ userName }
                             />} />
                         <Route exact path="/new_quiz" 
                             render={() => <NewQuizContainer 

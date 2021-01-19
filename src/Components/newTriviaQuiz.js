@@ -9,15 +9,15 @@ import LoadingModal from './loadingModal'
 import { Helmet } from 'react-helmet-async'
 import { Prompt } from 'react-router-dom'
 
-const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
+const NewTriviaQuiz = ({ author, id, dbCheck, existingQuiz, existingQuizID }) =>{
 
     const [ questionSchema, setQuestionSchema ] = useState({
         questionNumber: 0,
         questionBody: '',
-        correctAnswer: false,
+        correctAnswer: '',
         quiz: {},
         answers: [],
-        imgID: null,
+        imgID: 0,
         backgroundColour: '182, 206, 240, 1',
         croppedHeight: 0,
         croppedWidth: 0,
@@ -45,12 +45,27 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
     })
 
     const [ triviaQuizCreated, setTriviaQuizCreated ] = useState( false )
+    const [ existingQuizAltered, setExistingQuizAltered ] = useState( false )
     const [ copiedToClipboard, setCopiedToClipboard ] = useState( false )
 
     const postQuizToGetID = () => {
         axios.post(`${ process.env.REACT_APP_SERVER_URL }/quizzes`, quizObject)
             .then( res => setQuizID(res.data.id))
-            .catch( err => console.log( err ))
+            .catch( err => console.error( err ))
+    }
+
+    const fetchExistingQuiz = ( id ) => {
+        axios.get( `${ process.env.REACT_APP_SERVER_URL }/quizzes/${id}`)
+            .then( res => {
+                setQuizObject({ ...res.data, quizAuthor: res.data.user.firstName })
+                setQuestions( res.data.questions)
+                setOutcomes( res.data.outcomes )
+                setQuizID( id )
+                
+                // let prevQuestions = { ...res.data.questions }
+                // setQuiz
+            })
+            .catch( err => console.error( err ))
     }
     
     const quizIDRef = useRef()
@@ -66,10 +81,12 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
     }, [ quizID, quizObject ])
 
     useEffect(() => {
-        postQuizToGetID()
+        existingQuiz ? 
+            fetchExistingQuiz( existingQuizID ) :
+            postQuizToGetID()
         setQuizObject({ ...quizObject, quizAuthor: author})
         return () => {
-            if( !quizNameRef.current || quizQuestionsRef.current.length === 0 || quizOutcomesRef.current.length === 0 ){
+            if( (!quizNameRef.current || quizQuestionsRef.current.length === 0 || quizOutcomesRef.current.length === 0) && !existingQuiz ){
                 axios.delete( `${ process.env.REACT_APP_SERVER_URL }/quizzes/${ quizIDRef.current }` )
                     .then( res => res )
                     .catch( err => console.error( err ))
@@ -78,7 +95,8 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
     }, [])
 
     const organiseLogic = () => {
-        let newOutcomes = [ ...quizObject.outcomes ]
+        let prevOutcomes = [ ...quizObject.outcomes ]
+        let newOutcomes = prevOutcomes.map(( outcome ) => { return { ...outcome, quiz: { id: quizID }}})
         for( let i = 0; i < newOutcomes.length; i++){
             for( let j = 0; j < newOutcomes.length - i - 1; j++){
                 let adjustment = ( x ) => {
@@ -100,6 +118,11 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
 
     }
 
+    const handleFinishExistingQuiz = () => {
+        organiseLogic()
+        axios.put( `${ process.env.REACT_APP_SERVER_URL}/quizzes/${quizID}`, { id: quizID, outcomes: quizObject.outcomes, quizAuthor: author, quizName: quizObject.quizName })
+        setExistingQuizAltered( true )
+    }
     const deleteOutcome = ( index ) => {
         const newOutcomes = [ ...outcomes ]
         newOutcomes.splice( index, 1 )
@@ -123,6 +146,9 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
                 organiseLogic={ organiseLogic }
                 index={ index }
                 deleteOutcome={ deleteOutcome }
+                existingQuiz={ existingQuiz }
+                existingQuizID={ existingQuizID }
+                outcome={ outcomes[ index ]}
             />
         )
     })
@@ -138,6 +164,9 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
                 questionNumber={ index + 1}
                 index={ index }
                 deleteQuestion={ deleteQuestion }
+                existingQuiz={ existingQuiz }
+                existingQuizID={ existingQuizID }
+                question={ questions[ index ] }
             />
         )
     })
@@ -162,8 +191,9 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
     }
 
     const handleQuizNameChange = (event) => {
-        setQuizObject({...quizObject, quizName: event.target.value})
-        axios.put(`${process.env.REACT_APP_SERVER_URL}/quizzes/${quizID}`, quizObject)
+        setQuizObject({ ...quizObject, quizName: event.target.value})
+        axios.put(`${process.env.REACT_APP_SERVER_URL}/quizzes/${quizID}`, { quizName: event.target.value })
+            .catch( err => console.error( err ))
     }
 
     const submitQuiz = ( e ) => {
@@ -188,7 +218,9 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
                 created = true
             }
             if( created ){
-                axios.put(`${process.env.REACT_APP_SERVER_URL}/quizzes/${quizID}`, quizObject)
+                axios.put(`${process.env.REACT_APP_SERVER_URL}/quizzes/${quizID}`, { quizName: quizObject.quizName, quizAuthor: author})
+                    .then( res => console.log( res ))
+                    .catch( err => console.error( err ))
                 setTriviaQuizCreated( true )
             }
         }
@@ -209,7 +241,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
                 </title>
             </Helmet>
             <Prompt 
-                when={ !triviaQuizCreated }
+                when={ !triviaQuizCreated && !existingQuizAltered }
                 message={ 'Are you sure you want to leave this page, any changes will be lost?' }
             />
             { dbCheck === true && 
@@ -218,8 +250,14 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
                     </div>
             }
             <form onSubmit={ submitQuiz } style={{width: '100%'}}>
-                <h1> Let's create a new trivia quiz! </h1>
-                <h2 id="new-quiz-name">{ quizObject.quizName || 'Quiz'}</h2>
+                { existingQuiz ?
+                    null 
+                    :
+                    <>
+                        <h1> Let's create a new trivia quiz! </h1>
+                        <h2 id="new-quiz-name">{ quizObject.quizName || 'Quiz'}</h2>
+                    </> 
+                }
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <label htmlFor="quiz_name_input"> Quiz title... </label>
                     <input required id="quiz_name_input" value={ quizObject.quizName } onChange={ handleQuizNameChange } placeholder="Quiz title..."></input>
@@ -235,18 +273,24 @@ const NewTriviaQuiz = ({ author, id, dbCheck }) =>{
                     { outcomesToDisplay }
                 </div>
                 <h3 id="add-poll-choice" style={{ cursor: 'pointer'}} onClick={ handleAddOutcomeClick }> Add outcome <span style={{ color: 'red' }} id="add_outcome">+</span> </h3>
-                <button type="submit" id="build-quiz"> Build my quiz!</button>
-                { triviaQuizCreated && 
-                <>
-                    <h2> You can find your quiz: 
-                        <br></br>
-                        <a style={{ color: 'lightblue', fontWeight: '800'}} href={`${process.env.REACT_APP_WIDGET_URL}quiz/`+ quizID}>here</a>
-                    </h2>
-                    <div id="iframe-grab">
+                { !existingQuiz && <button type="submit" id="build-quiz"> Build my quiz!</button> }
+                { existingQuiz && <button type="button" className="999" onClick={ handleFinishExistingQuiz } id="build-quiz"> Build my quiz!</button> }
+                { triviaQuizCreated &&
+                    <>
+                        <h2> You can find your quiz: 
+                            <br></br>
+                            <a style={{ color: 'lightblue', fontWeight: '800'}} href={`${process.env.REACT_APP_WIDGET_URL}quiz/`+ quizID}>here</a>
+                        </h2>
+                        <div id="iframe-grab">
+                            <h3> Get iframe code :</h3>
+                            <button onClick={ handleIframeCopyCode } type="button"> { copiedToClipboard ? 'Copied' : 'Copy iframe code to clipboard' } </button>
+                        </div>
+                    </> }
+                { existingQuizAltered &&
+                    <div style={{ marginTop: '1em'}} id="iframe-grab">
                         <h3> Get iframe code :</h3>
                         <button onClick={ handleIframeCopyCode } type="button"> { copiedToClipboard ? 'Copied' : 'Copy iframe code to clipboard' } </button>
                     </div>
-                </>
                 }
                 <p> Author: { author }</p>
             </form>

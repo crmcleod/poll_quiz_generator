@@ -1,11 +1,23 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
 import axios from 'axios'
-import React, { useState } from 'react'
+// eslint-disable-next-line no-unused-vars
+import React, { useState, useEffect } from 'react'
 import BackgroundHandler from '../Containers/backgroundHandler'
 import LoadingModal from './loadingModal'
 
-const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questionNumber, index, deleteQuestion }) => {
+const TriviaQuestion = ({ 
+    questionId, 
+    quizID, 
+    quizObject, 
+    setQuizObject, 
+    questionNumber, 
+    index, 
+    deleteQuestion,
+    existingQuiz,
+    question,
+    existingQuizID
+}) => {
 
     const [ questionBody, setQuestionBody ] = useState({
         correctAnswer: '',
@@ -13,8 +25,8 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
         questionNumber,
         quiz: { id: quizID },
         answers: [ '', '', '', '' ],
-        imgID: null,
-        backgroundColour: null,
+        imgID: 0,
+        backgroundColour: 0,
         croppedHeight: 0,
         croppedWidth: 0,
         croppedX: 0,
@@ -23,6 +35,14 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
     })
     const [ questionDisabled, setQuestionDisabled ] = useState( false )
     const [ imageLoading, setImageLoading ] = useState( false )
+
+    useEffect(() => {
+        if( existingQuiz && question.questionBody ){ 
+            setQuestionBody( {...questionBody, ...question, quiz: { id: existingQuizID } })
+            let radioButtons = document.querySelectorAll(`.correct-answer${questionId}`)
+            radioButtons[ question.answers.indexOf(question.correctAnswer) ].checked = true
+        }
+    }, [])
 
     const handleQuestionBodyChange = ( event ) => { setQuestionBody({ ...questionBody, questionBody: event.target.value })}
     const handleQuestionNumberChange = ( event ) => { 
@@ -89,7 +109,7 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
             <div className="trivia-form">
                 <span id="question-and-label">
                     <label htmlFor="question-number">Question number...</label>
-                    <input required className={ 'disable' + questionId } id="question-number" type="number" onChange={ handleQuestionNumberChange } value={ questionBody.questionNumber }></input>
+                    <input required className={ 'disable' + questionId + ' question-number'} type="number" onChange={ handleQuestionNumberChange } value={ questionBody.questionNumber }></input>
                 </span>
                 <input required className={ 'disable' + questionId } type="text" onChange={ handleQuestionBodyChange } value={ questionBody.questionBody } placeholder="Question..."></input>
                 <div>
@@ -123,6 +143,8 @@ const TriviaQuestion = ({ questionId, quizID, quizObject, setQuizObject, questio
                     quizSaved={ questionDisabled }
                     imageLoading={ imageLoading }
                     questionId={ questionId }
+                    index={ index }
+                    existingQuiz={ existingQuiz }
                 />
                 <button onClick={ handleSubmit } type="button"> { questionDisabled ? 'Edit Question' : 'Save Question'} </button>
                 <button className="delete-from-quiz" type="button" onClick={ () => handleQuestionDelete( index ) }> Delete Question</button>
