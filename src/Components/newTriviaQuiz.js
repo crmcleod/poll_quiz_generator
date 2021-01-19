@@ -61,9 +61,6 @@ const NewTriviaQuiz = ({ author, id, dbCheck, existingQuiz, existingQuizID }) =>
                 setQuestions( res.data.questions)
                 setOutcomes( res.data.outcomes )
                 setQuizID( id )
-                
-                // let prevQuestions = { ...res.data.questions }
-                // setQuiz
             })
             .catch( err => console.error( err ))
     }

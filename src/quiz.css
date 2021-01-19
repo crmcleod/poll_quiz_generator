@@ -329,3 +329,10 @@
     justify-content: space-evenly;
     padding: 5%;
 }
+#your-quizzes-label, #your-quizzes{
+    margin-top: 1em;
+}
+#your-quizzes{
+    min-width: 25em;
+    height: 3em;
+}

@@ -32,6 +32,16 @@ const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
     const [ pollPosted, setPollPosted ] = useState( false )
     const [ copiedToClipboard, setCopiedToClipboard ] = useState( false )
     const [ imageLoading, setImageLoading ] = useState( false )
+    const pollNameRef = useRef()
+    const pollChoicesRef = useRef()
+    const pollIdRef = useRef()
+
+    useEffect(() => {
+        if ( poll ){
+            pollIdRef.current = poll.id
+            pollNameRef.current = poll.pollName
+            pollChoicesRef.current = poll.choices}
+    }, [ poll ])
 
     useEffect(() => {
         existingPoll ? 
@@ -39,6 +49,15 @@ const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
                 .then( res => setPoll( res.data )) :
             axios.post( `${ process.env.REACT_APP_SERVER_URL }/polls`, pollObject )
                 .then(res => setPoll( res.data ))
+    }, [])
+
+    useEffect(() => {
+        return () => {
+            if ( !pollNameRef.current || pollChoicesRef.current.length === 0 ){
+                axios.delete( `${ process.env.REACT_APP_SERVER_URL }/polls/${ pollIdRef.current }`)
+                    .catch( err => console.error( err ))
+            }
+        }
     }, [])
 
     const handlePollSubmission = ( event ) => {
@@ -137,7 +156,7 @@ const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
             { existingPoll ? null :
                 <>
                     <h1> Let's create a new poll!</h1>
-                    <h2> { (!poll || !poll.pollname) ? 'Poll name / Question:' : poll.pollName} </h2>
+                    <h2> { poll ? poll.pollName ? poll.pollName : 'Poll name / Question:' : null} </h2>
                     <p> Author: { author }</p>
                 </> }
 

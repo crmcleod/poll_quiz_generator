@@ -56,8 +56,7 @@ const QuizList = ({ userEmail, author }) =>{
                     Your quizzes
                 </title>
             </Helmet>
-            <h1> Under construction </h1>
-            <label htmlFor="your-quizzes"> Select a trivia quiz or poll </label>
+            <label id="your-quizzes-label" htmlFor="your-quizzes"> Select a trivia quiz or poll </label>
             { loading ? null : 
                 <select defaultValue="Pick Quiz" name="your-quizzes" id="your-quizzes" onChange={ handleSelectChange }>
                     <option disabled >Pick Quiz</option>
