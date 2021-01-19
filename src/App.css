@@ -109,7 +109,7 @@ margin: 5em;
 .new-quiz-button{
   cursor: pointer;
   width: 20%;
-  min-width: 300px;
+  min-width: 275px;
   background-color: rgba(255, 255, 255, 0.247);
   margin: 0.5em;
   border-radius: 0.2em;
@@ -169,4 +169,7 @@ box-shadow: 0 0 0.3em 0.1em rgb(9, 79, 107);
 }
 #loading-modal p{
   animation: pulse 1.5s linear infinite;
+}
+button, input, select{
+  min-height: 1.2em;
 }
