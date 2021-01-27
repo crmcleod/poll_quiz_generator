@@ -49,7 +49,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck, existingQuiz, existingQuizID }) =>
     const [ copiedToClipboard, setCopiedToClipboard ] = useState( false )
 
     const postQuizToGetID = () => {
-        axios.post(`${ process.env.REACT_APP_SERVER_URL }/quizzes`, quizObject)
+        axios.post( `${ process.env.REACT_APP_SERVER_URL }/quizzes`, quizObject )
             .then( res => setQuizID(res.data.id))
             .catch( err => console.error( err ))
     }
@@ -78,12 +78,10 @@ const NewTriviaQuiz = ({ author, id, dbCheck, existingQuiz, existingQuizID }) =>
     }, [ quizID, quizObject ])
 
     useEffect(() => {
-        existingQuiz ? 
-            fetchExistingQuiz( existingQuizID ) :
-            postQuizToGetID()
-        setQuizObject({ ...quizObject, quizAuthor: author})
+        { existingQuiz ? fetchExistingQuiz( existingQuizID ) : postQuizToGetID() }
+        setQuizObject({ ...quizObject, quizAuthor: author })
         return () => {
-            if( (!quizNameRef.current || quizQuestionsRef.current.length === 0 || quizOutcomesRef.current.length === 0) && !existingQuiz ){
+            if( (!quizNameRef.current || quizQuestionsRef.current.length === 0 || quizOutcomesRef.current.length === 0 ) && !existingQuiz ){
                 axios.delete( `${ process.env.REACT_APP_SERVER_URL }/quizzes/${ quizIDRef.current }` )
                     .then( res => res )
                     .catch( err => console.error( err ))
@@ -94,10 +92,10 @@ const NewTriviaQuiz = ({ author, id, dbCheck, existingQuiz, existingQuizID }) =>
     const organiseLogic = () => {
         let prevOutcomes = [ ...quizObject.outcomes ]
         let newOutcomes = prevOutcomes.map(( outcome ) => { return { ...outcome, quiz: { id: quizID }}})
-        for( let i = 0; i < newOutcomes.length; i++){
-            for( let j = 0; j < newOutcomes.length - i - 1; j++){
+        for( let i = 0; i < newOutcomes.length; i++ ){
+            for( let j = 0; j < newOutcomes.length - i - 1; j++ ){
                 let adjustment = ( x ) => {
-                    if( newOutcomes[ x ].conditionComparator === '<'){
+                    if( newOutcomes[ x ].conditionComparator === '<' ){
                         return( -1 )
                     } else if (
                         newOutcomes[ x ].conditionComparator === '>' ){
@@ -106,7 +104,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck, existingQuiz, existingQuizID }) =>
                         return( 0 )
                     }
                 }
-                if( newOutcomes[ j + 1].conditionValue + adjustment( j + 1) < newOutcomes[ j ].conditionValue + adjustment[ j ] ){
+                if( newOutcomes[ j + 1 ].conditionValue + adjustment( j + 1 ) < newOutcomes[ j ].conditionValue + adjustment[ j ] ){
                     [ newOutcomes[ j + 1 ], newOutcomes[ j ]] = [ newOutcomes[ j ], newOutcomes[ j + 1 ]]
                 }
             }
@@ -117,7 +115,7 @@ const NewTriviaQuiz = ({ author, id, dbCheck, existingQuiz, existingQuizID }) =>
 
     const handleFinishExistingQuiz = () => {
         organiseLogic()
-        axios.put( `${ process.env.REACT_APP_SERVER_URL}/quizzes/${quizID}`, { id: quizID, outcomes: quizObject.outcomes, quizAuthor: author, quizName: quizObject.quizName })
+        axios.put( `${ process.env.REACT_APP_SERVER_URL}/quizzes/${ quizID }`, { id: quizID, outcomes: quizObject.outcomes, quizAuthor: author, quizName: quizObject.quizName })
         setExistingQuizAltered( true )
     }
     const deleteOutcome = ( index ) => {

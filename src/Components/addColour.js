@@ -39,7 +39,7 @@ const AddColour = ({
         handleBoxShadow( rgbSplit )
     }
     const handleBoxShadow = ( rgb ) => {
-        let colPicker = document.querySelectorAll('.sketch-picker')
+        let colPicker = document.querySelectorAll('.sketch-picker, #add-image-wrapper')
         colPicker[ index ? index : 0 ].style.boxShadow = ` 0 0 7px 3px rgba(${boxShadow})`
         setBoxShadow( rgb )
     }

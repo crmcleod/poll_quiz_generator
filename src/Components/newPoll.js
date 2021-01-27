@@ -111,7 +111,8 @@ const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
         setPoll({ ...poll, choices: prevChoices, responses: prevResponses })
     }
 
-    const handlePollChoiceDelete = async ( i ) => {
+    const handlePollChoiceDelete = async ( i, e ) => {
+        e.preventDefault()
         const newChoices = [ ...poll.choices ]
         const newResponses = [ ...poll.responses ]
         newChoices.splice( i, 1 )
@@ -125,7 +126,7 @@ const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
         return(
             <div className="poll-input-wrapper" key={ index }>
                 <input required key={ index } className="poll-input" type="text" value={ choice } onChange={ ( e ) => handleChoiceChange(index, e) } placeholder="Choice..."></input>
-                <button className="delete-from-quiz" onClick={ ( e ) => handlePollChoiceDelete( index, e ) }> x </button>
+                <button type="button" className="delete-from-quiz" onClick={ ( e ) => handlePollChoiceDelete( index, e ) }> x </button>
             </div>
         )
     })
@@ -153,17 +154,27 @@ const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
                 when={ !pollPosted }
                 message={ 'Are you sure you want to leave this page, any changes will be lost?' }
             />
-            { existingPoll ? null :
-                <>
-                    <h1> Let's create a new poll!</h1>
-                    <h2> { poll ? poll.pollName ? poll.pollName : 'Poll name / Question:' : null} </h2>
-                    <p> Author: { author }</p>
-                </> }
-
+            { existingPoll ? null : <h1> Let's create a new poll!</h1> }
+            { existingPoll ? 
+                <p id="poll-edit-warning">
+                    Note, a poll's title and responses 
+                    may not be edited. The totals 
+                    need to be preserved against the
+                    original responses - within the context
+                    of the original title - to prevent
+                    misrepresentation of information.
+                </p> 
+                : null}
+            <h2 style={{marginBottom: '0'}}> { poll ? poll.pollName ? poll.pollName : 'Poll name / Question:' : null} </h2>
+            <p> Author: { author }</p>
             <form id="poll-form" onSubmit={ handlePollSubmission }>
-                <input required className="poll-input" id="poll_name_input" value={ poll ? poll.pollName : '' } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
-                { choicesToDisplay }
-                <p id="add-poll-choice" onClick={ handleAddChoiceClick } >Add choice<span id="add_question" style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
+                { existingPoll ? null :
+                    <>
+                        <input required className="poll-input" id="poll_name_input" value={ poll ? poll.pollName : '' } onChange={ handlePollNameChange } placeholder="Poll name..."></input>
+                        { choicesToDisplay }
+                        <p id="add-poll-choice" onClick={ handleAddChoiceClick } >Add choice<span id="add_question" style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
+                    </>
+                }
                 <BackgroundHandler 
                     quizObject={ poll }
                     setQuizObject={ setPoll }

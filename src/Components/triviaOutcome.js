@@ -26,7 +26,7 @@ const TriviaOutcome = ({
     const [ outcomeDisabled, setOutcomeDisabled ] = useState( false )
     
     useEffect(() => {
-        if( existingQuiz && outcome.outcomeBody ){
+        if( existingQuiz ){
             setOutcomeObject({ ...outcomeObject, ...outcome, quiz: { id: existingQuizID }})
         }
     }, [])

@@ -80,7 +80,7 @@ const AddImage = ({ quizSaved, quizObject, setQuizObject, setImageLoading }) => 
         )
     }
     return(
-        <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div id="add-image-wrapper" style={{display: 'flex', flexDirection: 'column'}}>
             { cropperState.image ?
                 <div style={ quizSaved ? {display: 'none'} : null} >
                     <div style={{position: 'relative', width: '300px', height: '300px'}}>
