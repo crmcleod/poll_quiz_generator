@@ -3,7 +3,6 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import NewPoll from './newPoll'
-import PollWidget from './pollWidget'
 import '../poll.css'
 import '../quiz.css'
 import NewTriviaQuiz from './newTriviaQuiz'
@@ -11,7 +10,6 @@ import NewTriviaQuiz from './newTriviaQuiz'
 const ExistingQuizCard = ({ 
     id, 
     setQuizId, 
-    populateQuizState, 
     quizzes, 
     setQuizzes, 
     polls, 
@@ -25,7 +23,7 @@ const ExistingQuizCard = ({
     const [ checkDelete, setCheckDelete ] = useState( false )
 
     const getCurrentQuiz = () => {
-        axios.get( `${process.env.REACT_APP_SERVER_URL}/${currentQuizType}/${id}`)
+        axios.get( `${ process.env.REACT_APP_SERVER_URL }/${ currentQuizType }/${ id }`)
             .then( res => setQuiz( res.data ))
     }
 
@@ -39,14 +37,14 @@ const ExistingQuizCard = ({
                 if( currentQuizType === 'polls'){
                     let newQuizzes = quizzes.filter( quiz => res.data != quiz.id )
                     setQuizzes( newQuizzes )}
-                else if ( currentQuizType === 'quizzes'){
-                    let newPolls = polls.filter( poll => res.data != poll.id)
+                else if ( currentQuizType === 'quizzes' ){
+                    let newPolls = polls.filter( poll => res.data != poll.id )
                     setPolls( newPolls )
                 }
             })
             .catch( err => console.error( err ))
         setQuizId('')
-        document.querySelector('#your-quizzes').selectedIndex = 0
+        document.querySelector( '#your-quizzes' ).selectedIndex = 0
 
     }
 
@@ -67,11 +65,11 @@ const ExistingQuizCard = ({
                     author={ author }
                 /> :
                 <iframe 
-                    style={{ backgroundColor: 'white', margin: '1em'}} 
+                    style={{ backgroundColor: 'white', margin: '1em' }} 
                     frameBorder="0" 
                     width="300" 
                     height="400" 
-                    src={`${process.env.REACT_APP_WIDGET_URL}poll/${id}`} />
+                    src={`${ process.env.REACT_APP_WIDGET_URL }poll/${ id }`} />
                 :
                 null
             }
@@ -91,11 +89,11 @@ const ExistingQuizCard = ({
                     />
                 </div> :
                 <iframe 
-                    style={{ backgroundColor: 'white', margin: '1em'}} 
+                    style={{ backgroundColor: 'white', margin: '1em' }} 
                     frameBorder="0" 
                     width="300" 
                     height="400" 
-                    src={`${process.env.REACT_APP_WIDGET_URL}quiz/${id}`} />
+                    src={`${ process.env.REACT_APP_WIDGET_URL }quiz/${ id }`} />
                 :
                 null
             }
@@ -107,7 +105,7 @@ const ExistingQuizCard = ({
                 :
                 <span>
                     <button onClick={ handleDeleteCheck } type="button"> Delete this quiz? </button>
-                    <button onClick={ handleEditClick } type={ editing ? 'submit' : 'button' } value={ editing ? 'submit' : 'edit'}> { editing ? 'See widget' : 'Edit' } </button>
+                    <button onClick={ handleEditClick } type={ editing ? 'submit' : 'button' } value={ editing ? 'submit' : 'edit' }> { editing ? 'See widget' : 'Edit' } </button>
                 </span> }
         </>
     )

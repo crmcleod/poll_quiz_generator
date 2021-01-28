@@ -10,14 +10,13 @@ const QuizList = ({ userEmail, author }) =>{
 
     const [ quizId, setQuizId ] = useState()
     const [ currentQuizType, setCurrentQuizType ] = useState()
-    const [ pollId, setPollId ] = useState()
     const [ quizzes, setQuizzes ] = useState()
     const [ polls, setPolls ] = useState()
     const [ loading, setLoading ] = useState( true )
 
     useEffect(() => {
         populateQuizState()
-    }, [ quizId ])
+    }, [])
 
     useEffect(() => {
         setLoading( false )
@@ -27,8 +26,8 @@ const QuizList = ({ userEmail, author }) =>{
         axios.get( `${ process.env.REACT_APP_SERVER_URL }/users?email=${ userEmail }`)
             .then( res => {
                 if( res.data.length !== 0 ){
-                    let quizzesDB = res.data[ 0 ].quizzes.map( quiz => quiz )
-                    let pollsDB = res.data[ 0 ].polls.map( poll => poll )
+                    let quizzesDB = res.data[ 0 ].quizzes.map( quiz => { return { id: quiz.id,  quizName: quiz.quizName }})
+                    let pollsDB = res.data[ 0 ].polls.map( poll => { return { id: poll.id, pollName: poll.pollName }})
                     setQuizzes( quizzesDB )
                     setPolls( pollsDB )
                 }
@@ -37,6 +36,7 @@ const QuizList = ({ userEmail, author }) =>{
 
     const handleSelectChange = ( e ) =>{
         let result = e.target.value.split(' ')
+        console.log( e.target.value )
         let targetType = result[0]
         let targetID = parseInt(result[1])
         setQuizId( targetID )
@@ -56,6 +56,7 @@ const QuizList = ({ userEmail, author }) =>{
                     Your quizzes
                 </title>
             </Helmet>
+
             <label id="your-quizzes-label" htmlFor="your-quizzes"> Select a trivia quiz or poll </label>
             { loading ? null : 
                 <select defaultValue="Pick Quiz" name="your-quizzes" id="your-quizzes" onChange={ handleSelectChange }>
@@ -71,26 +72,18 @@ const QuizList = ({ userEmail, author }) =>{
                 </select>
             }
 
-            { quizId && 
-            <ExistingQuizCard 
-                id={ quizId } 
-                populateQuizState={ populateQuizState } 
-                setQuizId={ setQuizId } 
-                quizzes={ quizzes }
-                setQuizzes={ setQuizzes }
-                polls={ polls }
-                setPolls={ setPolls }
-                currentQuizType={ currentQuizType }
-                author={ author }  
-            /> }
-            
-            
-            
-            {/* <Link to={`/quizzes/${quizId}`}> Go to quiz</Link> */}
-            {/* <Switch>
-                <Route exact path={'/quizzes/:id'} 
-                    render={() => <QuizCard />} />
-            </Switch> */}
+            { 
+                quizId && 
+                <ExistingQuizCard 
+                    id={ quizId } 
+                    setQuizId={ setQuizId } 
+                    quizzes={ quizzes }
+                    setQuizzes={ setQuizzes }
+                    polls={ polls }
+                    setPolls={ setPolls }
+                    currentQuizType={ currentQuizType }
+                    author={ author }  /> 
+            }
         </>
     )
 
