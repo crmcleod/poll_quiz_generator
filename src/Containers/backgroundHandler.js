@@ -9,27 +9,25 @@ const BackgroundHandler = ({
     quizObject, 
     setQuizObject, 
     quizSaved, 
-    imageLoading, 
     setImageLoading, 
     questionId, 
     index,
     existingQuiz
 }) => {
 
-    const [ backGroundColorOption, setBackGroundColorOption ] = useState( true )
+    const [ backGroundColorOption, setBackGroundColorOption ] = useState( 'colour' )
     
     const handleBackgroundPickChange = ( e ) => {
-        let bool = e.target.value === 'true'
-        setBackGroundColorOption( bool)
+        setBackGroundColorOption( e.target.value )
     }
 
     return(
         <>
-            <select className={'poll-input ' + 'disable'+questionId + ' background-selector'} onChange={ handleBackgroundPickChange } >
-                <option value={ true }> Background colour </option>
-                <option value={ false }> Background image </option>
+            <select className={'poll-input ' + 'disable' + questionId + ' background-selector'} onChange={ handleBackgroundPickChange } >
+                <option value='colour'> Background colour </option>
+                <option value='image'> Background image </option>
             </select>
-            { backGroundColorOption ? 
+            { backGroundColorOption === 'colour' ? 
                 <AddColour 
                     quizObject={ quizObject }
                     setQuizObject={ setQuizObject }

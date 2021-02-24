@@ -19,17 +19,7 @@ const ExistingQuizCard = ({
 }) => {
 
     const [ editing, setEditing ] = useState( false )
-    const [ quiz, setQuiz ] = useState()
     const [ checkDelete, setCheckDelete ] = useState( false )
-
-    const getCurrentQuiz = () => {
-        axios.get( `${ process.env.REACT_APP_SERVER_URL }/${ currentQuizType }/${ id }`)
-            .then( res => setQuiz( res.data ))
-    }
-
-    useEffect(() => {
-        getCurrentQuiz()
-    }, [ id ])
 
     const handleDelete = async () => {
         await axios.delete(`${ process.env.REACT_APP_SERVER_URL }/${ currentQuizType }/${ id }`)

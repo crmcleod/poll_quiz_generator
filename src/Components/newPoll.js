@@ -10,8 +10,14 @@ import BackgroundHandler from '../Containers/backgroundHandler'
 import { Helmet } from 'react-helmet-async'
 import { Prompt } from 'react-router-dom'
 
-const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
-    const [ pollObject ] = useState({
+const NewPoll = ({ 
+    author, 
+    id, 
+    existingPoll, 
+    existingPollID
+}) => {
+
+    const pollObject = {
         pollName: '',
         pollAuthor: author,
         responses: [],
@@ -25,7 +31,7 @@ const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
         croppedWidth: 0,
         croppedX: 0,
         croppedY: 0
-    })
+    }
 
     const [ poll, setPoll ] = useState()
     const [ pollSaved, setPollSaved ] = useState( false )
@@ -99,7 +105,6 @@ const NewPoll = ({ author, id, existingPoll, existingPollID }) => {
             })
                 .then( res => prevResponses.push(res.data))
                 .then( setPoll({ ...poll, choices: prevChoices, responses: prevResponses }))
-            // setPollObject({ ...pollObject, choices: prevChoices, responses: prevResponses })
         }
     }
 
