@@ -20,6 +20,43 @@ const AddImage = ({
         croppedAreaPixels: null
     })
 
+    const handleImageChange = ( e ) => {
+        if( e.target.files[0].type == 'image/heic' ){
+            // add custom alert modal
+            alert('.heic images are incompatible with this application')
+            e.target.value=''
+            setCropperState({ ...cropperState, image: null })
+        } else {
+            saveImage( e )
+            setImageLoading( true )
+            setTimeout( () => setImageLoading( false ), 3000 )
+        }
+        
+    }
+
+    const saveImage = ( e ) => {
+        if( e.target.files[0].size > 10000000 ){
+            alert( 'The file is too large.' )
+            e.target.value = ''
+        } else {
+            let image = new FormData()
+            image.append( 'image', e.target.files[ 0 ] )
+            axios.post( `${ process.env.REACT_APP_SERVER_URL }/upload`, image )
+                .then( res => {
+                    setQuizObject({ ...quizObject, imgID: res.data }) 
+                    handleImageGrab( res.data )
+                })
+        }
+    }
+
+    const handleImageGrab = async ( id ) => {
+        axios.get(`${ process.env.REACT_APP_SERVER_URL }/images/${ await id }`)
+            .then( res => {
+                const resB64 = `data:image/png;base64,${ res.data.image }`
+                setCropperState({ ...cropperState, image: resB64 })
+            })
+    }
+
     const handleCropChange = ( crop ) => {
         setCropperState({ ...cropperState, crop })
     }
@@ -41,43 +78,6 @@ const AddImage = ({
 
     const handleZoomSliderChange = ( e ) => {
         handleZoomChange( e.target.value )
-    }
-
-    const handleImageChange = ( e ) => {
-        if( e.target.files[0].type == 'image/heic' ){
-            // add custom alert modal
-            alert('.heic images are incompatible with this application')
-            e.target.value=''
-            setCropperState({ ...cropperState, image: null })
-        } else {
-            saveImage( e )
-            setImageLoading( true )
-            setTimeout( () => setImageLoading( false ), 3000 )
-        }
-        
-    }
-
-    const saveImage = async ( e ) => {
-        if( e.target.files[0].size > 10000000 ){
-            alert( 'The file is too large.' )
-            e.target.value = ''
-        } else {
-            let image = new FormData()
-            image.append( 'image', e.target.files[ 0 ] )
-            axios.post( `${ process.env.REACT_APP_SERVER_URL }/upload`, image )
-                .then( res => {
-                    setQuizObject({ ...quizObject, imgID: res.data }) 
-                    handleImageGrab( res.data )
-                })
-        }
-    }
-
-    const handleImageGrab = async ( id ) => {
-        axios.get(`${ process.env.REACT_APP_SERVER_URL }/images/${ await id }`)
-            .then( res => {
-                const resB64 = `data:image/png;base64, ${ res.data.image }`
-                setCropperState({ ...cropperState, image: resB64 })
-            })
     }
 
     if( /iPhone|iPad|iPod|Android/i.test( navigator.userAgent ) ){

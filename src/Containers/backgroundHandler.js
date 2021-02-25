@@ -34,7 +34,7 @@ const BackgroundHandler = ({
                 <AddColour 
                     quizObject={ quizObject }
                     setQuizObject={ setQuizObject }
-                    pollSaved={ quizSaved }
+                    quizSaved={ quizSaved }
                     index={ index }
                     existingQuiz={ existingQuiz }
                 />

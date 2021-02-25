@@ -5,30 +5,30 @@ import { SketchPicker } from 'react-color'
 const AddColour = ({ 
     quizObject,
     setQuizObject, 
-    pollSaved, 
+    quizSaved, 
     index,
     existingQuiz
 }) => {
 
     const [ color, setColor ] = useState({
-        a: 1,
-        b: 240,
+        r: 182,
         g: 206,
-        r: 182
+        b: 240,
+        a: 1
     })
     const [ boxShadow, setBoxShadow ] = useState( '182, 206, 240, 1' )
 
     useEffect(() => {
         if( existingQuiz && quizObject.backgroundColour ){
             const rgbCols = quizObject.backgroundColour.split(' ')
-            setColor(parseColors(rgbCols))
-            setBoxShadow( rgbCols )
+            setColor(rgbaToObject(rgbCols))
+            setBoxShadow( quizObject.backgroundColour )
         } else {
             handleBoxShadow( boxShadow )
         }
     }, [])
 
-    const parseColors = (rgbCols) => {
+    const rgbaToObject = (rgbCols) => {
         return { 
             r: parseInt( rgbCols[3] ),
             g: parseInt( rgbCols[2] ),
@@ -39,16 +39,22 @@ const AddColour = ({
 
     const handleColorChange = ( color ) => {
         const rgba = color.rgb
-        const rgbaSplit = `${ rgba.r }, ${ rgba.g }, ${ rgba.b }, ${ rgba.a }`
+        const rgbaString = rgbaToString( rgba )
         setColor( rgba )
-        setQuizObject({ ...quizObject, backgroundColour: rgbaSplit })
-        handleBoxShadow( rgbaSplit )
+        setQuizObject({ ...quizObject, backgroundColour: rgbaString })
+        handleBoxShadow( rgbaString )
+    }
+
+    const rgbaToString = ( rgba ) => {
+        return (
+            `${ rgba.r }, ${ rgba.g }, ${ rgba.b }, ${ rgba.a }`
+        )
     }
 
     const handleBoxShadow = ( rgb ) => {
+        setBoxShadow( rgb )
         let colPicker = document.querySelectorAll( '.sketch-picker, #add-image-wrapper' )
         colPicker[ index ? index : 0 ].style.boxShadow = ` 0 0 7px 3px rgba( ${ boxShadow } )`
-        setBoxShadow( rgb )
     }
 
     // prevents the page from dragging on mobile
@@ -57,7 +63,7 @@ const AddColour = ({
     }
 
     return(
-        <span style={ pollSaved ? {display: 'none'} : {display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <span style={ quizSaved ? {display: 'none'} : {display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <SketchPicker onClick={ handleClick } onChange={ handleColorChange } color={ color } />
         </span>
     )
