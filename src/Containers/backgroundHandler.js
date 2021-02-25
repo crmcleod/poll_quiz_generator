@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react'
 import AddColour from '../Components/addColour'
@@ -15,19 +14,23 @@ const BackgroundHandler = ({
     existingQuiz
 }) => {
 
-    const [ backGroundColorOption, setBackGroundColorOption ] = useState( 'colour' )
+    const [ backgroundOption, setBackgroundOption ] = useState( 'colour' )
     
-    const handleBackgroundPickChange = ( e ) => {
-        setBackGroundColorOption( e.target.value )
+    const handleBackgroundChoiceChange = ( e ) => {
+        setBackgroundOption( e.target.value )
     }
 
     return(
         <>
-            <select className={'poll-input ' + 'disable' + questionId + ' background-selector'} onChange={ handleBackgroundPickChange } >
+            <select 
+                className={ 'poll-input ' + 'disable' + questionId + ' background-selector' } 
+                onChange={ handleBackgroundChoiceChange } 
+            >
                 <option value='colour'> Background colour </option>
                 <option value='image'> Background image </option>
             </select>
-            { backGroundColorOption === 'colour' ? 
+
+            { backgroundOption === 'colour' ? 
                 <AddColour 
                     quizObject={ quizObject }
                     setQuizObject={ setQuizObject }
@@ -41,7 +44,6 @@ const BackgroundHandler = ({
                     setQuizObject={ setQuizObject }
                     quizSaved={ quizSaved }
                     setImageLoading={ setImageLoading }
-                    questionId={ questionId }
                 />
             }
         </>

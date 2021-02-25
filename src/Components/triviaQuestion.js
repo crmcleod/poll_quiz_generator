@@ -141,7 +141,6 @@ const TriviaQuestion = ({
                     quizObject={ questionBody }
                     setQuizObject={ setQuestionBody }
                     quizSaved={ questionDisabled }
-                    imageLoading={ imageLoading }
                     questionId={ questionId }
                     index={ index }
                     existingQuiz={ existingQuiz }

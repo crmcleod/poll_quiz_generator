@@ -180,16 +180,14 @@ const NewPoll = ({
                         <p id="add-poll-choice" onClick={ handleAddChoiceClick } >Add choice<span id="add_question" style={{color: 'red', fontWeight: 'bold'}}> +</span></p>
                     </>
                 }
-                <BackgroundHandler 
+                <BackgroundHandler
+                    existingQuiz={ existingPoll }
                     quizObject={ poll }
                     setQuizObject={ setPoll }
                     quizSaved={ pollSaved }
-                    imageLoading={ imageLoading }
                     setImageLoading={ setImageLoading }
                 />
-                
                 <button type="submit"> { pollSaved ? 'Edit Poll' : 'Save Poll' } </button>
-                
             </form>
             {poll ? pollSaved ?
                 <>
@@ -204,7 +202,8 @@ const NewPoll = ({
                     </div> 
                 </>
                 : null
-                : null}
+                : null
+            }
         </>
     )
 }

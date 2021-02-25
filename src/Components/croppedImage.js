@@ -71,10 +71,11 @@ const CroppedImage = ({
                 console.error( e )
             }
         },
-        [ croppedHeight,
+        [   croppedHeight,
             croppedWidth,
             croppedX,
-            croppedY ],
+            croppedY 
+        ],
     )
 
     useEffect(() => {

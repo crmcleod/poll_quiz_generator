@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { SketchPicker } from 'react-color'
 
 const AddColour = ({ 
-    quizObject, 
+    quizObject,
     setQuizObject, 
     pollSaved, 
     index,
@@ -16,34 +16,42 @@ const AddColour = ({
         g: 206,
         r: 182
     })
-    const [ boxShadow, setBoxShadow ] = useState( '240, 206, 182, 1' )
+    const [ boxShadow, setBoxShadow ] = useState( '182, 206, 240, 1' )
 
-    useEffect( async () => {
-        handleBoxShadow()
+    useEffect(() => {
         if( existingQuiz && quizObject.backgroundColour ){
-            let rgbCols = quizObject.backgroundColour.split(' ')
-            setColor({ 
-                r: parseInt( rgbCols[3] ),
-                g: parseInt( rgbCols[2] ),
-                b: parseInt( rgbCols[1] ),
-                a: parseInt( rgbCols[0] )
-            })
+            const rgbCols = quizObject.backgroundColour.split(' ')
+            setColor(parseColors(rgbCols))
+            setBoxShadow( rgbCols )
+        } else {
+            handleBoxShadow( boxShadow )
         }
     }, [])
 
-    const handleColorChange = ( color ) => {
-        const rgb = color.rgb
-        const rgbSplit = `${ rgb.r }, ${ rgb.g }, ${ rgb.b }, ${ rgb.a }`
-        setColor( rgb )
-        setQuizObject({ ...quizObject, backgroundColour: rgbSplit })
-        handleBoxShadow( rgbSplit )
+    const parseColors = (rgbCols) => {
+        return { 
+            r: parseInt( rgbCols[3] ),
+            g: parseInt( rgbCols[2] ),
+            b: parseInt( rgbCols[1] ),
+            a: parseInt( rgbCols[0] )
+        }
     }
+
+    const handleColorChange = ( color ) => {
+        const rgba = color.rgb
+        const rgbaSplit = `${ rgba.r }, ${ rgba.g }, ${ rgba.b }, ${ rgba.a }`
+        setColor( rgba )
+        setQuizObject({ ...quizObject, backgroundColour: rgbaSplit })
+        handleBoxShadow( rgbaSplit )
+    }
+
     const handleBoxShadow = ( rgb ) => {
         let colPicker = document.querySelectorAll( '.sketch-picker, #add-image-wrapper' )
         colPicker[ index ? index : 0 ].style.boxShadow = ` 0 0 7px 3px rgba( ${ boxShadow } )`
         setBoxShadow( rgb )
     }
 
+    // prevents the page from dragging on mobile
     const handleClick = ( e ) => {
         e.preventDefault()
     }
